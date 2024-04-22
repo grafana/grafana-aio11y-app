@@ -1,4 +1,4 @@
-# ChromaDB Monitoring with OpenTelemetry
+# Anthropic Monitoring with OpenTelemetry
 
 ### Install `openlit` Library
 

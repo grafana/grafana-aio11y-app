@@ -1,40 +1,39 @@
-# Monitor Pinecone
+# Pinecone Monitoring with OpenTelemetry
 
-## Install Grafana Agent
+### Install `openlit` Library
 
-The Grafana agent collects observability data and sends it to Grafana Cloud. Once the agent is deployed to your hosts, it collects and sends Prometheus-style metrics and log data using a pared-down Prometheus collector.
-
-Run this command to install and run Grafana Agent as a grafana-agent.service systemd service
+To start collecting telemetry data from your application, you first need to install the `openlit`. This SDK is assumed to be an OpenTelemetry-based tool that simplifies the process of collecting traces and other LLM data.
 
 ```shell
-ARCH="amd64" GCLOUD_HOSTED_METRICS_URL="https://prometheus[asdf]-prod-us-east-0.grafana.net/api/prom/push" GCLOUD_HOSTED_METRICS_ID="" GCLOUD_SCRAPE_INTERVAL="60s" GCLOUD_HOSTED_LOGS_URL="https://[asdfsad].grafana.net/loki/api/v1/push" GCLOUD_HOSTED_LOGS_ID="" GCLOUD_RW_API_KEY="" /bin/sh -c "$(curl -fsSL https://storage.googleapis.com/cloud-onboarding/agent/scripts/static/install-linux.sh)"
+pip install openlit
 ```
 
-## Prepare your agent configuration file
+### Create Grafana Cloud Token
 
-### Metrics
-Below `metrics.configs.scrape_configs`, insert the following lines and change the URLs according to your environment:
+A Grafana Cloud token is necessary for authentication when sending telemetry data to Grafana Cloud. The provided token should be kept secure and used in your application's environment variables for authorization.
 
 ```
-- job_name: pinecone
-  authorization:
-    credentials: 
-  scheme: https
-  static_configs:
-    - targets: ['metrics.YOUR_ENVIRONMENT.pinecone.io/metrics']
+
 ```
 
-## Restart the agent
+### Add Environment Variables
 
-Once you’ve made changes to your agent configuration file, run the following command to restart the agent.
-
-After installation, the Agent config is stored in /etc/grafana-agent.yaml. Restart the agent for any changes to take effect:
+Setting these environment variables configures the SDK with the necessary endpoint and headers to securely send telemetry data to Grafana Cloud.
 
 ```shell
-sudo systemctl restart grafana-agent.service
+export OTEL_EXPORTER_OTLP_ENDPOINT="YOUR_OTEL_GATEWAY_URL"
+export OTEL_EXPORTER_OTLP_HEADERS = "Authorization=Basic%20<base64 encoded Instance ID and API Token>"
 ```
 
-## Install dashboard
+### Instrument your code
+
+To begin collecting telemetry data, initialize the `openlit` library at the start of your application. This simple step hooks into your application to start monitoring its performance and behavior.
+    
+```python 
+import openlit
+
+openlit.init()
+```
+
+### Install Dashboard
 Get access to pre-configured dashboard that work right away
-
-    - targets: [metrics.YOUR_ENVIRONMENT.pinecone.io/metrics]
