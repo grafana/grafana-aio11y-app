@@ -1,4 +1,4 @@
-# ChromaDB Monitoring with OpenTelemetry
+# Cohere Monitoring with OpenTelemetry
 
 ### Install `openlit` Library
 

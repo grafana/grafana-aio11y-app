@@ -1,6 +1,4 @@
-
 {
-  "dashboard": {
   "annotations": {
     "list": [
       {
@@ -19,488 +17,29 @@
   },
   "editable": true,
   "fiscalYearStartMonth": 0,
-  "graphTooltip": 2,
+  "graphTooltip": 0,
+  "id": 12,
   "links": [],
-  "liveNow": false,
   "panels": [
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "$datasource"
-      },
+      "collapsed": false,
       "gridPos": {
-        "h": 3,
-        "w": 3,
+        "h": 1,
+        "w": 24,
         "x": 0,
         "y": 0
       },
-      "id": 9,
-      "options": {
-        "code": {
-          "language": "plaintext",
-          "showLineNumbers": false,
-          "showMiniMap": false
-        },
-        "content": "# ![openai](https://github.com/grafana/grafana-openai-monitoring/blob/main/assets/openai-logo-black.png?raw=true)",
-        "mode": "markdown"
-      },
-      "pluginVersion": "11.0.0-67348",
-      "transparent": true,
-      "type": "text"
+      "id": 11,
+      "panels": [],
+      "title": "Row title",
+      "type": "row"
     },
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${metricsDatasource}"
       },
-      "description": "Total Requests made to OpenAI",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "continuous-BlPu"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 3,
-        "x": 3,
-        "y": 0
-      },
-      "id": 8,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "11.0.0-67348",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "$datasource"
-          },
-          "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "sum by(job) (count_over_time(openai_promptTokens{job=~\"$job\"}[$__range]))",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "instant": false,
-          "legendFormat": "__auto",
-          "range": true,
-          "refId": "A",
-          "useBackend": false
-        }
-      ],
-      "title": "Total Requests",
-      "transparent": true,
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "$datasource"
-      },
-      "description": "Avg Duration taken by each request",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 2
-              }
-            ]
-          },
-          "unit": "s"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 4,
-        "x": 6,
-        "y": 0
-      },
-      "id": 4,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "11.0.0-67348",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "$datasource"
-          },
-          "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "avg by(job) (openai_requestDuration{job=~\"$job\"})",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "instant": false,
-          "legendFormat": "__auto",
-          "range": true,
-          "refId": "A",
-          "useBackend": false
-        }
-      ],
-      "title": "Avg Request Duration",
-      "transparent": true,
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "$datasource"
-      },
-      "description": "Avg Total tokens used per request",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "continuous-BlPu"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 14,
-        "x": 10,
-        "y": 0
-      },
-      "id": 1,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "11.0.0-67348",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "$datasource"
-          },
-          "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "avg by(job) (openai_totalTokens{job=~\"$job\"})",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "instant": false,
-          "legendFormat": "__auto",
-          "range": true,
-          "refId": "A",
-          "useBackend": false
-        }
-      ],
-      "title": "Avg Total Tokens",
-      "transparent": true,
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "$datasource"
-      },
-      "description": "Average Cost over time in USD",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "continuous-BlPu"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "currencyUSD"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 10,
-        "x": 0,
-        "y": 3
-      },
-      "id": 7,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "11.0.0-67348",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "$datasource"
-          },
-          "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "avg by(job) (openai_usageCost{job=~\"$job\"})",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "instant": false,
-          "legendFormat": "__auto",
-          "range": true,
-          "refId": "A",
-          "useBackend": false
-        }
-      ],
-      "title": "Average Cost (USD)",
-      "transparent": true,
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "$datasource"
-      },
-      "description": "Avg Total tokens used per request",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "continuous-BlPu"
-          },
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 4047
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 7,
-        "x": 10,
-        "y": 4
-      },
-      "id": 12,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "11.0.0-67348",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "$datasource"
-          },
-          "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "avg by(job) (openai_completionTokens{job=~\"$job\"})",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "instant": false,
-          "legendFormat": "__auto",
-          "range": true,
-          "refId": "A",
-          "useBackend": false
-        }
-      ],
-      "title": "Avg Completion Tokens",
-      "transparent": true,
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "$datasource"
-      },
-      "description": "Avg Total tokens used per request",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "continuous-BlPu"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 4047
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 7,
-        "x": 17,
-        "y": 4
-      },
-      "id": 13,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "11.0.0-67348",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "$datasource"
-          },
-          "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "avg by(job) (openai_promptTokens{job=~\"$job\"})",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "instant": false,
-          "legendFormat": "__auto",
-          "range": true,
-          "refId": "A",
-          "useBackend": false
-        }
-      ],
-      "title": "Avg Prompt Tokens",
-      "transparent": true,
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "$datasource"
-      },
-      "description": "Top 5 Models used in OpenAI API requests",
+      "description": "This panel displays the total number of successful requests made to the GenAI system. A successful request is one that is completed without errors, indicating seamless operation and effective utilization of the GenAI service. Tracking this helps in understanding the reliability and performance of the GenAI system.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -526,17 +65,487 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
-        "w": 9,
+        "h": 4,
+        "w": 12,
         "x": 0,
-        "y": 8
+        "y": 1
       },
-      "id": 11,
+      "id": 1,
       "options": {
-        "displayMode": "lcd",
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.1.0-69372",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${metricsDatasource}"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "sum by() (gen_ai_requests_total{telemetry_sdk_name=\"openlit\", gen_ai_application_name=~\"$application\", gen_ai_environment=~\"$environment\"})",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "Total Successful GenAI Requests",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${metricsDatasource}"
+      },
+      "description": "This panel displays the total count of successful VectorDB requests. It indicates requests that have been processed completely without any errors, showcasing VectorDB's effectiveness and reliability. Watching this helps gauge how well VectorDB is performing and its success in handling operations.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 12,
+        "x": 12,
+        "y": 1
+      },
+      "id": 7,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.1.0-69372",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${metricsDatasource}"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "sum(db_requests_total{telemetry_sdk_name=\"openlit\", gen_ai_application_name=~\"$application\", gen_ai_environment=~\"$environment\"})",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "Total Successful VectorDB Requests",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${metricsDatasource}"
+      },
+      "description": "This panel displays the total number of tokens consumed by GenAI requests, providing a direct measure of usage. Monitoring this helps in assessing the demand on GenAI services and guiding resource allocation or optimization strategies.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic-by-name"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 0,
+        "y": 5
+      },
+      "id": 3,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.1.0-69372",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${metricsDatasource}"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "sum(gen_ai_usage_tokens_total{telemetry_sdk_name=\"openlit\", gen_ai_application_name=~\"$application\", gen_ai_environment=~\"$environment\"})",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "Total Usage Tokens",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${metricsDatasource}"
+      },
+      "description": "This panel displays the total cost incurred from using GenAI models. It reflects the financial impact of operational activities, offering insights into budgetary allocation and efficiency. Tracking this helps in effective cost management and financial planning for GenAI usage.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-BlPu"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 8,
+        "y": 5
+      },
+      "id": 2,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.1.0-69372",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${metricsDatasource}"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "sum(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", gen_ai_application_name=~\"$application\", gen_ai_environment=~\"$environment\"})",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "Total Usage Cost",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${metricsDatasource}"
+      },
+      "description": "This panel displays the average cost per use of the GenAI models and related services. It provides insights into the cost-effectiveness of interactions with GenAI, helping to identify trends in expense per operation. Monitoring this assists in optimizing budget allocation and improving cost efficiency in GenAI utilization.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 0.5
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 16,
+        "y": 5
+      },
+      "id": 5,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.1.0-69372",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${metricsDatasource}"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "avg by() (gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", gen_ai_application_name=~\"$application\", gen_ai_environment=~\"$environment\"})",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "Avg Usage Cost",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "tempo",
+        "uid": "${traceDatasource}"
+      },
+      "description": "This panel displays the distribution of request durations for both GenAI and VectorDB services. It highlights how long requests take to complete, from the shortest to the longest durations, offering insights into system performance and efficiency. Understanding this distribution helps in identifying bottlenecks and optimizing response times for both services.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 10
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 9
+      },
+      "id": 4,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        }
+      },
+      "pluginVersion": "11.1.0-69372",
+      "targets": [
+        {
+          "datasource": {
+            "type": "tempo",
+            "uid": "${traceDatasource}"
+          },
+          "filters": [
+            {
+              "id": "status",
+              "operator": "=",
+              "scope": "intrinsic",
+              "tag": "status",
+              "value": "ok",
+              "valueType": "keyword"
+            },
+            {
+              "id": "f755ab99",
+              "operator": "=",
+              "scope": "span",
+              "tag": "telemetry.sdk.name",
+              "value": [
+                "openlit"
+              ],
+              "valueType": "string"
+            }
+          ],
+          "limit": 20,
+          "query": "{status=ok && span.telemetry.sdk.name=\"openlit\" && span.gen_ai.application_name=~\"$application\" && span.gen_ai.environment=~\"$environment\"}",
+          "queryType": "traceql",
+          "refId": "A",
+          "tableType": "traces"
+        }
+      ],
+      "title": "Request Duration Distribution",
+      "type": "histogram"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${metricsDatasource}"
+      },
+      "description": "This panel displays the ranking of GenAI models based on their usage frequency. It identifies which models are most popular or in-demand, providing insights into user preferences and operational trends. Analyzing this helps in resource allocation, optimizing model availability, and understanding which GenAI features are driving usage.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-BlYlRd"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 14,
+        "w": 14,
+        "x": 0,
+        "y": 16
+      },
+      "id": 17,
+      "options": {
+        "displayMode": "gradient",
         "maxVizHeight": 300,
-        "minVizHeight": 10,
-        "minVizWidth": 0,
+        "minVizHeight": 16,
+        "minVizWidth": 8,
         "namePlacement": "auto",
         "orientation": "horizontal",
         "reduceOptions": {
@@ -550,74 +559,326 @@
         "sizing": "auto",
         "valueMode": "text"
       },
-      "pluginVersion": "11.0.0-67348",
+      "pluginVersion": "11.1.0-69372",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${metricsDatasource}"
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "topk by(model) (5, count_over_time(openai_completionTokens{job=~\"$job\"}[$__range]))",
+          "expr": "topk(5, sum by(gen_ai_request_model) (gen_ai_requests_total{telemetry_sdk_name=\"openlit\", gen_ai_application_name=~\"$application\", gen_ai_environment=~\"$environment\"}))",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
-          "legendFormat": "{{model}}",
+          "legendFormat": "__auto",
           "range": true,
           "refId": "A",
           "useBackend": false
         }
       ],
-      "title": "Top 5 Models",
-      "transparent": true,
+      "title": "Top GenAI Models by Usage",
       "type": "bargauge"
     },
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${metricsDatasource}"
       },
-      "description": "OpenAI Model usage overtime",
+      "description": "This panel displays the distribution of GenAI requests across different platforms such as OpenAI, Cohere, Anthropic, etc. It shows where requests are being sent, giving insights into platform popularity and usage patterns. Monitoring this helps in understanding platform preferences, and it can guide strategic decisions for integration or diversification of GenAI services.",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineStyle": {
-              "fill": "solid"
-            },
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
             }
+          },
+          "mappings": [],
+          "min": 0,
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 5,
+        "x": 14,
+        "y": 16
+      },
+      "id": 16,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.1.0-69372",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${metricsDatasource}"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "sum by(gen_ai_system) (gen_ai_requests_total{telemetry_sdk_name=\"openlit\", gen_ai_application_name=~\"$application\", gen_ai_environment=~\"$environment\"})",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "GenAI Requests by Platform",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${metricsDatasource}"
+      },
+      "description": "This panel displays the breakdown of GenAI requests by type, such as Chat, Embedding, Image, Audio, and Fine Tuning. It reveals the diversity in usage, highlighting which types of requests are most common. Understanding this distribution assists in optimizing resources for the most demanded services and planning for future needs based on usage trends.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 5,
+        "x": 19,
+        "y": 16
+      },
+      "id": 13,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.1.0-69372",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${metricsDatasource}"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "sum by(gen_ai_type) (gen_ai_requests_total{telemetry_sdk_name=\"openlit\", gen_ai_application_name=~\"$application\", gen_ai_environment=~\"$environment\"})",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "GenAI Requests by Type",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${metricsDatasource}"
+      },
+      "description": "This panel displays the distribution of GenAI requests based on the environment, such as production, development, testing, etc. It shows where the requests are being utilized, providing a clear picture of operational focus and deployment strategies. Tracking this helps in aligning resources appropriately and optimizing the performance across different environments.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 5,
+        "x": 14,
+        "y": 23
+      },
+      "id": 15,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.1.0-69372",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${metricsDatasource}"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "sum by(gen_ai_environment) (gen_ai_requests_total{telemetry_sdk_name=\"openlit\", gen_ai_application_name=~\"$application\", gen_ai_environment=~\"$environment\"})",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "GenAI Requests by Environment",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${metricsDatasource}"
+      },
+      "description": "This panel displays the breakdown of GenAI requests by application name, offering insights into which applications are leveraging GenAI services the most. This identification helps in understanding application-specific demand, guiding resource allocation, and supporting targeted optimization efforts for enhanced efficiency in application performance.\"",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 5,
+        "x": 19,
+        "y": 23
+      },
+      "id": 19,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.1.0-69372",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${metricsDatasource}"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "sum by(gen_ai_application_name) (gen_ai_requests_total{telemetry_sdk_name=\"openlit\", gen_ai_application_name=~\"$application\", gen_ai_environment=~\"$environment\"})",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "GenAI Requests by Application",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${metricsDatasource}"
+      },
+      "description": "This panel displays the distribution of requests across different VectorDB systems, such as Chroma, Pinecone, etc. It highlights which VectorDB services are most frequently used, providing insights into system preference and usage patterns. Monitoring this helps in evaluating the performance and scalability of each VectorDB system, guiding strategic decisions for technology adoption and integration.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-BlYlRd"
           },
           "mappings": [],
           "min": 0,
@@ -639,140 +900,40 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
-        "w": 15,
-        "x": 9,
-        "y": 8
-      },
-      "id": 14,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "10.2.0-59542pre",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "$datasource"
-          },
-          "disableTextWrap": false,
-          "editorMode": "code",
-          "expr": "topk by(model) (5, count_over_time(openai_completionTokens{job=~\"$job\"}[$__range]))",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "instant": false,
-          "legendFormat": "{{model}}",
-          "range": true,
-          "refId": "A",
-          "useBackend": false
-        }
-      ],
-      "title": "Model usage overtime",
-      "transparent": true,
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "$datasource"
-      },
-      "description": "Total Tokens used in each query overtime",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineStyle": {
-              "fill": "solid"
-            },
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "log": 2,
-              "type": "log"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 12,
+        "h": 9,
+        "w": 14,
         "x": 0,
-        "y": 15
+        "y": 30
       },
-      "id": 17,
+      "id": 18,
       "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
+        "displayMode": "gradient",
+        "maxVizHeight": 300,
+        "minVizHeight": 16,
+        "minVizWidth": 8,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
         },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "text"
       },
+      "pluginVersion": "11.1.0-69372",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${metricsDatasource}"
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "avg by(job) (openai_totalTokens{job=~\"$job\"})",
+          "expr": "sum by(db_system) (db_requests_total{telemetry_sdk_name=\"openlit\", gen_ai_application_name=~\"$application\", gen_ai_environment=~\"$environment\"})",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
@@ -782,16 +943,87 @@
           "useBackend": false
         }
       ],
-      "title": "Total Tokens",
-      "transparent": true,
-      "type": "timeseries"
+      "title": "VectorDB Usage by System",
+      "type": "bargauge"
     },
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${metricsDatasource}"
       },
-      "description": "Token Usage by Model",
+      "description": "This panel displays the breakdown of database requests based on the type of operation, such as add, updates, deletes, and queries. It provides insights into the operational dynamics of database interactions, highlighting the most common actions performed. Understanding this distribution helps in optimizing database performance and planning for capacity based on operational needs.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 10,
+        "x": 14,
+        "y": 30
+      },
+      "id": 14,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.1.0-69372",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${metricsDatasource}"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "sum by(db_operation) (db_requests_total{telemetry_sdk_name=\"openlit\", gen_ai_application_name=~\"$application\", gen_ai_environment=~\"$environment\"})",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "DB Requests by Operation",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${metricsDatasource}"
+      },
+      "description": "This panel displays a comparative graph showing the average number of tokens consumed for completions and prompts against the average usage cost. It provides a visual representation of the relationship between the volume of data processed (in tokens) and the financial implications of using GenAI services. Analyzing this comparison helps in assessing cost-effectiveness and guiding strategic decisions for efficient resource utilization.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -803,111 +1035,10 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "barAlignment": 0,
+            "barAlignment": 1,
             "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 12,
-        "x": 12,
-        "y": 15
-      },
-      "id": 16,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "$datasource"
-          },
-          "disableTextWrap": false,
-          "editorMode": "code",
-          "expr": "sum by(model) (openai_totalTokens{job=~\"$job\"})",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "instant": false,
-          "legendFormat": "{{model}}",
-          "range": true,
-          "refId": "A",
-          "useBackend": false
-        }
-      ],
-      "title": "Token Usage by Model",
-      "transparent": true,
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "$datasource"
-      },
-      "description": "Duration overtime taken by each request",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
+            "fillOpacity": 30,
+            "gradientMode": "opacity",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
@@ -918,117 +1049,13 @@
             "lineStyle": {
               "fill": "solid"
             },
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "log": 2,
-              "type": "log"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 12,
-        "x": 0,
-        "y": 20
-      },
-      "id": 15,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "10.2.0-59542pre",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "$datasource"
-          },
-          "disableTextWrap": false,
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "openai_requestDuration{job=~\"$job\"}",
-          "format": "table",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "instant": false,
-          "legendFormat": "Request Duration",
-          "range": true,
-          "refId": "A",
-          "useBackend": false
-        }
-      ],
-      "title": "Request Duration",
-      "transparent": true,
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "$datasource"
-      },
-      "description": "Completion Tokens used overtime in each request",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
+            "lineWidth": 2,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
-            "spanNulls": false,
+            "showPoints": "always",
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -1042,108 +1069,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 24,
-        "x": 0,
-        "y": 25
-      },
-      "id": 3,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "10.2.0-59542pre",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "$datasource"
-          },
-          "disableTextWrap": false,
-          "editorMode": "code",
-          "expr": "avg by(job) (openai_completionTokens{job=~\"$job\"})",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "instant": false,
-          "legendFormat": "Completition Tokens",
-          "range": true,
-          "refId": "A",
-          "useBackend": false
-        }
-      ],
-      "title": "Completion Tokens",
-      "transparent": true,
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "$datasource"
-      },
-      "description": "Prompt Tokens used overtime in each request",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1159,15 +1086,15 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 32
+        "y": 39
       },
-      "id": 2,
+      "id": 6,
       "options": {
         "legend": {
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true
         },
         "tooltip": {
           "mode": "single",
@@ -1178,11 +1105,11 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${metricsDatasource}"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "avg by(job) (openai_promptTokens{job=~\"$job\"})",
+          "editorMode": "code",
+          "expr": "avg(gen_ai_usage_prompt_tokens_total{telemetry_sdk_name=\"openlit\", gen_ai_application_name=~\"$application\", gen_ai_environment=~\"$environment\"})",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
@@ -1190,18 +1117,64 @@
           "range": true,
           "refId": "A",
           "useBackend": false
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${metricsDatasource}"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "expr": "avg(gen_ai_usage_completion_tokens_total{telemetry_sdk_name=\"openlit\"})",
+          "fullMetaSearch": false,
+          "hide": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "Completion Tokens",
+          "range": true,
+          "refId": "B",
+          "useBackend": false
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${metricsDatasource}"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "expr": "avg(gen_ai_usage_cost_USD_bucket{telemetry_sdk_name=\"openlit\"})",
+          "fullMetaSearch": false,
+          "hide": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "Usage Cost",
+          "range": true,
+          "refId": "C",
+          "useBackend": false
         }
       ],
-      "title": "Prompt Tokens",
-      "transparent": true,
+      "title": "Average Token Consumption vs. Average Usage Cost Comparison",
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "loki",
-        "uid": "grafanacloud-logs"
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 47
       },
-      "description": "Prompts and Responses",
+      "id": 10,
+      "panels": [],
+      "title": "GenAI Requests",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "tempo",
+        "uid": "${traceDatasource}"
+      },
+      "description": "This panel displays a detailed table of GenAI request traces, providing comprehensive insights into each request's timing, source, type, and outcome. It allows for the in-depth analysis of individual requests, facilitating troubleshooting, performance monitoring, and understanding user interactions with GenAI services. Tracking this helps in identifying patterns, potential issues, and opportunities for optimization.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1210,18 +1183,119 @@
           "custom": {
             "align": "auto",
             "cellOptions": {
-              "mode": "gradient",
               "type": "color-background"
             },
-            "filterable": false,
-            "inspect": true
+            "inspect": false
           },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 16,
+        "w": 24,
+        "x": 0,
+        "y": 48
+      },
+      "id": 8,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "11.1.0-69372",
+      "targets": [
+        {
+          "datasource": {
+            "type": "tempo",
+            "uid": "${traceDatasource}"
+          },
+          "filters": [
+            {
+              "id": "e7e29fde",
+              "operator": "!=",
+              "scope": "span",
+              "tag": "gen_ai.type",
+              "value": [
+                "vectordb"
+              ],
+              "valueType": "string"
+            },
+            {
+              "id": "status",
+              "operator": "=",
+              "scope": "intrinsic",
+              "tag": "status",
+              "value": "ok",
+              "valueType": "keyword"
+            }
+          ],
+          "limit": 20,
+          "query": "{span.gen_ai.type!=\"vectordb\" && status=ok && span.gen_ai.application_name=~\"$application\" && span.gen_ai.environment=~\"$environment\"} | select(span.gen_ai.content.prompt, span.gen_ai.content.completion, span.gen_ai.usage.cost)",
+          "queryType": "traceql",
+          "refId": "A",
+          "tableType": "traces"
+        }
+      ],
+      "transparent": true,
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 64
+      },
+      "id": 12,
+      "panels": [],
+      "title": "VectorDB Requests",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "tempo",
+        "uid": "${traceDatasource}"
+      },
+      "description": "This panel displays a table with detailed traces of VectorDB requests, offering insights into specifics like request timing, source, operation type, and results. It's designed for thorough examination of VectorDB interactions, enabling precise troubleshooting, performance evaluation, and user behavior understanding. By monitoring these traces, users can spot trends, diagnose problems, and improve operational efficiency in handling VectorDB requests.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic-by-name"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "color-background"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1229,7 +1303,7 @@
               }
             ]
           },
-          "unit": "string"
+          "unit": "s"
         },
         "overrides": []
       },
@@ -1237,124 +1311,101 @@
         "h": 15,
         "w": 24,
         "x": 0,
-        "y": 40
+        "y": 65
       },
-      "id": 10,
+      "id": 9,
       "options": {
-        "cellHeight": "md",
+        "cellHeight": "sm",
         "footer": {
           "countRows": false,
-          "enablePagination": false,
           "fields": "",
           "reducer": [
             "sum"
           ],
           "show": false
         },
-        "showHeader": true,
-        "sortBy": [
-          {
-            "desc": true,
-            "displayName": "Time"
-          }
-        ]
+        "showHeader": true
       },
-      "pluginVersion": "10.2.0-59981",
+      "pluginVersion": "11.1.0-69372",
       "targets": [
         {
           "datasource": {
-            "type": "loki",
-            "uid": "grafanacloud-logs"
+            "type": "tempo",
+            "uid": "${traceDatasource}"
           },
-          "editorMode": "builder",
-          "expr": "{job=~\"$job\"}",
-          "queryType": "range",
-          "refId": "A"
-        }
-      ],
-      "title": "Prompts and Responses",
-      "transformations": [
-        {
-          "id": "extractFields",
-          "options": {
-            "source": "labels"
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "completion_tokens": true,
-              "finish_reason": true,
-              "id": true,
-              "integration": true,
-              "job": true,
-              "labels": true,
-              "prompt": false,
-              "prompt_tokens": true,
-              "role": true,
-              "traceID": true,
-              "tsNs": true,
-              "type": true
+          "filters": [
+            {
+              "id": "e7e29fde",
+              "operator": "=",
+              "scope": "span",
+              "tag": "gen_ai.type",
+              "value": [
+                "vectordb"
+              ],
+              "valueType": "string"
             },
-            "indexByName": {
-              "Line": 3,
-              "Time": 1,
-              "completion_tokens": 7,
-              "finish_reason": 8,
-              "id": 5,
-              "job": 12,
-              "labels": 0,
-              "model": 10,
-              "prompt": 2,
-              "prompt_tokens": 9,
-              "role": 13,
-              "total_tokens": 11,
-              "traceID": 6,
-              "tsNs": 4
-            },
-            "renameByName": {
-              "Line": "Response"
+            {
+              "id": "status",
+              "operator": "=",
+              "scope": "intrinsic",
+              "tag": "status",
+              "value": "ok",
+              "valueType": "keyword"
             }
-          }
+          ],
+          "limit": 20,
+          "query": "{span.gen_ai.type=\"vectordb\" && status=ok && span.gen_ai.application_name=~\"$application\" && span.gen_ai.environment=~\"$environment\"}",
+          "queryType": "traceql",
+          "refId": "A",
+          "tableType": "traces"
         }
       ],
       "transparent": true,
       "type": "table"
     }
   ],
-  "refresh": "30s",
+  "refresh": "",
   "schemaVersion": 39,
-  "tags": [
-    "openai-integration"
-  ],
+  "tags": [],
   "templating": {
     "list": [
       {
         "current": {
           "selected": true,
-          "text": [
-            "grafanacloud-aio11y-prom"
-          ],
-          "value": [
-            "grafanacloud-prom"
-          ]
+          "value": "grafanacloud-traces"
         },
         "hide": 0,
-        "includeAll": true,
-        "label": "Prometheus data source",
-        "multi": true,
-        "name": "datasource",
+        "includeAll": false,
+        "label": "Trace Datasource",
+        "multi": false,
+        "name": "traceDatasource",
         "options": [],
-        "query": "prometheus",
+        "query": "tempo",
         "queryValue": "",
         "refresh": 1,
-        "regex": "(?!grafanacloud-usage|grafanacloud-ml-metrics).+",
+        "regex": "",
         "skipUrlSync": false,
         "type": "datasource"
       },
       {
-        "allValue": ".+",
+        "current": {
+          "selected": true,
+          "value": "grafanacloud-prom"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": "Metrics Datasource",
+        "multi": false,
+        "name": "metricsDatasource",
+        "options": [],
+        "query": "prometheus",
+        "queryValue": "",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
         "current": {
           "selected": true,
           "text": [
@@ -1366,36 +1417,70 @@
         },
         "datasource": {
           "type": "prometheus",
-          "uid": "$datasource"
+          "uid": "grafanacloud-prom"
         },
-        "definition": "label_values(job)",
+        "definition": "label_values(gen_ai_application_name)",
         "hide": 0,
         "includeAll": true,
-        "label": "Job",
+        "label": "Application",
         "multi": true,
-        "name": "job",
+        "name": "application",
         "options": [],
         "query": {
-          "query": "label_values(job)",
+          "qryType": 1,
+          "query": "label_values(gen_ai_application_name)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
-        "refresh": 2,
+        "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "grafanacloud-prom"
+        },
+        "definition": "label_values(gen_ai_environment)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Environment",
+        "multi": true,
+        "name": "environment",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(gen_ai_environment)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
         "type": "query"
       }
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-24h",
     "to": "now"
   },
+  "timeRangeUpdatedDuringEditOrView": false,
   "timepicker": {},
-  "timezone": "",
-  "title": "Anthropic Monitoring",
-  "uid": "ebd58eb6-f2f8-481e-aa6c-bc02387821c7",
-  "version": 1,
+  "timezone": "browser",
+  "title": "GenAI Observability",
+  "uid": "cdiz9piuoa3gge",
+  "version": 21,
   "weekStart": ""
-}
-}
+  }
+  
