@@ -139,3 +139,38 @@ export const mlPytorchScrapeConfig = () => {
   static_configs:
   - targets: ['localhost:8082'] #TorchServe metrics endpoint`
 }
+
+export const mlTensorflowScrapeConfig = () => {
+  return `- job_name: integrations/tensorflow
+  relabel_configs:
+    - source_labels: ['__meta_docker_container_name']
+      replacement: tensorflow
+      target_label: name
+    - source_labels: ['__meta_docker_container_name']
+      replacement: integrations/tensorflow
+      target_label: job
+    - source_labels: ['__meta_docker_container_name']
+      replacement: '<your-instance-name>'
+      target_label: instance
+  docker_sd_configs:
+    - host: unix:///var/run/docker.sock
+      refresh_interval: 5s
+      filters:
+        - name: name
+          values: [tensorflow]`
+}
+
+export const mlTensorflowMetricsConfig = () => {
+  return `- job_name: integrations/tensorflow
+  metrics_path: "/monitoring/prometheus/metrics"
+  relabel_configs:
+    - replacement: '<your-instance-name>'
+      target_label: instance
+  static_configs:
+    - targets: ['localhost:8501']
+  metric_relabel_configs:
+  - action: keep
+    regex: :tensorflow:core:graph_build_calls|:tensorflow:core:graph_build_time_usecs|:tensorflow:core:graph_run_time_usecs|:tensorflow:core:graph_runs|:tensorflow:serving:batching_session:queuing_latency_count|:tensorflow:serving:batching_session:queuing_latency_sum|:tensorflow:serving:request_count|:tensorflow:serving:request_latency_count|:tensorflow:serving:request_latency_sum|:tensorflow:serving:runtime_latency_count|:tensorflow:serving:runtime_latency_sum
+    source_labels:
+      - __name__`
+}
