@@ -6,7 +6,7 @@ const Chroma = () => {
         <div>
             <h1>Monitor ChromaDB</h1>
             <h2>Understand the Environment Variables</h2>
-            <p>Firstly, here’s a quick overview of what each environment variable you'll be setting does:</p>
+            <p>Firstly, here&apos;s a quick overview of what each environment variable you&apos;ll be setting does:</p>
 
             <ol>
                 <li><code>CHROMA_OTEL_COLLECTION_ENDPOINT</code>: This is the endpoint to which the metrics from ChromaDB will be sent. It uses the OpenTelemetry protocol to communicate with Grafana Cloud.</li>
@@ -20,13 +20,13 @@ const Chroma = () => {
             <h2>Configure Environment Variables</h2>
             <p>These variables need to be set in the environment where ChromaDB runs. How you do this depends on your deployment method. Here are general instructions for a few common scenarios:</p>
             <h3>Direct Run</h3>
-            <p>If you're running ChromaDB directly on a host (for development or testing), you can export these variables in your terminal:</p>
+            <p>If you&apos;re running ChromaDB directly on a host (for development or testing), you can export these variables in your terminal:</p>
             <pre>{chromaDirectRun()}</pre>
             <h3>Docker Container</h3>
             <p>For a Docker deployment, these variables can be added to your `docker run` command or your Docker Compose file:</p>
             <pre>{chromaDockerContainer()}</pre>
             <h3>Kubernetes</h3>
-            <p>If you're deploying on Kubernetes, these variables should be added to your pod specifications under `env` in the deployment YAML:</p>
+            <p>If you&apos;re deploying on Kubernetes, these variables should be added to your pod specifications under `env` in the deployment YAML:</p>
             <pre>{chromaKubernetes()}</pre>
             <h2>Install Dashboards</h2>
         </div>

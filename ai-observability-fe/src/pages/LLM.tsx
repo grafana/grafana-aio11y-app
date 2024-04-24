@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
-import Markdown from 'markdown-to-jsx';
-import AnthropicMarkdown from '../instructions/llms/anthropic/openllmetry.md';
-import CohereMarkdown from '../instructions/llms/cohere/openllmetry.md';
-import OpenAIMarkdown from '../instructions/llms/openai/grafana-openai-monitoring.md';
 import { CardElement } from 'components/Card/Card';
 import InstallDashboard from 'components/InstallDashboards/InstallDashboards';
-// import openaidash from '../instructions/llms/openai/dashboard.json'
 
 export function LLM() {
   const [selectedLLM, setSelectedLLM] = useState(null);
@@ -37,9 +32,9 @@ export function LLM() {
       </div>
       <div style={{ marginLeft: '32px', padding: '16px', marginTop: '16px' }}>
 
-        {selectedLLM === 'Anthropic' && <Markdown disableHtml={true}>{AnthropicMarkdown}</Markdown>}
+        {/* {selectedLLM === 'Anthropic' && <Markdown disableHtml={true}>{AnthropicMarkdown}</Markdown>}
         {selectedLLM === 'Cohere' && <Markdown disableHtml={true}>{CohereMarkdown}</Markdown>}
-        {selectedLLM === 'OpenAI' && <Markdown disableHtml={true}>{OpenAIMarkdown}</Markdown>}
+        {selectedLLM === 'OpenAI' && <Markdown disableHtml={true}>{OpenAIMarkdown}</Markdown>} */}
 
         {selectedLLM === 'Anthropic' && <InstallDashboard filePath="https://raw.githubusercontent.com/grafana/hackathon-2024-03-tame-the-beast/main/gtm-aiobservability-app/src/instructions/llms/anthropic/dashboard.json?" />}
         {selectedLLM === 'Cohere' && <InstallDashboard filePath="https://raw.githubusercontent.com/grafana/hackathon-2024-03-tame-the-beast/main/gtm-aiobservability-app/src/instructions/llms/cohere/dashboard.json?" />}

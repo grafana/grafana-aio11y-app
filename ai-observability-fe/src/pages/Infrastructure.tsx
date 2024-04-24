@@ -19,7 +19,7 @@ export function Infrastructure() {
 
           <h2>Install DCGM Exporter </h2>
 
-          <p>The NVIDIA DCGM Exporter fetches metrics from GPUs and exposes them for collection. It's crucial for monitoring the performance and health of your GPUs within Kubernetes.</p>
+          <p>The NVIDIA DCGM Exporter fetches metrics from GPUs and exposes them for collection. It&apos;s crucial for monitoring the performance and health of your GPUs within Kubernetes.</p>
 
           <pre>{installDCGMExporter()}</pre>
 

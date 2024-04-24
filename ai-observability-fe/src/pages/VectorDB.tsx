@@ -1,7 +1,4 @@
 import React, { useState } from 'react';
-import Markdown from 'markdown-to-jsx';
-import ChromaMarkdown from '../instructions/vectordb/chroma.md';
-import PineconeMarkdown from '../instructions/vectordb/pinecone.md';
 import { CardElement } from 'components/Card/Card';
 import InstallDashboard from 'components/InstallDashboards/InstallDashboards';
 import Chroma from 'components/VectorDB/Chroma';
