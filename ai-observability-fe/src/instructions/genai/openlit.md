@@ -1,4 +1,4 @@
-# ChromaDB Monitoring with OpenTelemetry
+# LLM Application Monitoring with OpenTelemetry
 
 ### Install `openlit` Library
 
