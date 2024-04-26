@@ -25,14 +25,8 @@ export function HomePage() {
             <h2>Get insights on your:</h2>
             <div className={styles.cardGrid}>
               <div>
-                <h3>LLMs</h3>
-                <p>Monitor LLM token usage.</p>
-              </div>
-              <div>
-                <h3>Vector Databases</h3>
-                <p>
-                  Monitor your vector databases, usage, and diagnostics.
-                </p>
+                <h3>Generative AI</h3>
+                <p>Monitor LLM token and vector database usage.</p>
               </div>
               <div>
                 <h3>ML Frameworks</h3>
@@ -75,7 +69,7 @@ const homeStyles = (theme: GrafanaTheme2) => ({
   `,
   cardGrid: css`
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     grid-template-rows: 1fr;
     width: 100%;
     text-align: center;

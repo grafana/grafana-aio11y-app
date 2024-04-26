@@ -1,13 +1,12 @@
 import React from 'react';
-import { testIds } from '../components/testIds';
 import InstallDashboard from 'components/InstallDashboards/InstallDashboards';
-import { dcgmSnippet, installDCGMExporter, prepareAgentConfig } from './snippets';
+import { dcgmSnippet, installDCGMExporter, prepareAgentConfig } from '../snippets';
 
 export function Infrastructure() {
 
   return (
     <div style={{ marginTop: '64px', border: '0.5px solid gray' }}>
-      <div data-testid={testIds.pageThree.container}>
+      <div>
         <div style={{ marginLeft: '32px', padding: '16px' }}>
           <h1>Monitor Nvidea DCGM</h1>
           <p>some text about what this does!</p>

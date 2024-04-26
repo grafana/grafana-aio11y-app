@@ -7,7 +7,6 @@ import { CardElement } from 'components/Card/Card';
 export function MLFrameworks() {
   const [selectedFramework, setSelectedFramework] = useState(null);
 
-  // Function to handle button click
   const handleButtonClick = (framework: any) => {
     setSelectedFramework(framework);
   };

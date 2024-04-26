@@ -79,6 +79,10 @@ export const prepareAgentConfig = () => {
 //  THIS ENDS THE INFRA SNIPPETS SECTION
 
 // THIS MARKS THE LLM SNIPPETS SECTION
+export const openLitConfiguration = () => {
+  return` export OTEL_EXPORTER_OTLP_ENDPOINT="YOUR_OTEL_GATEWAY_URL"
+  export OTEL_EXPORTER_OTLP_HEADERS = "Authorization=Basic%20<base64 encoded Instance ID and API Token>"`
+}
 // THIS ENDS LLM SNIPPETS SECTION
 
 

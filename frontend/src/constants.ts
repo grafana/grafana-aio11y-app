@@ -9,4 +9,7 @@ export enum ROUTES {
   VectorDB = 'vectordb',
   LLM = 'llm',
   CONFIG = 'config',
+  GenAI = 'genAI',
+  MLFrameworksHomePage = 'mlFrameworksHomePage',
+  InfrastructureHomePage = 'infrastructureHomePage',
 }

@@ -26,7 +26,7 @@
       "name": "ML Frameworks",
       "path": "/a/%PLUGIN_ID%/ml",
       "role": "Admin",
-      "addToNav": true,
+      "addToNav": false,
       "defaultNav": false
     },
     {
@@ -34,7 +34,7 @@
       "name": "Infrastructure",
       "path": "/a/%PLUGIN_ID%/infra",
       "role": "Admin",
-      "addToNav": true,
+      "addToNav": false,
       "defaultNav": false
     },
     {
@@ -49,6 +49,30 @@
       "type": "page",
       "name": "LLM",
       "path": "/a/%PLUGIN_ID%/llm",
+      "role": "Admin",
+      "addToNav": false,
+      "defaultNav": false
+    },
+    {
+      "type": "page",
+      "name": "GenAI",
+      "path": "/a/%PLUGIN_ID%/GenAI",
+      "role": "Admin",
+      "addToNav": true,
+      "defaultNav": false
+    },
+    {
+      "type": "page",
+      "name": "ML Frameworks",
+      "path": "/a/%PLUGIN_ID%/MLFrameworksHomePage",
+      "role": "Admin",
+      "addToNav": true,
+      "defaultNav": false
+    },
+    {
+      "type": "page",
+      "name": "Infrastructure",
+      "path": "/a/%PLUGIN_ID%/InfrastructureHomePage",
       "role": "Admin",
       "addToNav": true,
       "defaultNav": false

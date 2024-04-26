@@ -28,4 +28,4 @@ const Tensorflow = () => {
   )
 }
 
-export default Tensorflow
+export default Tensorflow;
