@@ -3,7 +3,7 @@ import tokens from 'img/GenAI/tokens.png';
 import vectordb from 'img/GenAI/vectordb.png';
 import { css } from '@emotion/css';
 import { GrafanaTheme2 } from '@grafana/data';
-import { Card, useStyles2 } from '@grafana/ui';
+import { Card, LinkButton, useStyles2 } from '@grafana/ui';
 
 export function GenAI() {
   const styles = useStyles2(GenAIStyles);
@@ -14,9 +14,11 @@ export function GenAI() {
       <Card className=''>
         <div className={styles.imageContainer}>
         <div className={styles.textContainer}>
-          <h2>Monitor Your LLM usage</h2>
+          <h2>Monitor Your GPU usage</h2>
           <p>with prebuilt dashboards</p>
-          <a href="#">Learn more</a>
+          <LinkButton>
+          View Infrastructure Dashboard
+          </LinkButton>
         </div>
           <img src={tokens} alt="" />
         </div>
@@ -25,12 +27,25 @@ export function GenAI() {
         <div className={styles.imageContainer}>
           <img src={vectordb} alt="" />
           <div className={styles.textContainer}>
-          <h2>Monitor Your VectorDB usage</h2> 
+          <h2>Monitor Pytorch and Tensorflow</h2> 
           <p>With prebuilt dashboards</p>
-          <a href="#">Learn more</a>
-
+         <LinkButton>
+         View Frameworks Dashboard
+         </LinkButton>
         </div>
         </div> 
+      </Card>
+      <Card className=''>
+        <div className={styles.imageContainer}>
+        <div className={styles.textContainer}>
+          <h2>Monitor Your LLM and Vector DB usage</h2>
+          <p>with prebuilt dashboards</p>
+          <LinkButton>
+          View Gen AI dashboards
+          </LinkButton>
+        </div>
+          <img src={tokens} alt="" />
+        </div>
       </Card>
       <Card className={styles.cardStats}>
   <div className={styles.header}>

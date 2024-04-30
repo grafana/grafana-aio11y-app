@@ -1,14 +1,15 @@
 import React from 'react';
 import { testIds } from '../components/testIds';
 import { PluginPage } from '@grafana/runtime';
-import {  Card, LinkButton, useStyles2 } from '@grafana/ui';
-
+import { Card, LinkButton, useStyles2 } from '@grafana/ui';
+import tokens from 'img/GenAI/tokens.png';
+import vectordb from 'img/GenAI/vectordb.png';
 export function HomePage() {
   const styles = useStyles2(homeStyles);
 
   return (
     <PluginPage>
-      <div data-testid={testIds.pageOne.container}>
+      <div data-testid={testIds.pageOne.container} className={styles.container}>
         <div>
           <Card className={styles.cardCentered}>
             <h2>
@@ -21,26 +22,65 @@ export function HomePage() {
               </LinkButton>
             </div>
           </Card>
-          <Card className={styles.cardCentered}>
-            <h2>Get insights on your:</h2>
-            <div className={styles.cardGrid}>
-              <div>
-                <h3>Generative AI</h3>
-                <p>Monitor LLM token and vector database usage.</p>
+          <Card className=''>
+            <div className={styles.imageContainer}>
+              <div className={styles.textContainer}>
+                <h2>Monitor Your GPU usage</h2>
+                <p>NVIDA Support</p>
+                <LinkButton>
+                  View Infrastructure Dashboard
+                </LinkButton>
               </div>
-              <div>
-                <h3>ML Frameworks</h3>
-                <p>
-                  Monitor performance of your models.
-                </p>
-              </div>
-              <div>
-                <h3>Infrastructure</h3>
-                <p>
-                  Monitor performance of your GPUs
-                </p>
+              <img src={tokens} alt="" />
+            </div>
+          </Card>
+          <Card className=''>
+            <div className={styles.imageContainer}>
+              <img src={vectordb} alt="" />
+              <div className={styles.textContainer}>
+                <h2>ML Frameworks</h2>
+                <p>Including Pytorch and Tensorflow</p>
+                <LinkButton>
+                  View Frameworks Dashboard
+                </LinkButton>
               </div>
             </div>
+          </Card>
+          <Card className=''>
+            <div className={styles.imageContainer}>
+              <div className={styles.textContainer}>
+                <h2>Monitor Generative AI</h2>
+                <p>Monitor your LLM and Vector Database usage</p>
+                <LinkButton>
+                  View Gen AI dashboards
+                </LinkButton>
+              </div>
+              <img src={tokens} alt="" />
+            </div>
+          </Card>
+          <Card className={styles.cardStats}>
+            <div className={styles.header}>
+              <h1>Dashboard Visualizations Include</h1>
+            </div>
+            <div className={styles.stats}>
+              <div>
+                <h4>Total Successful Requests</h4>
+                <h5>✅</h5>
+              </div>
+              <div>
+                <h4>Total Usage Cost</h4>
+                <h5>✅</h5>
+              </div>
+              <div>
+                <h4>GPU Usage</h4>
+                <h5>✅</h5>
+              </div>
+              <div>
+                <h4>Total Requests By Platform</h4>
+                <h5>✅</h5>
+              </div>
+            </div>
+            <p>...and more</p>
           </Card>
         </div>
       </div>
@@ -53,6 +93,19 @@ import { css } from '@emotion/css';
 import { GrafanaTheme2 } from '@grafana/data';
 
 const homeStyles = (theme: GrafanaTheme2) => ({
+  container: css`
+  display: flex;
+  flex-direction: column;
+
+  h1 {
+    text-align: center;
+    font-size: 48x;
+    margin: 24px 0;
+  
+  }
+
+  padding: 16px;
+`,
   cardCentered: css`
     display: flex;
     flex-direction: column;
@@ -83,7 +136,6 @@ const homeStyles = (theme: GrafanaTheme2) => ({
     }
 
     p {
-      // width: 300px;
       margin: auto;
     }
   `,
@@ -108,6 +160,34 @@ const homeStyles = (theme: GrafanaTheme2) => ({
       margin-left: 20px;
     }
   `,
+  textContainer: css`
+  margin: auto;
+  `,
+  imageContainer: css`
+    display: flex;
+    justify-content: center; 
+    img {
+      width: 55%;
+    }
+  `,
+  stats: css`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-column-gap: 40px;
+  grid-row-gap: 10px;
+  padding: 30px;
+  text-align: center;
+`,
+
+  header: css`
+  grid-column: span 5;
+`,
+
+  cardStats: css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`,
 
 });
 
