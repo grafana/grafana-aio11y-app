@@ -42,7 +42,7 @@
       "name": "Vector Databases",
       "path": "/a/%PLUGIN_ID%/vectordb",
       "role": "Admin",
-      "addToNav": true,
+      "addToNav": false,
       "defaultNav": false
     },
     {

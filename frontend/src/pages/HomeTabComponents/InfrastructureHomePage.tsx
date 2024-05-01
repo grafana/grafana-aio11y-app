@@ -11,7 +11,6 @@ export  function InfrastructureHomePage() {
     <h1>Monitor your Infrastructure </h1>
 
       <Card>
-        placeholder image
         <img src={pytorch2} alt="" />
       </Card>
       <LinkButton href='/plugins/gtm-aiobservability-app'>

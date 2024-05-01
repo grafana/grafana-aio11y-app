@@ -1,7 +1,6 @@
 import { Card, LinkButton, useStyles2 } from '@grafana/ui'
 import React from 'react'
 import pytorch1 from 'img/MLFrameworks/Pytorch/pytorch1.png'
-import pytorch2 from 'img/MLFrameworks/Pytorch/pytorch2.png'
 import { GrafanaTheme2 } from '@grafana/data';
 import { css } from '@emotion/css';
 export  function MLFrameworksHomePage() {
@@ -13,9 +12,6 @@ export  function MLFrameworksHomePage() {
 
       <Card>
         <img src={pytorch1} alt="" />
-      </Card>
-      <Card>
-      <img src={pytorch2} alt="" />
       </Card>
       <LinkButton href='/plugins/gtm-aiobservability-app'>
         Configure Now

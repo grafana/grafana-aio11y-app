@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Infrastructure, LLM, VectorDB, MLFrameworks } from 'pages';
+import { Infrastructure, LLM, MLFrameworks } from 'pages';
 import { CardElement } from '../Card/Card'; 
 
 
@@ -17,8 +17,6 @@ const HomePageCards = () => {
         return <Infrastructure />;
         case 'LLM':
           return <LLM />;
-      case 'VectorDB':
-        return <VectorDB />;
       case 'MLFrameworks':
         return <MLFrameworks />;
       default:
@@ -42,13 +40,6 @@ const HomePageCards = () => {
             title="Gen AI"
             description="Monitor Your LLM Usage"
             onClick={() => handleClick('LLM')}
-          />
-        </li>
-        <li>
-          <CardElement
-            title="Vector DB"
-            description="Monitor your DB Usage"
-            onClick={() => handleClick('VectorDB')}
           />
         </li>
         <li>
