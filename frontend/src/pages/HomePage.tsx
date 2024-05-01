@@ -27,7 +27,7 @@ export function HomePage() {
               <div className={styles.textContainer}>
                 <h2>Monitor Your GPU usage</h2>
                 <p>NVIDA Support</p>
-                <LinkButton>
+                <LinkButton href='/a/gtm-aiobservability-app/InfrastructureHomePage'>
                   View Infrastructure Dashboard
                 </LinkButton>
               </div>
@@ -40,7 +40,7 @@ export function HomePage() {
               <div className={styles.textContainer}>
                 <h2>ML Frameworks</h2>
                 <p>Including Pytorch and Tensorflow</p>
-                <LinkButton>
+                <LinkButton href='/a/gtm-aiobservability-app/MLFrameworksHomePage'>
                   View Frameworks Dashboard
                 </LinkButton>
               </div>
@@ -51,7 +51,7 @@ export function HomePage() {
               <div className={styles.textContainer}>
                 <h2>Monitor Generative AI</h2>
                 <p>Monitor your LLM and Vector Database usage</p>
-                <LinkButton>
+                <LinkButton href='/a/gtm-aiobservability-app/GenAI'>
                   View Gen AI dashboards
                 </LinkButton>
               </div>
