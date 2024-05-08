@@ -1,7 +1,0 @@
-prometheus.scrape "metrics_torch_serve_torchserve" {
-	targets = [{
-		__address__ = "localhost:8082",
-	}]
-	forward_to = [prometheus.remote_write.metrics_torch_serve.receiver]
-	job_name   = "torchserve"
-}

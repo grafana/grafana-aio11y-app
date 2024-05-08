@@ -1,5 +1,5 @@
 # AI Observability
-App plugin for production AI observability. This includes:
-- GenAI (LLM & VectorDB Observability)
-- Machine Learning Serving
-- GPU Monitoring
+App plugin for production AI observability. This includes monitoring:
+- GenAI (LLM & VectorDB)
+- Model Serving
+- GPUs
