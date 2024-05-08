@@ -1,0 +1,9 @@
+metrics:
+  global:
+    scrape_interval: 60s
+  configs:
+   -  name: torch-serve
+      scrape_configs:
+      - job_name: 'torchserve'
+        static_configs:
+        - targets: ['localhost:8082'] #TorchServe metrics endpoint
