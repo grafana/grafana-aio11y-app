@@ -34,6 +34,3 @@ import openlit
 
 openlit.init()
 ```
-
-### Install Dashboard
-Get access to pre-configured dashboard that work right away

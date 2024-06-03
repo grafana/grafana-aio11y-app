@@ -1,5 +1,5 @@
-# ai-o11y
-App plugin for GPU &amp; AI model observability
-
-`metadata-service` contains all the code for the metadata service used to track
-ML processes and trainings.
+# AI Observability
+App plugin for production AI observability. This includes monitoring:
+- GenAI (LLM & VectorDB)
+- Model Serving
+- GPUs
