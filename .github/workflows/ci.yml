@@ -50,9 +50,9 @@ jobs:
       - name: Lint
         run: cd frontend && yarn run lint
 
-
       - name: Start grafana docker
-        run: docker-compose up -d
+        run: cd frontend && docker-compose up -d
 
       - name: Stop grafana docker
-        run: docker-compose down
+        run: cd frontend && docker-compose down
+
