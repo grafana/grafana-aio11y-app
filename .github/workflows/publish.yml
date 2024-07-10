@@ -54,7 +54,7 @@ jobs:
           steps.cache-node-modules.outputs.cache-hit != 'true'
 
       - name: Build frontend
-        run: yarn build
+        run: cd frontend && yarn build
 
       - name: Sign plugin
         run: yarn sign
