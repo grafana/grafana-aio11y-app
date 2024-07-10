@@ -51,10 +51,6 @@ jobs:
         run: cd frontend && yarn run lint
 
 
-      - name: Prepare env variables
-        run: |
-          cp ./.config/.env.local.sample ./.config/.env.local
-
       - name: Start grafana docker
         run: docker-compose up -d
 
