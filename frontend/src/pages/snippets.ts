@@ -80,8 +80,8 @@ export const prepareAgentConfig = () => {
 
 // THIS MARKS THE LLM SNIPPETS SECTION
 export const openLitConfiguration = () => {
-  return` export OTEL_EXPORTER_OTLP_ENDPOINT="YOUR_OTEL_GATEWAY_URL"
-  export OTEL_EXPORTER_OTLP_HEADERS = "Authorization=Basic%20<base64 encoded Instance ID and API Token>"`
+  return`export OTEL_EXPORTER_OTLP_ENDPOINT = "https://otlp-gateway-prod-us-east-0.grafana.net/otlp"
+export OTEL_EXPORTER_OTLP_HEADERS = "Authorization=Basic%20OTUyMzIyOmdsY19leUp2SWpvaU5qVXlPVGt5SWl3aWJpSTZJbk4wWVdOckxUazFNak15TWkxdmRHeHdMWGR5YVhSbExXRnpaQ0lzSW1zaU9pSTNlakF6TVZNeWNGWlZWamxHY1hwNk5qSXhkemxJV0dRaUxDSnRJanA3SW5JaU9pSndjbTlrTFhWekxXVmhjM1F0TUNKOWZRPT0="`
 }
 // THIS ENDS LLM SNIPPETS SECTION
 

@@ -2,7 +2,6 @@ import React from 'react';
 import { testIds } from '../components/testIds';
 import { PluginPage } from '@grafana/runtime';
 import { Card, LinkButton, useStyles2 } from '@grafana/ui';
-import tokens from 'img/GenAI/tokens.png';
 import vectordb from 'img/GenAI/vectordb.png';
 export function HomePage() {
   const styles = useStyles2(homeStyles);
@@ -31,7 +30,7 @@ export function HomePage() {
                   View Infrastructure Dashboard
                 </LinkButton>
               </div>
-              <img src={tokens} alt="" />
+              <img src={vectordb} alt="" />
             </div>
           </Card>
           <Card className=''>
@@ -55,7 +54,7 @@ export function HomePage() {
                   View Gen AI dashboards
                 </LinkButton>
               </div>
-              <img src={tokens} alt="" />
+              <img src={vectordb} alt="" />
             </div>
           </Card>
           <Card className={styles.cardStats}>

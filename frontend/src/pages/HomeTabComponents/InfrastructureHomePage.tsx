@@ -1,6 +1,5 @@
-import { Card, LinkButton, useStyles2 } from '@grafana/ui'
+import {  LinkButton, useStyles2 } from '@grafana/ui'
 import React from 'react'
-import pytorch2 from 'img/MLFrameworks/Pytorch/pytorch2.png'
 import { GrafanaTheme2 } from '@grafana/data';
 import { css } from '@emotion/css';
 export  function InfrastructureHomePage() {
@@ -8,28 +7,43 @@ export  function InfrastructureHomePage() {
 
   return (
     <div className={styles.container}>
-    <h1>Monitor your Infrastructure </h1>
+    {/* <h1>Monitor your Infrastructure </h1>
 
       <Card>
         <img src={pytorch2} alt="" />
       </Card>
       <LinkButton href='/plugins/gtm-aiobservability-app'>
         Configure Now
-      </LinkButton>
+      </LinkButton> */}
+
+<h1>Dashboards</h1>
+        <p>A list of your available dashboards</p>
+        <ul>
+          <li><a href="#">Infra1</a></li>
+          <li><a href="#">Infra2</a></li>
+          <li><a href="#">Infra3</a></li>
+          <li><a href="#">Infra4</a></li>
+          <li><a href="#">Infra5</a></li>
+        </ul>
+
+        <LinkButton href='/plugins/gtm-aiobservability-app'>
+        Download Dashboards
+        </LinkButton> 
     </div>
   )
 }
 
 const InfraStyles = (theme: GrafanaTheme2) => ({
   container: css`
-  padding: 16px;
-    img {
+  padding: 48px;
+  width: 100vw;
+  height: 100vh;
+  background-color: ${theme.colors.background.primary};
+  ul {
+    margin-bottom: 16px;
+  }    img {
       width: 99%;
     }
-    h1 {
-      text-align: center;
-      font-size: 48x;
-      margin: 24px 0;
-    }
+    
   `,
 })
