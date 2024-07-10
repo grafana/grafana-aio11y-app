@@ -50,8 +50,6 @@ jobs:
       - name: Lint
         run: yarn run lint
 
-      - name: Build frontend
-        run: yarn run build
 
       - name: Prepare env variables
         run: |
