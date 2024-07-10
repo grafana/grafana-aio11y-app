@@ -45,10 +45,10 @@ jobs:
             ${{ runner.os }}-${{ matrix.node-version }}-nodemodules-
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: cd frontend && yarn install --frozen-lockfile
 
       - name: Lint
-        run: yarn run lint
+        run: cd frontend && yarn run lint
 
 
       - name: Prepare env variables
