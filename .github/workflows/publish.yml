@@ -48,7 +48,7 @@ jobs:
         run: sudo apt-get install jq
 
       - name: Install dependencies
-        run: cd frontend && yarn install --frozen-lockfile
+        run: cd frontend && yarn --frozen-lockfile
         if: |
           steps.cache-yarn-cache.outputs.cache-hit != 'true' ||
           steps.cache-node-modules.outputs.cache-hit != 'true'
