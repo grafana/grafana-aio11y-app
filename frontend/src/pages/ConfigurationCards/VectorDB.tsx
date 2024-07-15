@@ -32,7 +32,7 @@ export function VectorDB() {
           {selectedDB === 'Chroma' && <Chroma />}
           {selectedDB === 'Pinecone' && <PineCone />}
           {selectedDB === 'Chroma' && <InstallDashboard filePath="https://raw.githubusercontent.com/grafana/hackathon-2024-03-tame-the-beast/main/gtm-aiobservability-app/src/instructions/vectordb/chroma.json" />}
-        {selectedDB === 'Pinecone' && <InstallDashboard filePath='https://raw.githubusercontent.com/grafana/hackathon-2024-03-tame-the-beast/main/gtm-aiobservability-app/src/instructions/vectordb/pinecone.json' />}
+          {selectedDB === 'Pinecone' && <InstallDashboard filePath='https://raw.githubusercontent.com/grafana/hackathon-2024-03-tame-the-beast/main/gtm-aiobservability-app/src/instructions/vectordb/pinecone.json' />}
         </div>
       </div>
   );
