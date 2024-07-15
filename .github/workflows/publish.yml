@@ -48,7 +48,7 @@ jobs:
         run: sudo apt-get install jq
 
       - name: Install dependencies
-        run: cd frontend && yarn --frozen-lockfile
+        run: cd frontend && yarn install --frozen-lockfile
 
       - name: Build frontend
         run: cd frontend && yarn build
