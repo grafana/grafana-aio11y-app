@@ -10,7 +10,6 @@ export function Infrastructure() {
       <div>
         <div style={{ marginLeft: '32px', padding: '16px' }}>
           <h1>Monitor Nvidea DCGM</h1>
-          
           <p>some text about what this does!</p>
           <h2>Install Grafana Agent In Kubernetes</h2>
           <p>The Grafana agent collects observability data and sends it to Grafana Cloud. Once the agent is deployed to your hosts, it collects and sends Prometheus-style metrics and log data using a pared-down Prometheus collector.</p>
