@@ -53,6 +53,11 @@ jobs:
       - name: Build frontend
         run: cd frontend && yarn build
 
+      - name: Sign plugin
+        run: cd frontend && yarn sign
+        env:
+          GRAFANA_ACCESS_POLICY_TOKEN: ${{ secrets.GRAFANA_ACCESS_POLICY_TOKEN }}
+
       - name: Get plugin metadata
         id: metadata
         run: |
@@ -72,6 +77,18 @@ jobs:
           echo "archive-sha1sum=${GRAFANA_PLUGIN_ARTIFACT_SHA1SUM}" >> $GITHUB_OUTPUT
           echo "archive-any=${GRAFANA_PLUGIN_ARTIFACT_ANY}" >> $GITHUB_OUTPUT
           echo "archive-any-sha1sum=${GRAFANA_PLUGIN_ARTIFACT_ANY_SHA1SUM}" >> $GITHUB_OUTPUT
+        shell: bash
+
+      - name: Package plugin
+        id: package-plugin
+        run: |
+          mv dist ${{ steps.metadata.outputs.plugin-id }}
+          zip ${{ steps.metadata.outputs.archive }} ${{ steps.metadata.outputs.plugin-id }} -r
+          zip ${{ steps.metadata.outputs.archive-any }} ${{ steps.metadata.outputs.plugin-id }} -r
+          sha1sum ${{ steps.metadata.outputs.archive }} | cut -f1 -d' ' > ${{ steps.metadata.outputs.archive-sha1sum }}
+          sha1sum ${{ steps.metadata.outputs.archive-any }} | cut -f1 -d' ' > ${{ steps.metadata.outputs.archive-any-sha1sum }}
+          mkdir artifacts
+          mv ${{ steps.metadata.outputs.archive }} ${{ steps.metadata.outputs.archive-any }} ${{ steps.metadata.outputs.archive-sha1sum }} ${{ steps.metadata.outputs.archive-any-sha1sum }} artifacts
         shell: bash
 
       - id: get-secrets
