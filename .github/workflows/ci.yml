@@ -55,16 +55,3 @@ jobs:
 
       - name: Stop grafana docker
         run: cd frontend && docker-compose down
-
-      - name: Build and push to Docker Hub
-        uses: grafana/shared-workflows/actions/push-to-gar-docker@main
-        id: push-to-gar
-        with:
-          platforms: linux/amd64,linux/arm64
-          file: ./frontend/docker-compose.yaml
-          tags: |
-            "${{ steps.image-tag.outputs.version }}"
-            "latest"
-          image_name: "ai-o11y-frontend"
-          environment: "dev"
-
