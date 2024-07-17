@@ -8,14 +8,6 @@ export function GenAI() {
 
   return (
     <div className={styles.container}>
-      {/* <h1>Generative AI Dashboards</h1>
-       <Card className=''>
-        <img src={tokens} alt="" />
-      </Card> 
-      <LinkButton href='/plugins/gtm-aiobservability-app'>
-        Configure Now
-        </LinkButton>  */}
-
         <h1>Dashboards</h1>
         <p>A list of your available dashboards</p>
         <ul>
