@@ -61,6 +61,7 @@ jobs:
       - name: Get plugin metadata
         id: metadata
         run: |
+          cd frontend &&
           sudo apt-get install jq
           
           export GRAFANA_PLUGIN_ID=$(cat dist/plugin.json | jq -r .id)
