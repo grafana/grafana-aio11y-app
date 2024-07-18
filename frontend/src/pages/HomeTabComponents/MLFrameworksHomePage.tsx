@@ -7,14 +7,6 @@ export function MLFrameworksHomePage() {
 
   return (
     <div className={styles.container}>
-      {/* <h1>Monitor your ML Frameworks</h1>
-
-      <Card>
-        <img src={pytorch1} alt="" />
-      </Card>
-      <LinkButton href='/plugins/grafana-aio11y-app'>
-        Configure Now
-        </LinkButton> */}
 
       <h1>Dashboards</h1>
       <p>A list of your available dashboards</p>
