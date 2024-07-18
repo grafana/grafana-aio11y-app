@@ -1,9 +1,11 @@
+# This GitHub Action automates the process of building Grafana plugins.
+# (For more information, see https://github.com/grafana/plugin-actions/blob/main/build-plugin/README.md)
 name: Release
 
 on:
   push:
     tags:
-      - "v*.*.*"
+      - "v*.*.*" # Run workflow on version tags, e.g. v1.0.0.
 
 jobs:
   release:
@@ -26,7 +28,7 @@ jobs:
           node-version: "20"
 
       - name: Get yarn cache directory path
-        id: cd frontend && yarn-cache-dir-path
+        id: yarn-cache-dir-path
         run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
 
       - name: Cache yarn cache
@@ -99,6 +101,9 @@ jobs:
           echo "archive-any-latest=${GRAFANA_PLUGIN_ARTIFACT_ANY_LATEST}" >> $GITHUB_OUTPUT
           echo "archive-any-latest-sha1sum=${GRAFANA_PLUGIN_ARTIFACT_ANY_LATEST_SHA1SUM}" >> $GITHUB_OUTPUT
           echo "github-tag=${GITHUB_REF#refs/*/}" >> $GITHUB_OUTPUT
+
+      - name: Check package version
+        run: if [ "v${{ steps.metadata.outputs.plugin-version }}" != "${{ steps.metadata.outputs.github-tag }}" ]; then printf "\033[0;31mPlugin version doesn't match tag name\033[0m\n"; exit 1; fi
 
       - name: Package plugin
         id: package-plugin
