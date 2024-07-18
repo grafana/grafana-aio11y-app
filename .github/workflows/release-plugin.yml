@@ -27,7 +27,7 @@ jobs:
         uses: ./.github/workflows/build-plugin
         with:
           policy_token: ${{ secrets.GRAFANA_ACCESS_POLICY_TOKEN }}
-          working-directory: ai-o11y
+          working-directory: gtm-aiobservability-app
 
         # This one is untested because the plugin is still way too alpha to publish.
       - name: Publish new plugin version on grafana.com
