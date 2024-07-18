@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/grafana/grafana/main/docs/sources/developers/plugins/plugin.schema.json",
   "type": "app",
   "name": "AI Observability",
-  "id": "gtm-aiobservability-app",
+  "id": "ai-o11y",
   "backend": true,
   "executable": "gpx_ai_observability",
   "info": {
