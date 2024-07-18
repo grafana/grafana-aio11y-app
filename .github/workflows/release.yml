@@ -55,16 +55,7 @@ jobs:
 
 
       - name: Install dependencies
-        run: |
-          printenv GCP_KEY
-          printenv GCP_KEY > /tmp/gcpkey.json
-          export GOOGLE_APPLICATION_CREDENTIALS=/tmp/gcpkey.json
-          cd frontend && yarn authenticate-npm
-          rm /tmp/gcpkey.json
-          cd frontend && yarn install --frozen-lockfile
-        env:
-          GCP_KEY: ${{ secrets.GCP_CONTAINERS_SA_JSON }}
-
+        run: cd frontend && yarn install --frozen-lockfile
 
       - name: Build and test frontend
         run: cd frontend && yarn build
