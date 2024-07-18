@@ -12,7 +12,7 @@ export function MLFrameworksHomePage() {
       <Card>
         <img src={pytorch1} alt="" />
       </Card>
-      <LinkButton href='/plugins/gtm-aiobservability-app'>
+      <LinkButton href='/plugins/grafana-aio11y-app'>
         Configure Now
         </LinkButton> */}
 
@@ -26,7 +26,7 @@ export function MLFrameworksHomePage() {
         <li><a href="#">ML5</a></li>
       </ul>
 
-      <LinkButton href='/plugins/gtm-aiobservability-app'>
+      <LinkButton href='/plugins/grafana-aio11y-app'>
         Download Dashboards
       </LinkButton>
     </div>

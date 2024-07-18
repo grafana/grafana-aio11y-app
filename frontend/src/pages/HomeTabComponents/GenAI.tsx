@@ -18,7 +18,7 @@ export function GenAI() {
           <li><a href="#">GenAi5</a></li>
         </ul>
 
-        <LinkButton href='/plugins/gtm-aiobservability-app'>
+        <LinkButton href='/plugins/grafana-aio11y-app'>
         Download Dashboards
         </LinkButton> 
     </div>

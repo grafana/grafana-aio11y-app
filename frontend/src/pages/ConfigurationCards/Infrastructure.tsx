@@ -26,7 +26,7 @@ export function Infrastructure() {
           </pre>
           <h2>Install Dashboards:</h2>
           <p>Authenticate: <input type="text" onChange={(e) => setInput(e.target.value)} /></p>
-          <InstallDashboard filePath={`https://raw.githubusercontent.com/grafana/hackathon-2024-03-tame-the-beast/main/gtm-aiobservability-app/src/instructions/infrastructure/dashboard.json?token=${input}`} />
+          <InstallDashboard filePath={`https://raw.githubusercontent.com/grafana/hackathon-2024-03-tame-the-beast/main/grafana-aio11y-app/src/instructions/infrastructure/dashboard.json?token=${input}`} />
         </div>
       </div>
     </div>

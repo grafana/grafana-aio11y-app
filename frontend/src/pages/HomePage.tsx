@@ -16,7 +16,7 @@ export function HomePage() {
               optimizing resource utilization.
             </h2>
             <div>
-              <LinkButton href='/plugins/gtm-aiobservability-app' style={{ marginRight: '10px' }} onClick={() => console.log('hi')}>
+              <LinkButton href='/plugins/grafana-aio11y-app' style={{ marginRight: '10px' }} onClick={() => console.log('hi')}>
                 Get started
               </LinkButton>
             </div>
@@ -26,7 +26,7 @@ export function HomePage() {
               <div className={styles.textContainer}>
                 <h2>Monitor Your GPU usage</h2>
                 <p>NVIDA Support</p>
-                <LinkButton href='/a/gtm-aiobservability-app/InfrastructureHomePage'>
+                <LinkButton href='/a/grafana-aio11y-app/InfrastructureHomePage'>
                   View Infrastructure Dashboard
                 </LinkButton>
               </div>
@@ -39,7 +39,7 @@ export function HomePage() {
               <div className={styles.textContainer}>
                 <h2>ML Frameworks</h2>
                 <p>Including Pytorch and Tensorflow</p>
-                <LinkButton href='/a/gtm-aiobservability-app/MLFrameworksHomePage'>
+                <LinkButton href='/a/grafana-aio11y-app/MLFrameworksHomePage'>
                   View Frameworks Dashboard
                 </LinkButton>
               </div>
@@ -50,7 +50,7 @@ export function HomePage() {
               <div className={styles.textContainer}>
                 <h2>Monitor Generative AI</h2>
                 <p>Monitor your LLM and Vector Database usage</p>
-                <LinkButton href='/a/gtm-aiobservability-app/GenAI'>
+                <LinkButton href='/a/grafana-aio11y-app/GenAI'>
                   View Gen AI dashboards
                 </LinkButton>
               </div>

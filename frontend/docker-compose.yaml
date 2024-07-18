@@ -2,7 +2,7 @@ version: '3.0'
 
 services:
   grafana:
-    container_name: 'gtm-aiobservability-app'
+    container_name: 'grafana-aio11y-app'
     platform: 'linux/amd64'
     build:
       context: ./.config
@@ -12,5 +12,5 @@ services:
     ports:
       - 3000:3000/tcp
     volumes:
-      - ./dist:/var/lib/grafana/plugins/gtm-aiobservability-app
+      - ./dist:/var/lib/grafana/plugins/grafana-aio11y-app
       - ./provisioning:/etc/grafana/provisioning

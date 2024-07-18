@@ -12,7 +12,7 @@ export  function InfrastructureHomePage() {
       <Card>
         <img src={pytorch2} alt="" />
       </Card>
-      <LinkButton href='/plugins/gtm-aiobservability-app'>
+      <LinkButton href='/plugins/grafana-aio11y-app'>
         Configure Now
       </LinkButton> */}
 
@@ -26,7 +26,7 @@ export  function InfrastructureHomePage() {
           <li><a href="#">Infra5</a></li>
         </ul>
 
-        <LinkButton href='/plugins/gtm-aiobservability-app'>
+        <LinkButton href='/plugins/grafana-aio11y-app'>
         Download Dashboards
         </LinkButton> 
     </div>

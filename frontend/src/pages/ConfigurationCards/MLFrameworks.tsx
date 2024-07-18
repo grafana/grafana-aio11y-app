@@ -28,8 +28,8 @@ export function MLFrameworks() {
       <div style={{ marginLeft: '32px', padding: '16px', marginTop: '16px' }}>
         {selectedFramework === 'Tensorflow' && <Tensorflow />}
         {selectedFramework === 'Pytorch' && <PyTorch />}
-        {selectedFramework === 'Tensorflow' && <InstallDashboard filePath="https://raw.githubusercontent.com/grafana/hackathon-2024-03-tame-the-beast/main/gtm-aiobservability-app/src/instructions/vectordb/chroma.json" />}
-        {selectedFramework === 'Pytorch' && <InstallDashboard filePath='https://raw.githubusercontent.com/grafana/hackathon-2024-03-tame-the-beast/main/gtm-aiobservability-app/src/instructions/vectordb/pinecone.json' />}
+        {selectedFramework === 'Tensorflow' && <InstallDashboard filePath="https://raw.githubusercontent.com/grafana/hackathon-2024-03-tame-the-beast/main/grafana-aio11y-app/src/instructions/vectordb/chroma.json" />}
+        {selectedFramework === 'Pytorch' && <InstallDashboard filePath='https://raw.githubusercontent.com/grafana/hackathon-2024-03-tame-the-beast/main/grafana-aio11y-app/src/instructions/vectordb/pinecone.json' />}
       </div>
     </div>
   );
