@@ -64,9 +64,6 @@ jobs:
           yarn install --frozen-lockfile
         env:
           GCP_KEY: ${{ secrets.GCP_CONTAINERS_SA_JSON }}
-        if: |
-          steps.cache-yarn-cache.outputs.cache-hit != 'true' ||
-          steps.cache-node-modules.outputs.cache-hit != 'true'
 
 
       - name: Build and test frontend
