@@ -111,3 +111,6 @@ jobs:
           path: artifacts
           destination: 'integration-artifacts/${{ steps.metadata.outputs.plugin-id }}/${{ steps.metadata.outputs.plugin-version }}/main/${{ github.event.pull_request.head.sha || github.sha }}'
           parent: false
+          
+      - name: Debug logs
+      run: ls -la ${GITHUB_WORKSPACE}
