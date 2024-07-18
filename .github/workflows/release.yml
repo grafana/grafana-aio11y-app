@@ -59,9 +59,9 @@ jobs:
           printenv GCP_KEY
           printenv GCP_KEY > /tmp/gcpkey.json
           export GOOGLE_APPLICATION_CREDENTIALS=/tmp/gcpkey.json
-          yarn authenticate-npm
+          cd frontend && yarn authenticate-npm
           rm /tmp/gcpkey.json
-          yarn install --frozen-lockfile
+          cd frontend && yarn install --frozen-lockfile
         env:
           GCP_KEY: ${{ secrets.GCP_CONTAINERS_SA_JSON }}
 
