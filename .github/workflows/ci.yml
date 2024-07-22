@@ -2,7 +2,7 @@ name: CI
 on:
   push:
     branches:
-      - ci
+      - main
 
 # These permissions are needed to assume roles from Github's OIDC.
 permissions:
