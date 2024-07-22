@@ -1,0 +1,60 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: 'Publish plugin'
+        required: true
+        default: 'false'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Plugin
+        id: build_plugin
+        uses: ./.github/workflows/build-plugin
+        with:
+          policy_token: ${{ secrets.GRAFANA_ACCESS_POLICY_TOKEN }}
+          working-directory: frontend
+
+        # This one is untested because the plugin is still way too alpha to publish.
+      - name: Publish new plugin version on grafana.com
+        if: inputs.publish == true
+        env:
+          GCOM_TOKEN: ${{ secrets.GRAFANA_ACCESS_POLICY_TOKEN }}
+          VERSION: ${{ steps.build_plugin.outputs.version }}
+          ARCHIVE_URL: ${{ steps.build_plugin.outputs.archive-url }}
+          ARCHIVE_SHA1SUM_URL: ${{ steps.build_plugin.outputs.archive-sha1sum-url }}
+        run: |
+          echo "Publish new plugin version on grafana.com:"
+          echo "Plugin version: ${VERSION}"
+          
+          # Download the SHA1 sum
+          SHA1=$(cat ${{ steps.build_plugin.outputs.archive-sha1sum }})
+          result=$(curl -H "Authorization: Bearer $GCOM_TOKEN" \
+            -H "Content-Type: application/json" \
+            https://grafana.com/api/plugins -d @- << EOF
+            {
+              "url": "https://github.com/${{ github.repository }}/tree/${{ github.ref_name }}",
+              "download": {
+                "any": {
+                  "url": "${ARCHIVE_URL}",
+                  "sha1": "${SHA1}"
+                }
+              }
+            }
+            EOF
+          )
+          echo "Result: $result"
