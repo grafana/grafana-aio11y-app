@@ -27,7 +27,7 @@ jobs:
         uses: ./.github/workflows/build-plugin
         with:
           policy_token: ${{ secrets.GRAFANA_ACCESS_POLICY_TOKEN }}
-          working-directory: grafana-aio11y-app
+          working-directory: frontend
 
         # This one is untested because the plugin is still way too alpha to publish.
       - name: Publish new plugin version on grafana.com
