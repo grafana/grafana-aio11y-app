@@ -26,14 +26,8 @@ jobs:
         id: image-tag
         run: echo "version=$(./tools/image-tag)" >> $GITHUB_OUTPUT
 
-      - name: Build and push to Docker Hub
-        uses: grafana/shared-workflows/actions/push-to-gar-docker@main
-        id: push-to-gar
-        with:
-          platforms: linux/amd64,linux/arm64
-          file: ./grafana-aio11y-app/Dockerfile
-          tags: |
-            "${{ steps.image-tag.outputs.version }}"
-            "latest"
-          image_name: "grafana-aio11y-app"
-          environment: "dev"
+      - name: Start grafana docker
+        run: cd frontend && docker-compose up -d
+
+      - name: Stop grafana docker
+        run: cd frontend && docker-compose down
