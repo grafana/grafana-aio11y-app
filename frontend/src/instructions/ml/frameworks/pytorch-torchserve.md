@@ -7,7 +7,7 @@ The Grafana Alloy collects observability data and sends it to Grafana Cloud. Onc
 ### Set up the Alloy configuration
 
 ```shell
-ARCH="amd64" GCLOUD_HOSTED_METRICS_URL="" GCLOUD_HOSTED_METRICS_ID="1568361" GCLOUD_SCRAPE_INTERVAL="60s" GCLOUD_HOSTED_LOGS_URL="" GCLOUD_HOSTED_LOGS_ID="" GCLOUD_RW_API_KEY="glc_xxx" /bin/sh -c "$(curl -fsSL https://storage.googleapis.com/cloud-onboarding/alloy/scripts/install-linux-binary.sh)"
+ARCH="amd64" GCLOUD_HOSTED_METRICS_URL="" GCLOUD_HOSTED_METRICS_ID="your-id" GCLOUD_SCRAPE_INTERVAL="60s" GCLOUD_HOSTED_LOGS_URL="" GCLOUD_HOSTED_LOGS_ID="" GCLOUD_RW_API_KEY="glc_xxx" /bin/sh -c "$(curl -fsSL https://storage.googleapis.com/cloud-onboarding/alloy/scripts/install-linux-binary.sh)"
 ```
 
 ## Run Alloy

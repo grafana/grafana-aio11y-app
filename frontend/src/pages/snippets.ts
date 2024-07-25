@@ -80,8 +80,8 @@ export const prepareAgentConfig = () => {
 
 // THIS MARKS THE LLM SNIPPETS SECTION
 export const openLitConfiguration = () => {
-  return`export OTEL_EXPORTER_OTLP_ENDPOINT = "https://otlp-gateway-prod-us-east-0.grafana.net/otlp"
-export OTEL_EXPORTER_OTLP_HEADERS = "Authorization=Basic%20OTUyMzIyOmdsY19leUp2SWpvaU5qVXlPVGt5SWl3aWJpSTZJbk4wWVdOckxUazFNak15TWkxdmRHeHdMWGR5YVhSbExXRnpaQ0lzSW1zaU9pSTNlakF6TVZNeWNGWlZWamxHY1hwNk5qSXhkemxJV0dRaUxDSnRJanA3SW5JaU9pSndjbTlrTFhWekxXVmhjM1F0TUNKOWZRPT0="`
+  return`export OTEL_EXPORTER_OTLP_ENDPOINT = "https://otlp-gateway-[url].grafana.net/otlp"
+export OTEL_EXPORTER_OTLP_HEADERS = "your-endpoint-header"`
 }
 // THIS ENDS LLM SNIPPETS SECTION
 
@@ -89,18 +89,18 @@ export OTEL_EXPORTER_OTLP_HEADERS = "Authorization=Basic%20OTUyMzIyOmdsY19leUp2S
 // THIS MARKS THE VECTOR DB SECTION
 export const chromaDirectRun = () => {
   return`
-  export CHROMA_OTEL_COLLECTION_ENDPOINT=https://otlp-gateway-prod-us-east-0.grafana.net/otlp
+  export CHROMA_OTEL_COLLECTION_ENDPOINT=https://otlp-gateway-[url].grafana.net/otlp
   export CHROMA_OTEL_SERVICE_NAME=chromadb
-  export CHROMA_OTEL_COLLECTION_HEADERS=Authorization=Basic%20ODY1MjM0OmdsY19leUp2SWpvaU5qVXlPVGt5SWl3aWJpSTZJbk4wWVdOckxUZzJOVEl6TkMxdmRHeHdMWGR5YVhSbExYZGhiR3hoYUdraUxDSnJJam9pVUZCR01EY3lTbnB2TmxKd1JqWnVaak15VmpVMFVGUTBJaXdpYlNJNmV5SnlJam9pY0hKdlpDMTFjeTFsWVhOMExUQWlmWDA9
+  export CHROMA_OTEL_COLLECTION_HEADERS=Authorization=""
   export CHROMA_OTEL_GRANULARITY=All`
 
 }
 
 export const chromaDockerContainer = () => {
   return `
-docker run -e CHROMA_OTEL_COLLECTION_ENDPOINT=https://otlp-gateway-prod-us-east-0.grafana.net/otlp \
+docker run -e CHROMA_OTEL_COLLECTION_ENDPOINT=https://otlp-gateway-[url].grafana.net/otlp \
   -e CHROMA_OTEL_SERVICE_NAME=chromadb \
-  -e CHROMA_OTEL_COLLECTION_HEADERS=Authorization=Basic%20ODY1MjM0OmdsY19leUp2SWpvaU5qVXlPVGt5SWl3aWJpSTZJbk4wWVdOckxUZzJOVEl6TkMxdmRHeHdMWGR5YVhSbExYZGhiR3hoYUdraUxDSnJJam9pVUZCR01EY3lTbnB2TmxKd1JqWnVaak15VmpVMFVGUTBJaXdpYlNJNmV5SnlJam9pY0hKdlpDMTFjeTFsWVhOMExUQWlmWDA9 \
+  -e CHROMA_OTEL_COLLECTION_HEADERS=Authorization="your-endpoint-header"\
   -e CHROMA_OTEL_GRANULARITY=All \
   your_chromadb_image`
 }
@@ -108,17 +108,17 @@ docker run -e CHROMA_OTEL_COLLECTION_ENDPOINT=https://otlp-gateway-prod-us-east-
 export const chromaKubernetes = () => {
 return`env:
 - name: CHROMA_OTEL_COLLECTION_ENDPOINT
-  value: "https://otlp-gateway-prod-us-east-0.grafana.net/otlp"
+  value: "https://otlp-gateway-[url].grafana.net/otlp"
 - name: CHROMA_OTEL_SERVICE_NAME
   value: "chromadb"
 - name: CHROMA_OTEL_COLLECTION_HEADERS
-  value: "Authorization=Basic%20ODY1MjM0OmdsY19leUp2SWpvaU5qVXlPVGt5SWl3aWJpSTZJbk4wWVdOckxUZzJOVEl6TkMxdmRHeHdMWGR5YVhSbExYZGhiR3hoYUdraUxDSnJJam9pVUZCR01EY3lTbnB2TmxKd1JqWnVaak15VmpVMFVGUTBJaXdpYlNJNmV5SnlJam9pY0hKdlpDMTFjeTFsWVhOMExUQWlmWDA9"
+  value: "your-header"
 - name: CHROMA_OTEL_GRANULARITY
   value: "All"`
 }
 
 export const pineconeDownloadAlloy = () => {
-  return`ARCH="amd64" GCLOUD_HOSTED_METRICS_URL="https://prometheus[asdf]-prod-us-east-0.grafana.net/api/prom/push" GCLOUD_HOSTED_METRICS_ID="" GCLOUD_SCRAPE_INTERVAL="60s" GCLOUD_HOSTED_LOGS_URL="https://[asdfsad].grafana.net/loki/api/v1/push" GCLOUD_HOSTED_LOGS_ID="" GCLOUD_RW_API_KEY="" /bin/sh -c "$(curl -fsSL https://storage.googleapis.com/cloud-onboarding/agent/scripts/static/install-linux.sh)"`
+  return`ARCH="amd64" GCLOUD_HOSTED_METRICS_URL="https://prometheus[url].grafana.net/api/prom/push" GCLOUD_HOSTED_METRICS_ID="" GCLOUD_SCRAPE_INTERVAL="60s" GCLOUD_HOSTED_LOGS_URL="https://[url].grafana.net/loki/api/v1/push" GCLOUD_HOSTED_LOGS_ID="" GCLOUD_RW_API_KEY="" /bin/sh -c "$(curl -fsSL https://storage.googleapis.com/cloud-onboarding/agent/scripts/static/install-linux.sh)"`
 }
 
 export const pineconeMetrics = () => {
@@ -135,7 +135,7 @@ export const pineconeMetrics = () => {
 
 
 export const grafanaAlloyPytorchServe = () => {
-  return `ARCH="amd64" GCLOUD_HOSTED_METRICS_URL="https://prometheus-prod-13-prod-us-east-0.grafana.net/api/prom/push" GCLOUD_HOSTED_METRICS_ID="1444735" GCLOUD_SCRAPE_INTERVAL="60s" GCLOUD_HOSTED_LOGS_URL="https://logs-prod-006.grafana.net/loki/api/v1/push" GCLOUD_HOSTED_LOGS_ID="821357" GCLOUD_RW_API_KEY="" /bin/sh -c "$(curl -fsSL https://storage.googleapis.com/cloud-onboarding/agent/scripts/static/install-linux.sh)"`
+  return `ARCH="amd64" GCLOUD_HOSTED_METRICS_URL="https://prometheus[url].grafana.net/api/prom/push" GCLOUD_HOSTED_METRICS_ID="yourID" GCLOUD_SCRAPE_INTERVAL="60s" GCLOUD_HOSTED_LOGS_URL="https://logs[url].grafana.net/loki/api/v1/push" GCLOUD_HOSTED_LOGS_ID="yourID" GCLOUD_RW_API_KEY="" /bin/sh -c "$(curl -fsSL https://storage.googleapis.com/cloud-onboarding/agent/scripts/static/install-linux.sh)"`
 }
 
 export const mlPytorchScrapeConfig = () => {
