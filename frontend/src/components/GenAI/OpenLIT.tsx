@@ -22,7 +22,7 @@ const OpenLIT = () => {
         </pre>
         <h3>Install Dashboard</h3>
         <p>Get access to pre-configured dashboard that work right away</p>
-        <InstallDashboard filePath='https://raw.githubusercontent.com/grafana/hackathon-2024-03-tame-the-beast/main/grafana-aio11y-app/src/instructions/llms/openai/dashboard.json?token=GHSAT0AAAAAACKHWE6CWH7A5ORZB6XWN5E4ZUOTL6Q'/>
+        <InstallDashboard filePath='https://raw.githubusercontent.com/grafana/hackathon-2024-03-tame-the-beast/main/grafana-aio11y-app/src/instructions/llms/openai/dashboard.json?token='/>
 
     </div>
   )
