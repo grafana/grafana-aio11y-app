@@ -90,7 +90,6 @@ export const errorIntegrationApiResponse = {
 };
 
 export const GRAFANA_EXAMPLE_USER = '<grafana.com username>';
-export const GRAFANA_EXAMPLE_API = '<grafana.com API Key>';
 export const DEFAULT_PROM_URL = 'https://prometheus-us-central1.grafana.net/api/prom/push';
 export const DEFAULT_LOKI_URL = 'logs-prod-us-central1.grafana.net/api/prom/push';
 export const DEFAULT_GRAPHITE_URL = 'https://graphite-us-central1.grafana.net/metrics';
