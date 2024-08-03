@@ -2,8 +2,6 @@ import InstallDashboard from 'components/InstallDashboards/InstallDashboards'
 import { openLitConfiguration } from 'pages/snippets'
 import React from 'react'
 
-// import b from '../../instructions/genai/dashboard.json'
-
 const OpenLIT = () => {
   const filePath ='https://raw.githubusercontent.com/grafana/grafana-aio11y-app/main/frontend/src/instructions/genai/dashboard.json'
   return (

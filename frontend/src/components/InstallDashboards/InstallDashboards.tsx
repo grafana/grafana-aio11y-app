@@ -10,19 +10,16 @@ const InstallDashboard: React.FC<InstallDashboardProps> = ({ filePath }) => {
 
     const installDashboard = async () => {
         try {
-            // Validate filePath
             if (typeof filePath !== 'string') {
                 throw new Error('Invalid file path');
             }
 
-            // Fetch file data
             const fileResponse = await fetch(filePath);
             if (!fileResponse.ok) {
                 throw new Error('Failed to fetch file');
             }
             const jsonData = await fileResponse.json();
 
-            // Send data to server
             const serverResponse = await fetch('http://localhost:3000/api/dashboards/db', {
                 method: 'POST',
                 headers: {
@@ -32,7 +29,6 @@ const InstallDashboard: React.FC<InstallDashboardProps> = ({ filePath }) => {
                 body: JSON.stringify(jsonData),
             });
 
-            // Handle server response
             if (serverResponse.ok) {
                 setMessage('Installed');
             } else {
