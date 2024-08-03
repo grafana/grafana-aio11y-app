@@ -2,7 +2,7 @@ import { Button } from '@grafana/ui';
 import React, { useState } from 'react';
 
 interface InstallDashboardProps {
-    filePath: string;
+    filePath: any;
 }
 
 const InstallDashboard: React.FC<InstallDashboardProps> = ({ filePath }) => {
