@@ -27,7 +27,7 @@ jobs:
         run: echo "version=$(./tools/image-tag)" >> $GITHUB_OUTPUT
 
       - name: Start grafana docker
-        run: cd frontend && docker-compose up -d
+        run: cd frontend && docker compose up -d
 
       - name: Stop grafana docker
-        run: cd frontend && docker-compose down
+        run: cd frontend && docker compose down
