@@ -5,9 +5,9 @@ import { CardElement } from '../Card/Card';
 
 
 const HomePageCards = () => {
-  const [selectedComponent, setSelectedComponent] = useState(null);
+  const [selectedComponent, setSelectedComponent] = useState<string | null>(null);
 
-  const handleClick = (componentName: any) => {
+  const handleClick = (componentName: string) => {
     setSelectedComponent(componentName);
   };
 
@@ -40,13 +40,6 @@ const HomePageCards = () => {
             title="Gen AI"
             description="Monitor Your LLM Usage"
             onClick={() => handleClick('LLM')}
-          />
-        </li>
-        <li>
-          <CardElement
-            title="ML Frameworks"
-            description="Monitor your ML frameworks"
-            onClick={() => handleClick('MLFrameworks')}
           />
         </li>
       </ul>

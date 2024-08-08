@@ -35,18 +35,6 @@ export function HomePage() {
           </Card>
           <Card className=''>
             <div className={styles.imageContainer}>
-              <img src={vectordb} alt="" />
-              <div className={styles.textContainer}>
-                <h2>ML Frameworks</h2>
-                <p>Including Pytorch and Tensorflow</p>
-                <LinkButton href='/a/grafana-aio11y-app/MLFrameworksHomePage'>
-                  View Frameworks Dashboard
-                </LinkButton>
-              </div>
-            </div>
-          </Card>
-          <Card className=''>
-            <div className={styles.imageContainer}>
               <div className={styles.textContainer}>
                 <h2>Monitor Generative AI</h2>
                 <p>Monitor your LLM and Vector Database usage</p>
