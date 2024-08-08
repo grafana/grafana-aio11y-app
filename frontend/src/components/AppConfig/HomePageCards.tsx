@@ -5,9 +5,9 @@ import { CardElement } from '../Card/Card';
 
 
 const HomePageCards = () => {
-  const [selectedComponent, setSelectedComponent] = useState(null);
+  const [selectedComponent, setSelectedComponent] = useState<string | null>(null);
 
-  const handleClick = (componentName: any) => {
+  const handleClick = (componentName: string) => {
     setSelectedComponent(componentName);
   };
 
