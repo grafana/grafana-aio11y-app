@@ -16,7 +16,7 @@ const OpenLIT = () => {
         <h3>Instrument your code</h3>
         <p>To begin collecting telemetry data, initialize the `openlit` library at the start of your application. This simple step hooks into your application to start monitoring its performance and behavior.</p>
         <pre>
-        import openlit
+        import openlit{'\n'}
         openlit.init()
         </pre>
         <h3>Install Dashboard</h3>
