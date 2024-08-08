@@ -8,7 +8,7 @@ export enum ROUTES {
   Infrastructure = 'infra',
   VectorDB = 'vectordb',
   LLM = 'llm',
-  CONFIG = 'config',
+  CONFIG = 'configuration',
   GenAI = 'genAI',
   MLFrameworksHomePage = 'mlFrameworksHomePage',
   InfrastructureHomePage = 'infrastructureHomePage',

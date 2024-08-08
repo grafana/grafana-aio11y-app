@@ -81,7 +81,7 @@
       "type": "page",
       "icon": "cog",
       "name": "Configuration",
-      "path": "/plugins/%PLUGIN_ID%",
+      "path": "/a/%PLUGIN_ID%/configuration",
       "role": "Admin",
       "addToNav": true
     }

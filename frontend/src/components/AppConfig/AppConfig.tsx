@@ -1,17 +1,11 @@
 import React  from 'react';
 import { lastValueFrom } from 'rxjs';
-import { AppPluginMeta, PluginConfigPageProps, PluginMeta } from '@grafana/data';
+import {  PluginMeta } from '@grafana/data';
 import { getBackendSrv } from '@grafana/runtime';
 import { testIds } from '../testIds';
 import HomePageCards from './HomePageCards';
 
-export type AppPluginSettings = {
-  apiUrl?: string;
-};
-
-export interface AppConfigProps extends PluginConfigPageProps<AppPluginMeta<AppPluginSettings>> {}
-export const AppConfig = ({ plugin }: AppConfigProps) => {
-
+export const AppConfig = () => {
   return (
     <div data-testid={testIds.appConfig.container}>
       <HomePageCards />    
