@@ -6,7 +6,9 @@
   "backend": true,
   "executable": "gpx_ai_observability",
   "info": {
-    "keywords": ["app"],
+    "keywords": [
+      "app"
+    ],
     "description": "All in one ai suite",
     "author": {
       "name": "Gtm"
@@ -20,15 +22,6 @@
     "updated": "%TODAY%"
   },
   "includes": [
-
-    {
-      "type": "page",
-      "name": "ML Frameworks",
-      "path": "/a/%PLUGIN_ID%/ml",
-      "role": "Admin",
-      "addToNav": false,
-      "defaultNav": false
-    },
     {
       "type": "page",
       "name": "Infrastructure",
@@ -57,14 +50,6 @@
       "type": "page",
       "name": "GenAI",
       "path": "/a/%PLUGIN_ID%/GenAI",
-      "role": "Admin",
-      "addToNav": true,
-      "defaultNav": false
-    },
-    {
-      "type": "page",
-      "name": "ML Frameworks",
-      "path": "/a/%PLUGIN_ID%/MLFrameworksHomePage",
       "role": "Admin",
       "addToNav": true,
       "defaultNav": false

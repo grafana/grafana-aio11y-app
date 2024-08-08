@@ -42,13 +42,6 @@ const HomePageCards = () => {
             onClick={() => handleClick('LLM')}
           />
         </li>
-        <li>
-          <CardElement
-            title="ML Frameworks"
-            description="Monitor your ML frameworks"
-            onClick={() => handleClick('MLFrameworks')}
-          />
-        </li>
       </ul>
       </div>
       <div>
