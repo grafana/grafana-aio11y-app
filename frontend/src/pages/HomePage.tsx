@@ -3,6 +3,7 @@ import { testIds } from '../components/testIds';
 import { PluginPage } from '@grafana/runtime';
 import { Card, LinkButton, useStyles2 } from '@grafana/ui';
 import vectordb from 'img/GenAI/vectordb.png';
+
 export function HomePage() {
   const styles = useStyles2(homeStyles);
 
@@ -16,7 +17,7 @@ export function HomePage() {
               optimizing resource utilization.
             </h2>
             <div>
-              <LinkButton href='/plugins/grafana-aio11y-app' style={{ marginRight: '10px' }} onClick={() => console.log('hi')}>
+              <LinkButton href='/a/grafana-aio11y-app/configuration' style={{ marginRight: '10px' }} onClick={() => console.log('hi')}>
                 Get started
               </LinkButton>
             </div>
