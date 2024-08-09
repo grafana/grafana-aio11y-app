@@ -90,7 +90,7 @@
         "h": 2,
         "w": 24,
         "x": 0,
-        "y": 4
+        "y": 5
       },
       "id": 2,
       "options": {
@@ -185,7 +185,7 @@
         "h": 3,
         "w": 6,
         "x": 0,
-        "y": 6
+        "y": 7
       },
       "id": 4,
       "options": {
@@ -259,7 +259,7 @@
         "h": 3,
         "w": 6,
         "x": 6,
-        "y": 6
+        "y": 7
       },
       "id": 5,
       "options": {
@@ -333,7 +333,7 @@
         "h": 3,
         "w": 6,
         "x": 12,
-        "y": 6
+        "y": 7
       },
       "id": 6,
       "options": {
@@ -407,7 +407,7 @@
         "h": 3,
         "w": 6,
         "x": 18,
-        "y": 6
+        "y": 7
       },
       "id": 7,
       "options": {
@@ -520,7 +520,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 9
+        "y": 10
       },
       "id": 8,
       "options": {
@@ -665,7 +665,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 9
+        "y": 10
       },
       "id": 9,
       "options": {
@@ -775,7 +775,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 17
+        "y": 19
       },
       "id": 10,
       "options": {
@@ -920,7 +920,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 17
+        "y": 19
       },
       "id": 11,
       "options": {
@@ -1030,7 +1030,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 25
+        "y": 28
       },
       "id": 12,
       "options": {
@@ -1091,10 +1091,17 @@
   ],
   "preload": false,
   "schemaVersion": 39,
-  "tags": [],
+  "tags": [
+    "GPU",
+    "AI"
+  ],
   "templating": {
     "list": [
       {
+        "current": {
+          "text": "grafanacloud-ishanjain-prom",
+          "value": "grafanacloud-prom"
+        },
         "description": "Prometheus datasource holding GPU Monitoring data",
         "label": "Metrics Datasource",
         "name": "metricsDatasource",
@@ -1160,8 +1167,8 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "New dashboard",
+  "title": "GPU Monitoring",
   "uid": "adu2uyzl5ih34e",
-  "version": 6,
+  "version": 7,
   "weekStart": ""
 }
