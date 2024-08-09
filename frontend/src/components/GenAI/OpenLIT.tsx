@@ -3,7 +3,6 @@ import { openLitConfiguration } from 'pages/snippets'
 import React from 'react'
 
 const OpenLIT = () => {
-  const filePath ='https://raw.githubusercontent.com/grafana/grafana-aio11y-app/main/frontend/src/instructions/genai/dashboard.json'
   return (
     <div>
         <h1>LLM Application Monitoring with OpenTelemetry</h1>
@@ -21,7 +20,7 @@ const OpenLIT = () => {
         </pre>
         <h3>Install Dashboard</h3>
         <p>Get access to pre-configured dashboard that work right away</p>
-        <InstallDashboard filePath={filePath}/>
+        <InstallDashboard filePath='https://raw.githubusercontent.com/grafana/grafana-aio11y-app/main/frontend/src/instructions/genai/dashboard.json'/>
 
     </div>
   )
