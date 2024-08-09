@@ -26,7 +26,7 @@ const HomePageCards = () => {
 
   return (
     <div>
-    <div style={{display: 'flex'}}>
+    <div style={{display: 'flex', marginTop: '3rem'}}>
       <ul style= {{display: 'flex', listStyleType: 'none'}}>
         <li>
           <CardElement

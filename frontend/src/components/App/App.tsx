@@ -4,6 +4,7 @@ import { AppRootProps } from '@grafana/data';
 import { ROUTES } from '../../constants';
 import {  HomePage, Infrastructure, MLFrameworks, LLM, InfrastructureHomePage, MLFrameworksHomePage } from '../../pages';
 import { GenAI } from 'pages/HomeTabComponents/GenAI';
+import { AppConfig } from 'components/AppConfig';
 
 export function App(props: AppRootProps) {
   return (
@@ -14,6 +15,7 @@ export function App(props: AppRootProps) {
       <Route path={ROUTES.LLM} element={<LLM/>} />
       <Route path={ROUTES.InfrastructureHomePage} element={<InfrastructureHomePage/>} />
       <Route path={ROUTES.MLFrameworksHomePage} element={<MLFrameworksHomePage/>} />
+      <Route path={ROUTES.CONFIG} element={<AppConfig />}/>
       <Route path="*" element={<HomePage />} />
     </Routes>
   );
