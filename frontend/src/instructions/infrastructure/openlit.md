@@ -60,7 +60,18 @@ docker pull ghcr.io/openlit/otel-gpu-collector:latest
 
 ### Running the Container
 
-Here's a quick example showing how to run the container with the required environment variables:
+Get the Grafana OpenTelemetry Gateway credentials by following the below steps:
+1. Sign in to Grafana Cloud Portal and select your Grafana Cloud Stack.
+2. Click Configure in the OpenTelemetry section.
+3. In the Password / API Token section, click on Generate now to create a new API token:
+4. Give the API token a name, for example openlit
+5. Click on Create token
+6. Click on Close without copying the token
+7. Copy and Save the value for `OTEL_EXPORTER_OTLP_ENDPOINT` and `OTEL_EXPORTER_OTLP_HEADERS`
+
+> Note: Replace the space after Basic with %20: OTEL_EXPORTER_OTLP_HEADERS=“Authorization=Basic%20[base64 instanceID:token]”
+
+Run the container with the required environment variables you copied above:
 
 ```sh
 docker run --gpus all \
