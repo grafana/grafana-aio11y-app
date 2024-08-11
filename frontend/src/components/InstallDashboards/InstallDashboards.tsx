@@ -20,7 +20,8 @@ const InstallDashboard: React.FC<InstallDashboardProps> = ({ filePath }) => {
             }
             const jsonData = await fileResponse.json();
 
-            const serverResponse = await fetch('http://localhost:3000/api/dashboards/db', {
+            // http://localhost:3000 works locally, https://nicholaslandreville798.grafana-dev.net an auth token
+            const serverResponse = await fetch('https://nicholaslandreville798.grafana-dev.net/api/dashboards/db', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

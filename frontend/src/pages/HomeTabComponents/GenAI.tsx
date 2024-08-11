@@ -8,19 +8,19 @@ export function GenAI() {
 
   return (
     <div className={styles.container}>
-        <h1>Dashboards</h1>
-        <p>A list of your available dashboards</p>
-        <ul>
-          <li><a href="#">GenAi1</a></li>
-          <li><a href="#">GenAi2</a></li>
-          <li><a href="#">GenAi3</a></li>
-          <li><a href="#">GenAi4</a></li>
-          <li><a href="#">GenAi5</a></li>
-        </ul>
+      <h1>Dashboards</h1>
+      <p>A list of your available dashboards</p>
+      <ul>
+        <li><a href="#">GenAi1</a></li>
+        <li><a href="#">GenAi2</a></li>
+        <li><a href="#">GenAi3</a></li>
+        <li><a href="#">GenAi4</a></li>
+        <li><a href="#">GenAi5</a></li>
+      </ul>
 
-        <LinkButton href='/plugins/grafana-aio11y-app'>
+      <LinkButton href='/a/grafana-aio11y-app/configuration'>
         Download Dashboards
-        </LinkButton> 
+      </LinkButton>
     </div>
   );
 }
@@ -39,9 +39,4 @@ const GenAIStyles = (theme: GrafanaTheme2) => ({
     }
 
   `,
-
-
-
-
-
 });

@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React  from 'react';
 import InstallDashboard from 'components/InstallDashboards/InstallDashboards';
 import { dcgmSnippet, installDCGMExporter, prepareAgentConfig } from '../snippets';
 
 export function Infrastructure() {
 
-  const [input, setInput] = useState('')
   return (
     <div style={{ marginTop: '64px', border: '0.5px solid gray' }}>
       <div>
@@ -25,8 +24,7 @@ export function Infrastructure() {
             {prepareAgentConfig()}
           </pre>
           <h2>Install Dashboards:</h2>
-          <p>Authenticate: <input type="text" onChange={(e) => setInput(e.target.value)} /></p>
-          <InstallDashboard filePath={`https://raw.githubusercontent.com/grafana/hackathon-2024-03-tame-the-beast/main/grafana-aio11y-app/src/instructions/infrastructure/dashboard.json?token=${input}`} />
+          <InstallDashboard filePath='https://raw.githubusercontent.com/grafana/grafana-aio11y-app/main/frontend/src/instructions/infrastructure/dashboard.json' />
         </div>
       </div>
     </div>

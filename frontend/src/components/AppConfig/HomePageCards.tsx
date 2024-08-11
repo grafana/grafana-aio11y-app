@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Infrastructure, LLM, MLFrameworks } from 'pages';
+import { Infrastructure, LLM  } from 'pages';
 import { CardElement } from '../Card/Card'; 
 
 
@@ -17,8 +17,6 @@ const HomePageCards = () => {
         return <Infrastructure />;
         case 'LLM':
           return <LLM />;
-      case 'MLFrameworks':
-        return <MLFrameworks />;
       default:
         return null;
     }
