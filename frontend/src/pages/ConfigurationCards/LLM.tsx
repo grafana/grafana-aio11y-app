@@ -1,12 +1,13 @@
 import React from 'react';
 import OpenLIT from 'components/GenAI/OpenLIT';
+import { PluginPage } from '@grafana/runtime';
 
 export function LLM() {
   return (
-    <div style={{ marginTop: '64px', border: '0.5px solid gray' }}>
+    <PluginPage>
       <div style={{ display: 'flex', padding: '16px' }}>
       <OpenLIT />
       </div>
-    </div>
-  );
+      </PluginPage>
+    );
 }

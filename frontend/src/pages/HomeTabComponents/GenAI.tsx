@@ -1,15 +1,18 @@
 import React from 'react';
 
 import { css } from '@emotion/css';
+
 import { GrafanaTheme2 } from '@grafana/data';
+import { PluginPage } from '@grafana/runtime';
 import { LinkButton, useStyles2 } from '@grafana/ui';
+
 export function GenAI() {
   const styles = useStyles2(GenAIStyles);
 
   return (
+    <PluginPage subTitle="AI O11y GenAI Dahsboards">
+
     <div className={styles.container}>
-        <h1>Dashboards</h1>
-        <p>A list of your available dashboards</p>
         <ul>
           <li><a href="#">GenAi1</a></li>
           <li><a href="#">GenAi2</a></li>
@@ -19,9 +22,10 @@ export function GenAI() {
         </ul>
 
         <LinkButton href='/plugins/grafana-aio11y-app'>
-        Download Dashboards
+          Download Dashboards
         </LinkButton> 
     </div>
+    </PluginPage>
   );
 }
 
