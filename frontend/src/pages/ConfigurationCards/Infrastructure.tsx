@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import InstallDashboard from 'components/InstallDashboards/InstallDashboards';
 import { dcgmSnippet, installDCGMExporter, prepareAgentConfig } from '../snippets';
+import { PluginPage } from '@grafana/runtime';
 
 export function Infrastructure() {
 
   const [input, setInput] = useState('')
   return (
-    <div style={{ marginTop: '64px', border: '0.5px solid gray' }}>
+    <PluginPage>
       <div>
-        <div style={{ marginLeft: '32px', padding: '16px' }}>
+        <div style={{ padding: '16px' }}>
           <h1>Monitor Nvidea DCGM</h1>
           
           <p>some text about what this does!</p>
@@ -29,7 +30,7 @@ export function Infrastructure() {
           <InstallDashboard filePath={`https://raw.githubusercontent.com/grafana/hackathon-2024-03-tame-the-beast/main/grafana-aio11y-app/src/instructions/infrastructure/dashboard.json?token=${input}`} />
         </div>
       </div>
-    </div>
+    </PluginPage>
   );
 }
 

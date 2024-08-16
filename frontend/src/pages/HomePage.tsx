@@ -8,7 +8,7 @@ export function HomePage() {
   const styles = useStyles2(homeStyles);
 
   return (
-    <PluginPage>
+    <PluginPage subTitle="AI O11y Monitoring Quick Setup">
       <div data-testid={testIds.pageOne.container} className={styles.container}>
         <div>
           <Card className={styles.cardCentered}>

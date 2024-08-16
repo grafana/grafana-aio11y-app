@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import { Infrastructure, LLM, MLFrameworks } from 'pages';
 import { CardElement } from '../Card/Card'; 
+import { PluginPage } from '@grafana/runtime';
+
 
 
 const HomePageCards = () => {
@@ -25,7 +27,7 @@ const HomePageCards = () => {
   };
 
   return (
-    <div>
+    <PluginPage subTitle="Configure AI O11y Dashboards">
     <div style={{display: 'flex', marginTop: '3rem'}}>
       <ul style= {{display: 'flex', listStyleType: 'none'}}>
         <li>
@@ -47,7 +49,7 @@ const HomePageCards = () => {
       <div>
         {renderComponent()}
       </div>
-    </div>
+    </PluginPage>
   );
 };
 
