@@ -1,27 +1,31 @@
 import React from 'react';
 
 import { css } from '@emotion/css';
+
 import { GrafanaTheme2 } from '@grafana/data';
+import { PluginPage } from '@grafana/runtime';
 import { LinkButton, useStyles2 } from '@grafana/ui';
+
 export function GenAI() {
   const styles = useStyles2(GenAIStyles);
 
   return (
-    <div className={styles.container}>
-      <h1>Dashboards</h1>
-      <p>A list of your available dashboards</p>
-      <ul>
-        <li><a href="#">GenAi1</a></li>
-        <li><a href="#">GenAi2</a></li>
-        <li><a href="#">GenAi3</a></li>
-        <li><a href="#">GenAi4</a></li>
-        <li><a href="#">GenAi5</a></li>
-      </ul>
+    <PluginPage subTitle="AI O11y GenAI Dahsboards">
 
-      <LinkButton href='/a/grafana-aio11y-app/configuration'>
-        Download Dashboards
-      </LinkButton>
+    <div className={styles.container}>
+        <ul>
+          <li><a href="#">GenAi1</a></li>
+          <li><a href="#">GenAi2</a></li>
+          <li><a href="#">GenAi3</a></li>
+          <li><a href="#">GenAi4</a></li>
+          <li><a href="#">GenAi5</a></li>
+        </ul>
+
+        <LinkButton href='/plugins/grafana-aio11y-app'>
+          Download Dashboards
+        </LinkButton> 
     </div>
+    </PluginPage>
   );
 }
 

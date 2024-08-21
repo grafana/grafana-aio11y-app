@@ -1,13 +1,14 @@
 import React  from 'react';
 import InstallDashboard from 'components/InstallDashboards/InstallDashboards';
 import { dcgmSnippet, installDCGMExporter, prepareAgentConfig } from '../snippets';
+import { PluginPage } from '@grafana/runtime';
 
 export function Infrastructure() {
 
   return (
-    <div style={{ marginTop: '64px', border: '0.5px solid gray' }}>
+    <PluginPage>
       <div>
-        <div style={{ marginLeft: '32px', padding: '16px' }}>
+        <div style={{ padding: '16px' }}>
           <h1>Monitor Nvidea DCGM</h1>
           
           <p>some text about what this does!</p>
@@ -27,7 +28,7 @@ export function Infrastructure() {
           <InstallDashboard filePath='https://raw.githubusercontent.com/grafana/grafana-aio11y-app/main/frontend/src/instructions/infrastructure/dashboard.json' />
         </div>
       </div>
-    </div>
+    </PluginPage>
   );
 }
 
