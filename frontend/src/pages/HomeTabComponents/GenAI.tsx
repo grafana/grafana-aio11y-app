@@ -43,9 +43,4 @@ const GenAIStyles = (theme: GrafanaTheme2) => ({
     }
 
   `,
-
-
-
-
-
 });
