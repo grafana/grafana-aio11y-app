@@ -1,0 +1,3 @@
+exclusions:
+  panel-title-description-rule:
+    reason: Removed panel title for visual appearence for top stats panels
