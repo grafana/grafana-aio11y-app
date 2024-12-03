@@ -1124,7 +1124,7 @@
           "query": "label_values(gen_ai_application_name)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
-        "refresh": 1,
+        "refresh": 2,
         "regex": "",
         "type": "query"
       },
@@ -1148,7 +1148,7 @@
           "query": "label_values(gen_ai_environment)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
-        "refresh": 1,
+        "refresh": 2,
         "regex": "",
         "type": "query"
       }
