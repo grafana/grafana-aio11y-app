@@ -1,3 +1,7 @@
 exclusions:
   panel-title-description-rule:
     reason: Removed panel title for visual appearence for top stats panels
+  template-job-rule:
+    reason: Using OpenLIT which doesn't generate job label
+  template-instance-rule:
+    reason: Using OpenLIT which doesn't generate instance label
