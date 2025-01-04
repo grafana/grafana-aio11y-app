@@ -5,9 +5,13 @@ The GenAI Observability mixin is a configurable Grafana dashboard.
 The GenAI Observability mixin contains the following dashboard:
 
 - GenAI Observability
+- GPU Observability
 
 ## GenAI Observability Dashboard Overview
 GenAI Observability dashboard provides details overall LLMs and VectorDB usage. The dashboard includes visualizations for requests, overall costs and token usage. The dashboard is sourced from https://docs.openlit.io/latest/connections/grafanacloud#dashboard
+
+## GPU Observability Dashboard Overview
+GPU Observability dashboard provides details overall GPU performance stats like temperature, Utilizatio and more. The dashboard is sourced from https://docs.openlit.io/latest/connections/grafanacloud#gpu-dashboard
 
 ## Tools
 To use them, you need to have `mixtool` and `jsonnetfmt` installed. If you have a working Go development environment, it's easiest to run the following:
