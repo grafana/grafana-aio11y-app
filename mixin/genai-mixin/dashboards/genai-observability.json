@@ -15,10 +15,10 @@
       }
     ]
   },
-  "editable": false,
+  "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": 21,
+  "id": 34,
   "links": [
     {
       "asDropdown": false,
@@ -70,7 +70,7 @@
         "content": "---\n# GenAI Observability\n\nThis dashboard displays the usage stats of LLMs, Vector Databases and GPUs, tracking OpenTelemetry Traces and Metrics sent using [OpenLIT](https://github.com/openlit/openlit).\n\n---",
         "mode": "markdown"
       },
-      "pluginVersion": "11.3.0-74868",
+      "pluginVersion": "12.1.0-91038.patch3-91166",
       "title": "",
       "transparent": true,
       "type": "text"
@@ -93,7 +93,7 @@
             "steps": [
               {
                 "color": "red",
-                "value": null
+                "value": 0
               },
               {
                 "color": "#EAB839",
@@ -133,7 +133,7 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0-74868",
+      "pluginVersion": "12.1.0-91038.patch3-91166",
       "targets": [
         {
           "datasource": {
@@ -141,7 +141,7 @@
             "uid": "${prometheus_datasource}"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
+          "editorMode": "code",
           "expr": "sum(rate(gen_ai_requests_total{telemetry_sdk_name=\"openlit\"}[$__rate_interval]))",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -174,7 +174,7 @@
             "steps": [
               {
                 "color": "red",
-                "value": null
+                "value": 0
               },
               {
                 "color": "#EAB839",
@@ -214,7 +214,7 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0-74868",
+      "pluginVersion": "12.1.0-91038.patch3-91166",
       "targets": [
         {
           "datasource": {
@@ -222,7 +222,7 @@
             "uid": "${prometheus_datasource}"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
+          "editorMode": "code",
           "expr": "sum(rate(db_requests_total{telemetry_sdk_name=\"openlit\"}[$__rate_interval]))",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -255,7 +255,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -291,23 +291,18 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0-74868",
+      "pluginVersion": "12.1.0-91038.patch3-91166",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${prometheus_datasource}"
           },
-          "disableTextWrap": false,
-          "editorMode": "code",
-          "expr": "sum(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", gen_ai_application_name=~\"$application\", gen_ai_environment=~\"$environment\"})",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "instant": false,
+          "expr": "sum(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", deployment_environment=~\"$environment\", service_name=~\"$application\"})",
+          "hide": false,
           "legendFormat": "Total Usage Cost",
           "range": true,
-          "refId": "A",
-          "useBackend": false
+          "refId": "A"
         }
       ],
       "title": "",
@@ -332,7 +327,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -368,23 +363,18 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0-74868",
+      "pluginVersion": "12.1.0-91038.patch3-91166",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${prometheus_datasource}"
           },
-          "disableTextWrap": false,
-          "editorMode": "code",
-          "expr": "sum by() (gen_ai_requests_total{telemetry_sdk_name=\"openlit\", gen_ai_application_name=~\"$application\", gen_ai_environment=~\"$environment\"})",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "instant": false,
+          "expr": "sum by() (gen_ai_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$application\", deployment_environment=~\"$environment\"})",
+          "hide": false,
           "legendFormat": "Total Successful GenAI Requests",
           "range": true,
-          "refId": "A",
-          "useBackend": false
+          "refId": "A"
         }
       ],
       "title": "",
@@ -408,7 +398,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -444,23 +434,18 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0-74868",
+      "pluginVersion": "12.1.0-91038.patch3-91166",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${prometheus_datasource}"
           },
-          "disableTextWrap": false,
-          "editorMode": "code",
-          "expr": "sum(db_requests_total{telemetry_sdk_name=\"openlit\", gen_ai_application_name=~\"$application\", gen_ai_environment=~\"$environment\"})",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "instant": false,
+          "expr": "sum(db_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$application\", deployment_environment=~\"$environment\"})",
+          "hide": false,
           "legendFormat": "Total Successful VectorDB Requests",
           "range": true,
-          "refId": "A",
-          "useBackend": false
+          "refId": "A"
         }
       ],
       "title": "",
@@ -485,7 +470,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -521,23 +506,19 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0-74868",
+      "pluginVersion": "12.1.0-91038.patch3-91166",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${prometheus_datasource}"
           },
-          "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "sum(gen_ai_usage_tokens_total{telemetry_sdk_name=\"openlit\", gen_ai_application_name=~\"$application\", gen_ai_environment=~\"$environment\"})",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "instant": false,
+          "expr": "sum(gen_ai_client_token_usage_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$application\", deployment_environment=~\"$environment\"})",
+          "hide": false,
           "legendFormat": "Total Usage Tokens",
           "range": true,
-          "refId": "A",
-          "useBackend": false
+          "refId": "A"
         }
       ],
       "title": "",
@@ -562,7 +543,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "#EAB839",
@@ -602,23 +583,18 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0-74868",
+      "pluginVersion": "12.1.0-91038.patch3-91166",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${prometheus_datasource}"
           },
-          "disableTextWrap": false,
-          "editorMode": "code",
-          "expr": "avg by() (gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", gen_ai_application_name=~\"$application\", gen_ai_environment=~\"$environment\"})",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "instant": false,
+          "expr": "avg by() (gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$application\", deployment_environment=~\"$environment\"})",
+          "hide": false,
           "legendFormat": "Avg Usage Cost",
           "range": true,
-          "refId": "A",
-          "useBackend": false
+          "refId": "A"
         }
       ],
       "title": "",
@@ -658,7 +634,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -685,11 +661,12 @@
           "showLegend": false
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.3.0-74868",
+      "pluginVersion": "12.1.0-91038.patch3-91166",
       "targets": [
         {
           "datasource": {
@@ -717,7 +694,8 @@
             }
           ],
           "limit": 20,
-          "query": "{status=ok && span.telemetry.sdk.name=\"openlit\" && span.gen_ai.application_name=~\"$application\" && span.gen_ai.environment=~\"$environment\"}",
+          "metricsQueryType": "range",
+          "query": "{status=ok && span.telemetry.sdk.name=\"openlit\" && span.service.name=~\"$application\" && span.deployment.environment=~\"$environment\"}",
           "queryType": "traceql",
           "refId": "A",
           "tableType": "traces"
@@ -743,7 +721,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -764,6 +742,12 @@
       "id": 17,
       "options": {
         "displayMode": "gradient",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
         "maxVizHeight": 300,
         "minVizHeight": 16,
         "minVizWidth": 8,
@@ -780,23 +764,18 @@
         "sizing": "auto",
         "valueMode": "text"
       },
-      "pluginVersion": "11.3.0-74868",
+      "pluginVersion": "12.1.0-91038.patch3-91166",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${prometheus_datasource}"
           },
-          "disableTextWrap": false,
-          "editorMode": "code",
-          "expr": "topk(5, sum by(gen_ai_request_model) (gen_ai_requests_total{telemetry_sdk_name=\"openlit\", gen_ai_application_name=~\"$application\", gen_ai_environment=~\"$environment\"}))",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "instant": false,
+          "expr": "topk(5, sum by(gen_ai_request_model) (gen_ai_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$application\", deployment_environment=~\"$environment\"}))",
+          "hide": false,
           "legendFormat": "__auto",
           "range": true,
-          "refId": "A",
-          "useBackend": false
+          "refId": "A"
         }
       ],
       "title": "Top GenAI Models by Usage",
@@ -849,27 +828,23 @@
           "values": false
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.3.0-74868",
+      "pluginVersion": "12.1.0-91038.patch3-91166",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${prometheus_datasource}"
           },
-          "disableTextWrap": false,
-          "editorMode": "code",
-          "expr": "sum by(gen_ai_environment) (gen_ai_requests_total{telemetry_sdk_name=\"openlit\", gen_ai_application_name=~\"$application\", gen_ai_environment=~\"$environment\"})",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "instant": false,
+          "expr": "sum by(gen_ai_environment) (gen_ai_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$application\", deployment_environment=~\"$environment\"})",
+          "hide": false,
           "legendFormat": "__auto",
           "range": true,
-          "refId": "A",
-          "useBackend": false
+          "refId": "A"
         }
       ],
       "title": "GenAI Requests by Environment",
@@ -921,27 +896,23 @@
           "values": false
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.3.0-74868",
+      "pluginVersion": "12.1.0-91038.patch3-91166",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${prometheus_datasource}"
           },
-          "disableTextWrap": false,
-          "editorMode": "code",
-          "expr": "sum by(gen_ai_application) (gen_ai_requests_total{telemetry_sdk_name=\"openlit\", gen_ai_application_name=~\"$application\", gen_ai_environment=~\"$environment\"})",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "instant": false,
+          "expr": "sum by(gen_ai_application) (gen_ai_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$application\", deployment_environment=~\"$environment\"})",
+          "hide": false,
           "legendFormat": "__auto",
           "range": true,
-          "refId": "A",
-          "useBackend": false
+          "refId": "A"
         }
       ],
       "title": "GenAI Requests by Application",
@@ -993,27 +964,23 @@
           "values": false
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.3.0-74868",
+      "pluginVersion": "12.1.0-91038.patch3-91166",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${prometheus_datasource}"
           },
-          "disableTextWrap": false,
-          "editorMode": "code",
-          "expr": "sum by(gen_ai_system) (gen_ai_requests_total{telemetry_sdk_name=\"openlit\", gen_ai_application_name=~\"$application\", gen_ai_environment=~\"$environment\"})",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "instant": false,
+          "expr": "sum by(gen_ai_system) (gen_ai_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$application\", deployment_environment=~\"$environment\"})",
+          "hide": false,
           "legendFormat": "__auto",
           "range": true,
-          "refId": "A",
-          "useBackend": false
+          "refId": "A"
         }
       ],
       "title": "GenAI Requests by Platform",
@@ -1065,27 +1032,23 @@
           "values": false
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.3.0-74868",
+      "pluginVersion": "12.1.0-91038.patch3-91166",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${prometheus_datasource}"
           },
-          "disableTextWrap": false,
-          "editorMode": "code",
-          "expr": "sum by(gen_ai_type) (gen_ai_requests_total{telemetry_sdk_name=\"openlit\", gen_ai_application_name=~\"$application\", gen_ai_environment=~\"$environment\"})",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "instant": false,
+          "expr": "sum by(gen_ai_type) (gen_ai_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$application\", deployment_environment=~\"$environment\"})",
+          "hide": false,
           "legendFormat": "__auto",
           "range": true,
-          "refId": "A",
-          "useBackend": false
+          "refId": "A"
         }
       ],
       "title": "GenAI Requests by Type",
@@ -1144,7 +1107,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -1171,68 +1134,52 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.3.0-74868",
+      "pluginVersion": "12.1.0-91038.patch3-91166",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${prometheus_datasource}"
           },
-          "disableTextWrap": false,
-          "editorMode": "code",
-          "expr": "avg(gen_ai_usage_input_tokens_total{telemetry_sdk_name=\"openlit\", gen_ai_application_name=~\"$application\", gen_ai_environment=~\"$environment\"})",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "instant": false,
+          "expr": "avg(gen_ai_usage_input_tokens_total{telemetry_sdk_name=\"openlit\", service_name=~\"$application\", deployment_environment=~\"$environment\"})",
+          "hide": false,
           "legendFormat": "Prompt Tokens",
           "range": true,
-          "refId": "A",
-          "useBackend": false
+          "refId": "A"
         },
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${prometheus_datasource}"
           },
-          "disableTextWrap": false,
-          "editorMode": "builder",
           "expr": "avg(gen_ai_usage_completion_tokens_total{telemetry_sdk_name=\"openlit\"})",
-          "fullMetaSearch": false,
           "hide": false,
-          "includeNullMetadata": true,
-          "instant": false,
           "legendFormat": "Completion Tokens",
           "range": true,
-          "refId": "B",
-          "useBackend": false
+          "refId": "B"
         },
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${prometheus_datasource}"
           },
-          "disableTextWrap": false,
-          "editorMode": "builder",
           "expr": "avg(gen_ai_usage_cost_USD_bucket{telemetry_sdk_name=\"openlit\"})",
-          "fullMetaSearch": false,
           "hide": false,
-          "includeNullMetadata": true,
-          "instant": false,
           "legendFormat": "Usage Cost",
           "range": true,
-          "refId": "C",
-          "useBackend": false
+          "refId": "C"
         }
       ],
       "title": "Average Token Consumption vs. Average Usage Cost Comparison",
       "type": "timeseries"
     },
     {
-      "collapsed": true,
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1240,539 +1187,530 @@
         "y": 35
       },
       "id": 10,
-      "panels": [
-        {
-          "datasource": {
-            "type": "tempo",
-            "uid": "${tempo_datasource}"
-          },
-          "description": "This panel displays a detailed table of GenAI request traces, providing comprehensive insights into each request's timing, source, type, and outcome. It allows for the in-depth analysis of individual requests, facilitating troubleshooting, performance monitoring, and understanding user interactions with GenAI services. Tracking this helps in identifying patterns, potential issues, and opportunities for optimization.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "continuous-BlPu"
-              },
-              "custom": {
-                "align": "auto",
-                "cellOptions": {
-                  "type": "color-background"
-                },
-                "inspect": false
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green"
-                  }
-                ]
-              },
-              "unit": "s"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 16,
-            "w": 24,
-            "x": 0,
-            "y": 36
-          },
-          "id": 8,
-          "options": {
-            "cellHeight": "sm",
-            "footer": {
-              "countRows": false,
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
-            },
-            "showHeader": true
-          },
-          "pluginVersion": "11.1.0-71516",
-          "targets": [
-            {
-              "datasource": {
-                "type": "tempo",
-                "uid": "${tempo_datasource}"
-              },
-              "filters": [
-                {
-                  "id": "e7e29fde",
-                  "operator": "!=",
-                  "scope": "span",
-                  "tag": "gen_ai.operation.name",
-                  "value": [
-                    "vectordb"
-                  ],
-                  "valueType": "string"
-                },
-                {
-                  "id": "status",
-                  "operator": "=",
-                  "scope": "intrinsic",
-                  "tag": "status",
-                  "value": "ok",
-                  "valueType": "keyword"
-                }
-              ],
-              "limit": 20,
-              "query": "{span.gen_ai.operation.name!=\"vectordb\" && status=ok && span.gen_ai.application_name=~\"$application\" && span.gen_ai.environment=~\"$environment\"} | select(span.gen_ai.prompt, span.gen_ai.completion, span.gen_ai.usage.cost)",
-              "queryType": "traceql",
-              "refId": "A",
-              "tableType": "traces"
-            }
-          ],
-          "title": "",
-          "transparent": true,
-          "type": "table"
-        },
-        {
-          "description": "",
-          "fieldConfig": {
-            "defaults": {},
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 2,
-            "w": 24,
-            "x": 0,
-            "y": 112
-          },
-          "id": 25,
-          "options": {
-            "code": {
-              "language": "plaintext",
-              "showLineNumbers": false,
-              "showMiniMap": false
-            },
-            "content": "### VectorDB\n\n---",
-            "mode": "markdown"
-          },
-          "pluginVersion": "11.1.0-71516",
-          "title": "",
-          "transparent": true,
-          "type": "text"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${prometheus_datasource}"
-          },
-          "description": "This panel displays the breakdown of database requests based on the type of operation, such as add, updates, deletes, and queries. It provides insights into the operational dynamics of database interactions, highlighting the most common actions performed. Understanding this distribution helps in optimizing database performance and planning for capacity based on operational needs.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "continuous-BlYlRd"
-              },
-              "mappings": [],
-              "min": 0,
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green"
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "none"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 9,
-            "w": 14,
-            "x": 0,
-            "y": 114
-          },
-          "id": 20,
-          "options": {
-            "displayMode": "gradient",
-            "maxVizHeight": 300,
-            "minVizHeight": 16,
-            "minVizWidth": 8,
-            "namePlacement": "top",
-            "orientation": "horizontal",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "showUnfilled": true,
-            "sizing": "auto",
-            "valueMode": "text"
-          },
-          "pluginVersion": "11.1.0-71516",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${prometheus_datasource}"
-              },
-              "disableTextWrap": false,
-              "editorMode": "code",
-              "expr": "sum by(db_operation) (db_requests_total{telemetry_sdk_name=\"openlit\", gen_ai_application_name=~\"$application\", gen_ai_environment=~\"$environment\"})",
-              "fullMetaSearch": false,
-              "includeNullMetadata": true,
-              "instant": false,
-              "legendFormat": "__auto",
-              "range": true,
-              "refId": "A",
-              "useBackend": false
-            }
-          ],
-          "title": "DB Requests by Operation",
-          "transparent": true,
-          "type": "bargauge"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${prometheus_datasource}"
-          },
-          "description": "This panel displays the distribution of requests across different VectorDB systems, such as Chroma, Pinecone, etc. It highlights which VectorDB services are most frequently used, providing insights into system preference and usage patterns. Monitoring this helps in evaluating the performance and scalability of each VectorDB system, guiding strategic decisions for technology adoption and integration.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                }
-              },
-              "mappings": []
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 5,
-            "w": 10,
-            "x": 14,
-            "y": 114
-          },
-          "id": 18,
-          "options": {
-            "legend": {
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "pieType": "pie",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "11.1.0-69950",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${prometheus_datasource}"
-              },
-              "disableTextWrap": false,
-              "editorMode": "code",
-              "expr": "sum by(db_system) (db_requests_total{telemetry_sdk_name=\"openlit\", gen_ai_application_name=~\"$application\", gen_ai_environment=~\"$environment\"})",
-              "fullMetaSearch": false,
-              "includeNullMetadata": true,
-              "instant": false,
-              "legendFormat": "__auto",
-              "range": true,
-              "refId": "A",
-              "useBackend": false
-            }
-          ],
-          "title": "DB Requests by System",
-          "type": "piechart"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${prometheus_datasource}"
-          },
-          "description": "This panel displays the breakdown of DB requests by application name, offering insights into which applications are leveraging VectorDB services the most. This identification helps in understanding application-specific demand, guiding resource allocation, and supporting targeted optimization efforts for enhanced efficiency in application performance.\"",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                }
-              },
-              "mappings": [],
-              "min": 0,
-              "unit": "none"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 4,
-            "w": 5,
-            "x": 14,
-            "y": 119
-          },
-          "id": 19,
-          "options": {
-            "legend": {
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": false
-            },
-            "pieType": "pie",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "11.1.0-69372",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${prometheus_datasource}"
-              },
-              "disableTextWrap": false,
-              "editorMode": "builder",
-              "expr": "sum by(gen_ai_application_name) (db_requests_total{telemetry_sdk_name=\"openlit\", gen_ai_application_name=~\"$application\", gen_ai_environment=~\"$environment\"})",
-              "fullMetaSearch": false,
-              "includeNullMetadata": true,
-              "instant": false,
-              "legendFormat": "__auto",
-              "range": true,
-              "refId": "A",
-              "useBackend": false
-            }
-          ],
-          "title": "DB Requests by Application",
-          "type": "piechart"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${prometheus_datasource}"
-          },
-          "description": "This panel displays the breakdown of DB requests by application name, offering insights into which applications are leveraging VectorDB services the most. This identification helps in understanding application-specific demand, guiding resource allocation, and supporting targeted optimization efforts for enhanced efficiency in application performance.\"",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                }
-              },
-              "mappings": [],
-              "min": 0,
-              "unit": "none"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 4,
-            "w": 5,
-            "x": 19,
-            "y": 119
-          },
-          "id": 26,
-          "options": {
-            "legend": {
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": false
-            },
-            "pieType": "pie",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "11.1.0-69372",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${prometheus_datasource}"
-              },
-              "disableTextWrap": false,
-              "editorMode": "builder",
-              "expr": "sum by(gen_ai_application_name) (db_requests_total{telemetry_sdk_name=\"openlit\", gen_ai_application_name=~\"$application\", gen_ai_environment=~\"$environment\"})",
-              "fullMetaSearch": false,
-              "includeNullMetadata": true,
-              "instant": false,
-              "legendFormat": "__auto",
-              "range": true,
-              "refId": "A",
-              "useBackend": false
-            }
-          ],
-          "title": "DB Requests by Application",
-          "type": "piechart"
-        }
-      ],
+      "panels": [],
       "title": "GenAI Requests",
       "type": "row"
     },
     {
-      "collapsed": true,
+      "datasource": {
+        "type": "tempo",
+        "uid": "${tempo_datasource}"
+      },
+      "description": "This panel displays a detailed table of GenAI request traces, providing comprehensive insights into each request's timing, source, type, and outcome. It allows for the in-depth analysis of individual requests, facilitating troubleshooting, performance monitoring, and understanding user interactions with GenAI services. Tracking this helps in identifying patterns, potential issues, and opportunities for optimization.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-BlPu"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "color-background"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
       "gridPos": {
-        "h": 1,
+        "h": 16,
         "w": 24,
         "x": 0,
         "y": 36
       },
-      "id": 12,
-      "panels": [
+      "id": 8,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "12.1.0-91038.patch3-91166",
+      "targets": [
         {
           "datasource": {
             "type": "tempo",
             "uid": "${tempo_datasource}"
           },
-          "description": "This panel displays a table with detailed traces of VectorDB requests, offering insights into specifics like request timing, source, operation type, and results. It's designed for thorough examination of VectorDB interactions, enabling precise troubleshooting, performance evaluation, and user behavior understanding. By monitoring these traces, users can spot trends, diagnose problems, and improve operational efficiency in handling VectorDB requests.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic-by-name"
-              },
-              "custom": {
-                "align": "auto",
-                "cellOptions": {
-                  "type": "color-background"
-                },
-                "inspect": false
-              },
-              "mappings": [],
-              "min": 0,
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green"
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "s"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 15,
-            "w": 24,
-            "x": 0,
-            "y": 37
-          },
-          "id": 9,
-          "options": {
-            "cellHeight": "sm",
-            "footer": {
-              "countRows": false,
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
-            },
-            "showHeader": true
-          },
-          "pluginVersion": "11.1.0-71516",
-          "targets": [
+          "filters": [
             {
-              "datasource": {
-                "type": "tempo",
-                "uid": "${tempo_datasource}"
-              },
-              "filters": [
-                {
-                  "id": "e7e29fde",
-                  "operator": "=",
-                  "scope": "span",
-                  "tag": "gen_ai.operation.name",
-                  "value": [
-                    "vectordb"
-                  ],
-                  "valueType": "string"
-                },
-                {
-                  "id": "status",
-                  "operator": "=",
-                  "scope": "intrinsic",
-                  "tag": "status",
-                  "value": "ok",
-                  "valueType": "keyword"
-                }
+              "id": "e7e29fde",
+              "operator": "!=",
+              "scope": "span",
+              "tag": "gen_ai.operation.name",
+              "value": [
+                "vectordb"
               ],
-              "limit": 20,
-              "query": "{span.gen_ai.operation.name=\"vectordb\" && status=ok && span.gen_ai.application_name=~\"$application\" && span.gen_ai.environment=~\"$environment\"}",
-              "queryType": "traceql",
-              "refId": "A",
-              "tableType": "traces"
+              "valueType": "string"
+            },
+            {
+              "id": "status",
+              "operator": "=",
+              "scope": "intrinsic",
+              "tag": "status",
+              "value": "ok",
+              "valueType": "keyword"
             }
           ],
-          "title": "",
-          "transparent": true,
-          "type": "table"
+          "limit": 20,
+          "metricsQueryType": "range",
+          "query": "{span.gen_ai.operation.name!=\"vectordb\" && status=ok && span.service.name=~\"$application\" && span.deployment.environment=~\"$environment\"} | select(span.gen_ai.prompt, span.gen_ai.completion, span.gen_ai.usage.cost)",
+          "queryType": "traceql",
+          "refId": "A",
+          "tableType": "traces"
         }
       ],
+      "title": "",
+      "transparent": true,
+      "type": "table"
+    },
+    {
+      "description": "",
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 24,
+        "x": 0,
+        "y": 52
+      },
+      "id": 25,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "### VectorDB\n\n---",
+        "mode": "markdown"
+      },
+      "pluginVersion": "12.1.0-91038.patch3-91166",
+      "title": "",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus_datasource}"
+      },
+      "description": "This panel displays the breakdown of database requests based on the type of operation, such as add, updates, deletes, and queries. It provides insights into the operational dynamics of database interactions, highlighting the most common actions performed. Understanding this distribution helps in optimizing database performance and planning for capacity based on operational needs.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-BlYlRd"
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 14,
+        "x": 0,
+        "y": 54
+      },
+      "id": 20,
+      "options": {
+        "displayMode": "gradient",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 300,
+        "minVizHeight": 16,
+        "minVizWidth": 8,
+        "namePlacement": "top",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "text"
+      },
+      "pluginVersion": "12.1.0-91038.patch3-91166",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "expr": "sum by(db_operation) (db_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$application\", deployment_environment=~\"$environment\"})",
+          "hide": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "DB Requests by Operation",
+      "transparent": true,
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus_datasource}"
+      },
+      "description": "This panel displays the distribution of requests across different VectorDB systems, such as Chroma, Pinecone, etc. It highlights which VectorDB services are most frequently used, providing insights into system preference and usage patterns. Monitoring this helps in evaluating the performance and scalability of each VectorDB system, guiding strategic decisions for technology adoption and integration.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 10,
+        "x": 14,
+        "y": 54
+      },
+      "id": 18,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.1.0-91038.patch3-91166",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "expr": "sum by(db_system) (db_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$application\", deployment_environment=~\"$environment\"})",
+          "hide": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "DB Requests by System",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus_datasource}"
+      },
+      "description": "This panel displays the breakdown of DB requests by application name, offering insights into which applications are leveraging VectorDB services the most. This identification helps in understanding application-specific demand, guiding resource allocation, and supporting targeted optimization efforts for enhanced efficiency in application performance.\"",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 14,
+        "y": 59
+      },
+      "id": 19,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.1.0-91038.patch3-91166",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "expr": "sum by(gen_ai_application_name) (db_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$application\", deployment_environment=~\"$environment\"})",
+          "hide": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "DB Requests by Application",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus_datasource}"
+      },
+      "description": "This panel displays the breakdown of DB requests by application name, offering insights into which applications are leveraging VectorDB services the most. This identification helps in understanding application-specific demand, guiding resource allocation, and supporting targeted optimization efforts for enhanced efficiency in application performance.\"",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 19,
+        "y": 59
+      },
+      "id": 26,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.1.0-91038.patch3-91166",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "expr": "sum by(gen_ai_application_name) (db_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$application\", deployment_environment=~\"$environment\"})",
+          "hide": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "DB Requests by Application",
+      "type": "piechart"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 63
+      },
+      "id": 12,
+      "panels": [],
       "title": "VectorDB Requests",
       "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "tempo",
+        "uid": "${tempo_datasource}"
+      },
+      "description": "This panel displays a table with detailed traces of VectorDB requests, offering insights into specifics like request timing, source, operation type, and results. It's designed for thorough examination of VectorDB interactions, enabling precise troubleshooting, performance evaluation, and user behavior understanding. By monitoring these traces, users can spot trends, diagnose problems, and improve operational efficiency in handling VectorDB requests.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic-by-name"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "color-background"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 15,
+        "w": 24,
+        "x": 0,
+        "y": 64
+      },
+      "id": 9,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "frameIndex": 0,
+        "showHeader": true
+      },
+      "pluginVersion": "12.1.0-91038.patch3-91166",
+      "targets": [
+        {
+          "datasource": {
+            "type": "tempo",
+            "uid": "${tempo_datasource}"
+          },
+          "filters": [
+            {
+              "id": "e7e29fde",
+              "operator": "=",
+              "scope": "span",
+              "tag": "gen_ai.operation.name",
+              "value": [
+                "vectordb"
+              ],
+              "valueType": "string"
+            },
+            {
+              "id": "status",
+              "operator": "=",
+              "scope": "intrinsic",
+              "tag": "status",
+              "value": "ok",
+              "valueType": "keyword"
+            }
+          ],
+          "limit": 20,
+          "metricsQueryType": "range",
+          "query": "{span.gen_ai.operation.name=\"vectordb\" && status=ok && span.service.name=~\"$application\" && span.deployment.environment=~\"$environment\"}",
+          "queryType": "traceql",
+          "refId": "A",
+          "tableType": "traces"
+        }
+      ],
+      "title": "",
+      "transparent": true,
+      "type": "table"
     }
   ],
   "preload": false,
-  "refresh": "",
-  "schemaVersion": 39,
+  "refresh": "30s",
+  "schemaVersion": 41,
   "tags": [
-    "LLM",
-    "VectorDB",
-    "GenAI"
+    "ai-observability-integration"
   ],
   "templating": {
     "list": [
       {
         "current": {
-          "text": "grafanacloud-demoinfra-traces",
-          "value": "grafanacloud-demoinfra-traces"
+          "text": "grafanacloud-gjvengelen-traces",
+          "value": "grafanacloud-traces"
         },
         "includeAll": false,
         "label": "Tempo data source",
@@ -1785,8 +1723,8 @@
       },
       {
         "current": {
-          "text": "grafanacloud-demoinfra-prom",
-          "value": "grafanacloud-demoinfra-prom"
+          "text": "grafanacloud-gjvengelen-prom",
+          "value": "grafanacloud-prom"
         },
         "includeAll": false,
         "label": "Prometheus data source",
@@ -1794,10 +1732,11 @@
         "options": [],
         "query": "prometheus",
         "refresh": 1,
-        "regex": "",
+        "regex": "(?!grafanacloud-usage|grafanacloud-ml-metrics).+",
         "type": "datasource"
       },
       {
+        "allValue": "default",
         "current": {
           "text": "All",
           "value": "$__all"
@@ -1806,7 +1745,7 @@
           "type": "prometheus",
           "uid": "${prometheus_datasource}"
         },
-        "definition": "label_values(gen_ai_application_name)",
+        "definition": "label_values(service_name)",
         "includeAll": true,
         "label": "Application",
         "multi": true,
@@ -1814,7 +1753,7 @@
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(gen_ai_application_name)",
+          "query": "label_values(service_name)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 2,
@@ -1830,7 +1769,7 @@
           "type": "prometheus",
           "uid": "${prometheus_datasource}"
         },
-        "definition": "label_values(gen_ai_environment)",
+        "definition": "label_values(deployment_environment)",
         "includeAll": true,
         "label": "Environment",
         "multi": true,
@@ -1838,7 +1777,7 @@
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(gen_ai_environment)",
+          "query": "label_values(deployment_environment)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 2,
@@ -1856,6 +1795,5 @@
   "timezone": "browser",
   "title": "GenAI Observability",
   "uid": "cdiz9piuoa3gge",
-  "version": 3,
-  "weekStart": ""
+  "version": 4
 }
