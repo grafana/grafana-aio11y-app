@@ -6,7 +6,7 @@ on:
       mock_type:
         description: 'Select mock data type to generate'
         required: true
-        default: 'llm'
+        default: 'both'
         type: choice
         options:
           - llm
@@ -32,11 +32,11 @@ on:
         default: 'demo'
         type: string
       openai_api_key:
-        description: 'OpenAI API Key (optional but recommended)'
-        required: false
+        description: 'OpenAI API Key'
+        required: true
         type: string
       anthropic_api_key:
-        description: 'Anthropic API Key (optional but recommended)'
+        description: 'Anthropic API Key (optional)'
         required: false
         type: string
 
@@ -53,7 +53,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
+          python-version: '3.11'
           
       - name: Install dependencies
         run: |
@@ -61,16 +61,19 @@ jobs:
           pip install -r .github/scripts/requirements.txt
           
       - name: Validate API Keys
+        env:
+          OPENAI_API_KEY: ${{ github.event.inputs.openai_api_key }}
+          ANTHROPIC_API_KEY: ${{ github.event.inputs.anthropic_api_key }}
         run: |
-          if [ -z "${{ github.event.inputs.openai_api_key }}" ] && [ -z "${{ github.event.inputs.anthropic_api_key }}" ]; then
+          if [ -z "$OPENAI_API_KEY" ] && [ -z "$ANTHROPIC_API_KEY" ]; then
             echo "❌ Error: At least one API key (OpenAI or Anthropic) must be provided"
             exit 1
           fi
-          if [ -n "${{ github.event.inputs.openai_api_key }}" ]; then
-            echo "✅ OpenAI API key provided"
+          if [ -n "$OPENAI_API_KEY" ]; then
+            echo "✅ OpenAI API key provided (${#OPENAI_API_KEY} characters)"
           fi
-          if [ -n "${{ github.event.inputs.anthropic_api_key }}" ]; then
-            echo "✅ Anthropic API key provided"
+          if [ -n "$ANTHROPIC_API_KEY" ]; then
+            echo "✅ Anthropic API key provided (${#ANTHROPIC_API_KEY} characters)"
           fi
           
       - name: Generate LLM Mock Data
@@ -96,7 +99,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
+          python-version: '3.11'
           
       - name: Install dependencies
         run: |
