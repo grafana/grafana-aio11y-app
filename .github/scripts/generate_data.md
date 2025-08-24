@@ -2,6 +2,22 @@
 
 Generate sample AI observability data for your Grafana dashboards using OpenLIT instrumentation. This workflow creates realistic LLM interactions and vector database operations with telemetry data.
 
+## Get Your Grafana Cloud Credentials
+
+Before running the workflow, you'll need your OTEL endpoint and headers from Grafana Cloud:
+
+1. Sign in to [Grafana Cloud Portal](https://grafana.com/auth/sign-in/) and select your Grafana Cloud Stack
+2. Click **Configure** in the OpenTelemetry section
+3. In the **Password / API Token** section, click **Generate now** to create a new API token
+4. Give the API token a name (e.g., `openlit`) and click **Create token**
+5. Click **Close** without copying the token
+6. Copy and save the values for:
+   - `OTEL_EXPORTER_OTLP_ENDPOINT` 
+   - `OTEL_EXPORTER_OTLP_HEADERS`
+7. **Important**: Replace the space after `Basic` with `%20`:
+   - Change: `Authorization=Basic [base64 instanceID:token]`
+   - To: `Authorization=Basic%20[base64 instanceID:token]`
+
 ## Quick Start
 
 1. Go to your repository's **Actions** tab
