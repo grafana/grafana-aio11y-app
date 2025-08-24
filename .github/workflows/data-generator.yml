@@ -41,7 +41,7 @@ on:
 
 jobs:
   llm-data:
-    if: ${{ github.event.inputs.data_type == 'llm' || github.event.inputs.data_type == 'both' }}
+    if: ${{ github.event.inputs.data_type == 'LLM' || github.event.inputs.data_type == 'All' }}
     runs-on: ubuntu-latest
     timeout-minutes: 12
     
@@ -117,7 +117,7 @@ jobs:
         run: python .github/scripts/llm_data_generator.py
 
   vectordb-data:
-    if: ${{ github.event.inputs.data_type == 'vectordb' || github.event.inputs.data_type == 'both' }}
+    if: ${{ github.event.inputs.data_type == 'VectorDB' || github.event.inputs.data_type == 'All' }}
     runs-on: ubuntu-latest
     timeout-minutes: 12
     
