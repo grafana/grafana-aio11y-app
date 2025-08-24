@@ -6,12 +6,12 @@ on:
       data_type:
         description: 'Select data type to generate'
         required: true
-        default: 'llm'
+        default: 'LLM'
         type: choice
         options:
-          - llm
-          - vectordb
-          - both
+          - LLM
+          - VectorDB
+          - All
       otel_endpoint:
         description: 'OTEL Endpoint (e.g., https://otlp-gateway-prod-us-east-1.grafana.net/otlp)'
         required: true
