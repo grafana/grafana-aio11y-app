@@ -2083,10 +2083,6 @@
     "templating": {
       "list": [
         {
-          "current": {
-            "text": "grafanacloud-ishanjain-traces",
-            "value": "grafanacloud-traces"
-          },
           "label": "Trace data source",
           "name": "trace_datasource",
           "options": [],
@@ -2096,10 +2092,6 @@
           "type": "datasource"
         },
         {
-          "current": {
-            "text": "grafanacloud-ishanjain-prom",
-            "value": "grafanacloud-prom"
-          },
           "label": "Metrics data source",
           "name": "metrics_datasource",
           "options": [],
@@ -2109,10 +2101,6 @@
           "type": "datasource"
         },
         {
-          "current": {
-            "text": "All",
-            "value": "$__all"
-          },
           "datasource": {
             "type": "prometheus",
             "uid": "grafanacloud-prom"
@@ -2133,10 +2121,6 @@
           "type": "query"
         },
         {
-          "current": {
-            "text": "All",
-            "value": "$__all"
-          },
           "datasource": {
             "type": "prometheus",
             "uid": "grafanacloud-prom"
@@ -2157,10 +2141,6 @@
           "type": "query"
         },
         {
-          "current": {
-            "text": "",
-            "value": ""
-          },
           "label": "Trace ID",
           "name": "traceId",
           "options": [],
@@ -2174,7 +2154,7 @@
       "to": "now"
     },
     "timepicker": {},
-    "timezone": "Asia/Calcutta",
+    "timezone": "browser",
     "title": "VectorDB Observability",
     "uid": "is5nc7p",
     "version": 87

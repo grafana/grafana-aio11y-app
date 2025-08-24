@@ -2505,12 +2505,6 @@
           "type": "datasource"
         },
         {
-          "current": {
-            "text": "All",
-            "value": [
-              "$__all"
-            ]
-          },
           "definition": "label_values(service_name)",
           "includeAll": true,
           "label": "service_name",
@@ -2527,12 +2521,6 @@
           "type": "query"
         },
         {
-          "current": {
-            "text": "All",
-            "value": [
-              "$__all"
-            ]
-          },
           "definition": "label_values(deployment_environment)",
           "includeAll": true,
           "label": "deployment_environment",
@@ -2549,10 +2537,6 @@
           "type": "query"
         },
         {
-          "current": {
-            "text": "9a53a99f541b3e67ae83a8f15f165dbb",
-            "value": "9a53a99f541b3e67ae83a8f15f165dbb"
-          },
           "label": "Trace ID",
           "name": "traceId",
           "options": [],
@@ -2562,11 +2546,11 @@
       ]
     },
     "time": {
-      "from": "now-12h",
+      "from": "now-30m",
       "to": "now"
     },
     "timepicker": {},
-    "timezone": "Asia/Calcutta",
+    "timezone": "browser",
     "title": "MCP Observability",
     "uid": "isldpl4",
     "version": 108

@@ -1897,10 +1897,6 @@
   "templating": {
     "list": [
       {
-        "current": {
-          "text": "grafanacloud-ishanjain-prom",
-          "value": "grafanacloud-prom"
-        },
         "label": "Metrics data source",
         "name": "metrics_datasource",
         "options": [],
@@ -1910,12 +1906,6 @@
         "type": "datasource"
       },
       {
-        "current": {
-          "text": "All",
-          "value": [
-            "$__all"
-          ]
-        },
         "definition": "label_values(service_name)",
         "includeAll": true,
         "label": "service_name",
@@ -1932,12 +1922,6 @@
         "type": "query"
       },
       {
-        "current": {
-          "text": "All",
-          "value": [
-            "$__all"
-          ]
-        },
         "definition": "label_values(deployment_environment)",
         "includeAll": true,
         "label": "deployment_environment",
@@ -1956,7 +1940,7 @@
     ]
   },
   "time": {
-    "from": "now-7d",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {},

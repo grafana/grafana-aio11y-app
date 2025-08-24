@@ -3370,10 +3370,6 @@
   "templating": {
     "list": [
       {
-        "current": {
-          "text": "grafanacloud-ishanjain-traces",
-          "value": "grafanacloud-traces"
-        },
         "includeAll": false,
         "label": "Traces data source",
         "name": "traces_datasource",
@@ -3384,10 +3380,6 @@
         "type": "datasource"
       },
       {
-        "current": {
-          "text": "grafanacloud-ishanjain-prom",
-          "value": "grafanacloud-prom"
-        },
         "includeAll": false,
         "label": "Metrics data source",
         "name": "metrics_datasource",
@@ -3398,12 +3390,6 @@
         "type": "datasource"
       },
       {
-        "current": {
-          "text": "All",
-          "value": [
-            "$__all"
-          ]
-        },
         "datasource": {
           "type": "prometheus",
           "uid": "${metrics_datasource}"
@@ -3424,10 +3410,6 @@
         "type": "query"
       },
       {
-        "current": {
-          "text": "All",
-          "value": "$__all"
-        },
         "datasource": {
           "type": "prometheus",
           "uid": "${metrics_datasource}"
