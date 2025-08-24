@@ -3,8 +3,8 @@ name: AI Observability Data Generator
 on:
   workflow_dispatch:
     inputs:
-      mock_type:
-        description: 'Select mock data type to generate'
+      data_type:
+        description: 'Select data type to generate'
         required: true
         default: 'llm'
         type: choice
@@ -13,27 +13,27 @@ on:
           - vectordb
           - both
       otel_endpoint:
-        description: 'OTEL Endpoint URL'
+        description: 'OTEL Endpoint'
         required: true
         default: 'https://otlp-gateway-prod-us-east-1.grafana.net/otlp'
         type: string
       otel_headers:
-        description: 'OTEL Headers (Authorization header)'
+        description: 'OTEL Headers'
         required: true
         type: string
       service_name:
         description: 'Service Name'
         required: false
-        default: 'ai-observability-data'
+        default: 'example-service'
         type: string
       deployment_environment:
         description: 'Deployment Environment'
         required: false
-        default: 'demo'
+        default: 'example-environment'
         type: string
       openai_api_key:
-        description: 'OpenAI API Key (optional but recommended)'
-        required: false
+        description: 'OpenAI API Key'
+        required: true
         type: string
       anthropic_api_key:
         description: 'Anthropic API Key (optional but recommended)'
@@ -41,8 +41,8 @@ on:
         type: string
 
 jobs:
-  llm-mock-data:
-    if: ${{ github.event.inputs.mock_type == 'llm' || github.event.inputs.mock_type == 'both' }}
+  llm-data:
+    if: ${{ github.event.inputs.data_type == 'llm' || github.event.inputs.data_type == 'both' }}
     runs-on: ubuntu-latest
     timeout-minutes: 12
     
@@ -106,7 +106,7 @@ jobs:
           
           echo "🔒 Sensitive parameters successfully masked from logs"
           
-      - name: Generate LLM Mock Data
+      - name: Generate LLM Data
         timeout-minutes: 10
         env:
           OTEL_EXPORTER_OTLP_ENDPOINT: ${{ github.event.inputs.otel_endpoint }}
@@ -117,8 +117,8 @@ jobs:
           ANTHROPIC_API_KEY: ${{ env.ANTHROPIC_API_KEY }}
         run: python .github/scripts/llm_data_generator.py
 
-  vectordb-mock-data:
-    if: ${{ github.event.inputs.mock_type == 'vectordb' || github.event.inputs.mock_type == 'both' }}
+  vectordb-data:
+    if: ${{ github.event.inputs.data_type == 'vectordb' || github.event.inputs.data_type == 'both' }}
     runs-on: ubuntu-latest
     timeout-minutes: 12
     
@@ -150,7 +150,7 @@ jobs:
           
           echo "🔒 Sensitive parameters successfully masked from logs"
           
-      - name: Generate Vector Database Mock Data
+      - name: Generate Vector Database Data
         timeout-minutes: 10
         env:
           OTEL_EXPORTER_OTLP_ENDPOINT: ${{ github.event.inputs.otel_endpoint }}
