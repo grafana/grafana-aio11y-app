@@ -1,0 +1,17 @@
+# OpenLIT for LLM and Vector Database observability
+openlit>=0.1.0
+
+# LLM providers
+openai>=1.0.0
+anthropic>=0.8.0
+
+# Vector databases
+chromadb>=0.4.0
+qdrant-client>=1.6.0
+
+# Scientific computing
+numpy>=1.21.0
+
+# HTTP and utilities (dependencies that might be needed)
+requests>=2.25.0
+typing-extensions>=4.0.0
