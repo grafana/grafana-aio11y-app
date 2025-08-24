@@ -1,0 +1,2557 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "grafana",
+            "uid": "-- Grafana --"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "description": "Dashboard showing traffic metrics including request totals, rates, and error percentages with both time series and stat visualizations for MCP Servers",
+    "editable": false,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 0,
+    "links": [
+      {
+        "asDropdown": false,
+        "icon": "dashboard",
+        "includeVars": true,
+        "keepTime": true,
+        "tags": [],
+        "targetBlank": false,
+        "title": "GenAI Observability",
+        "tooltip": "",
+        "type": "link",
+        "url": "/d/cdiz9piuoa3gge/genai-observability"
+      },
+      {
+        "asDropdown": false,
+        "icon": "dashboard",
+        "includeVars": true,
+        "keepTime": true,
+        "tags": [],
+        "targetBlank": false,
+        "title": "GenAI Evaluations",
+        "tooltip": "",
+        "type": "link",
+        "url": "/d/is7rtn8/genai-evaluations"
+      },
+      {
+        "asDropdown": false,
+        "icon": "dashboard",
+        "includeVars": true,
+        "keepTime": true,
+        "tags": [],
+        "targetBlank": false,
+        "title": "VectorDB Observability",
+        "tooltip": "",
+        "type": "link",
+        "url": "/d/is5nc7p/vectordb-observability"
+      },
+      {
+        "asDropdown": false,
+        "icon": "doc",
+        "includeVars": false,
+        "keepTime": false,
+        "tags": [],
+        "targetBlank": true,
+        "title": "Documentation",
+        "tooltip": "",
+        "type": "link",
+        "url": "https://grafana.com/docs/grafana-cloud/monitor-applications/ai-observability/"
+      },
+      {
+        "asDropdown": false,
+        "icon": "external link",
+        "includeVars": false,
+        "keepTime": false,
+        "tags": [],
+        "targetBlank": true,
+        "title": "OpenLIT Github",
+        "tooltip": "",
+        "type": "link",
+        "url": "https://github.com/openlit/openlit"
+      }
+    ],
+    "panels": [
+      {
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 3,
+          "x": 0,
+          "y": 0
+        },
+        "id": 46,
+        "options": {
+          "code": {
+            "language": "plaintext",
+            "showLineNumbers": false,
+            "showMiniMap": false
+          },
+          "content": "<img\n src=\"https://grafana.com/media/docs/grafana-cloud/ai-observability/aio11y-logo.svg\"\n width=\"100%\"\n height=\"100%\">",
+          "mode": "html"
+        },
+        "pluginVersion": "12.2.0-16890666601.patch2",
+        "title": "",
+        "transparent": true,
+        "type": "text"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${metrics_datasource}"
+        },
+        "description": "Total cumulative requests across all MCP operations",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "red",
+                  "value": 0
+                },
+                {
+                  "color": "yellow",
+                  "value": 5
+                },
+                {
+                  "color": "green",
+                  "value": 10
+                }
+              ]
+            },
+            "unit": "short"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 2,
+          "w": 6,
+          "x": 3,
+          "y": 0
+        },
+        "id": 3,
+        "options": {
+          "colorMode": "background",
+          "displayMode": "basic",
+          "graphMode": "area",
+          "justifyMode": "center",
+          "orientation": "horizontal",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showPercentChange": true,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "pluginVersion": "12.2.0-16890666601.patch2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${metrics_datasource}"
+            },
+            "editorMode": "code",
+            "expr": "sum(mcp_requests_total{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"})",
+            "hide": false,
+            "legendFormat": "Total Requests",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "",
+        "transparent": true,
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${metrics_datasource}"
+        },
+        "description": "Current request rate in requests per second",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "red",
+                  "value": 0
+                },
+                {
+                  "color": "yellow",
+                  "value": 0.1
+                },
+                {
+                  "color": "green",
+                  "value": 1
+                }
+              ]
+            },
+            "unit": "reqps"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 2,
+          "w": 7,
+          "x": 9,
+          "y": 0
+        },
+        "id": 4,
+        "options": {
+          "colorMode": "background",
+          "displayMode": "basic",
+          "graphMode": "area",
+          "justifyMode": "center",
+          "orientation": "horizontal",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "pluginVersion": "12.2.0-16890666601.patch2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${metrics_datasource}"
+            },
+            "editorMode": "code",
+            "expr": "sum(rate(mcp_requests_total{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval]))",
+            "hide": false,
+            "legendFormat": "Request Rate",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "",
+        "transparent": true,
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${metrics_datasource}"
+        },
+        "description": "Average request payload size in bytes",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": 0
+                },
+                {
+                  "color": "yellow",
+                  "value": 1000
+                },
+                {
+                  "color": "red",
+                  "value": 10000
+                }
+              ]
+            },
+            "unit": "decbytes"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 2,
+          "w": 8,
+          "x": 16,
+          "y": 0
+        },
+        "id": 11,
+        "options": {
+          "colorMode": "background",
+          "displayMode": "basic",
+          "graphMode": "area",
+          "justifyMode": "center",
+          "orientation": "horizontal",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "pluginVersion": "12.2.0-16890666601.patch2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${metrics_datasource}"
+            },
+            "editorMode": "code",
+            "expr": "sum(mcp_request_size_bytes_sum{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}) / sum(mcp_request_size_bytes_count{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"})",
+            "hide": false,
+            "legendFormat": "Avg Request Size",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "",
+        "transparent": true,
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${metrics_datasource}"
+        },
+        "description": "Average operation duration across all MCP operations",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": 0
+                },
+                {
+                  "color": "yellow",
+                  "value": 0.1
+                },
+                {
+                  "color": "red",
+                  "value": 1
+                }
+              ]
+            },
+            "unit": "s"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 2,
+          "w": 6,
+          "x": 3,
+          "y": 2
+        },
+        "id": 10,
+        "options": {
+          "colorMode": "background",
+          "displayMode": "basic",
+          "graphMode": "area",
+          "justifyMode": "center",
+          "orientation": "horizontal",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "pluginVersion": "12.2.0-16890666601.patch2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${metrics_datasource}"
+            },
+            "editorMode": "code",
+            "expr": "sum(mcp_client_operation_duration_seconds_sum{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}) / sum(mcp_client_operation_duration_seconds_count{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"})",
+            "hide": false,
+            "legendFormat": "Avg Duration",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "",
+        "transparent": true,
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${metrics_datasource}"
+        },
+        "description": "Error percentage calculated over your selected dashboard time range",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "max": 100,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": 0
+                },
+                {
+                  "color": "yellow",
+                  "value": 1
+                },
+                {
+                  "color": "red",
+                  "value": 5
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 2,
+          "w": 7,
+          "x": 9,
+          "y": 2
+        },
+        "id": 5,
+        "options": {
+          "colorMode": "background",
+          "displayMode": "basic",
+          "graphMode": "area",
+          "justifyMode": "center",
+          "orientation": "horizontal",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "pluginVersion": "12.2.0-16890666601.patch2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${metrics_datasource}"
+            },
+            "editorMode": "code",
+            "expr": "100 * sum(increase(mcp_errors_total{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range])) / (sum(increase(mcp_requests_total{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range])) + 1)",
+            "hide": false,
+            "legendFormat": "Error Percentage",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "",
+        "transparent": true,
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${metrics_datasource}"
+        },
+        "description": "Average response payload size in bytes",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": 0
+                },
+                {
+                  "color": "yellow",
+                  "value": 5000
+                },
+                {
+                  "color": "red",
+                  "value": 50000
+                }
+              ]
+            },
+            "unit": "bytes"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 2,
+          "w": 8,
+          "x": 16,
+          "y": 2
+        },
+        "id": 12,
+        "options": {
+          "colorMode": "background",
+          "displayMode": "basic",
+          "graphMode": "area",
+          "justifyMode": "center",
+          "orientation": "horizontal",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "pluginVersion": "12.2.0-16890666601.patch2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${metrics_datasource}"
+            },
+            "editorMode": "code",
+            "expr": "sum(mcp_response_size_bytes_sum{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}) / sum(mcp_response_size_bytes_count{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"})",
+            "hide": false,
+            "legendFormat": "Avg Response Size",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "",
+        "transparent": true,
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${metrics_datasource}"
+        },
+        "description": "Request patterns showing totals, rates, and error percentage over time",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 10,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "vis": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": 0
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "short"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Total Requests"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "blue",
+                    "mode": "fixed"
+                  }
+                },
+                {
+                  "id": "unit",
+                  "value": "short"
+                },
+                {
+                  "id": "custom.axisPlacement",
+                  "value": "left"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Request Rate (req/s)"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "green",
+                    "mode": "fixed"
+                  }
+                },
+                {
+                  "id": "unit",
+                  "value": "reqps"
+                },
+                {
+                  "id": "custom.axisPlacement",
+                  "value": "right"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Error Percentage"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "red",
+                    "mode": "fixed"
+                  }
+                },
+                {
+                  "id": "unit",
+                  "value": "percent"
+                },
+                {
+                  "id": "custom.axisPlacement",
+                  "value": "right"
+                },
+                {
+                  "id": "custom.drawStyle",
+                  "value": "line"
+                },
+                {
+                  "id": "custom.lineWidth",
+                  "value": 2
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Error Percentage (%)"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "red",
+                    "mode": "fixed"
+                  }
+                },
+                {
+                  "id": "unit",
+                  "value": "percent"
+                },
+                {
+                  "id": "custom.axisPlacement",
+                  "value": "right"
+                },
+                {
+                  "id": "custom.hideFrom",
+                  "value": {
+                    "legend": false,
+                    "tooltip": false,
+                    "vis": false
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 24,
+          "x": 0,
+          "y": 4
+        },
+        "id": 1,
+        "options": {
+          "legend": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "displayMode": "table",
+            "placement": "bottom",
+            "showLegend": true,
+            "values": [
+              "value"
+            ]
+          },
+          "tooltip": {
+            "hideZeros": false,
+            "mode": "multi",
+            "sort": "desc"
+          }
+        },
+        "pluginVersion": "12.2.0-16890666601.patch2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${metrics_datasource}"
+            },
+            "editorMode": "code",
+            "expr": "sum(mcp_requests_total{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"})",
+            "hide": false,
+            "legendFormat": "Total Requests",
+            "range": true,
+            "refId": "A"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${metrics_datasource}"
+            },
+            "editorMode": "code",
+            "expr": "sum(rate(mcp_requests_total{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval]))",
+            "hide": false,
+            "legendFormat": "Request Rate (req/s)",
+            "range": true,
+            "refId": "B"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${metrics_datasource}"
+            },
+            "editorMode": "code",
+            "expr": "100 * sum(rate(mcp_errors_total{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) / (sum(rate(mcp_requests_total{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) + 0.001)",
+            "hide": false,
+            "legendFormat": "Error Percentage",
+            "range": true,
+            "refId": "C"
+          }
+        ],
+        "title": "Traffic Overview",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${metrics_datasource}"
+        },
+        "description": "Pie chart showing proportional distribution of MCP methods",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "vis": false,
+                "viz": false
+              }
+            },
+            "mappings": [],
+            "unit": "short"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 8,
+          "x": 0,
+          "y": 13
+        },
+        "id": 25,
+        "options": {
+          "displayLabels": [
+            "percent"
+          ],
+          "legend": {
+            "displayMode": "table",
+            "placement": "bottom",
+            "showLegend": false,
+            "values": [
+              "value",
+              "percent"
+            ]
+          },
+          "pieType": "donut",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "tooltip": {
+            "hideZeros": false,
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "12.2.0-16890666601.patch2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${metrics_datasource}"
+            },
+            "editorMode": "code",
+            "expr": "sum by (mcp_method) (mcp_requests_total{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"})",
+            "hide": false,
+            "legendFormat": "{{mcp_method}}",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "MCP Methods - Pie Chart",
+        "transparent": true,
+        "type": "piechart"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${metrics_datasource}"
+        },
+        "description": "Time series showing MCP method request rates over time",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 100,
+              "gradientMode": "opacity",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "vis": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "smooth",
+              "lineWidth": 2,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": 0
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "reqps"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 16,
+          "x": 8,
+          "y": 13
+        },
+        "id": 29,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "table",
+            "placement": "bottom",
+            "showLegend": false,
+            "values": [
+              "current",
+              "max"
+            ]
+          },
+          "tooltip": {
+            "hideZeros": false,
+            "mode": "multi",
+            "sort": "desc"
+          }
+        },
+        "pluginVersion": "12.2.0-16890666601.patch2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${metrics_datasource}"
+            },
+            "editorMode": "code",
+            "expr": "sum by (mcp_method) (rate(mcp_requests_total{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval]))",
+            "hide": false,
+            "legendFormat": "{{mcp_method}}",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "MCP Methods",
+        "transparent": true,
+        "type": "timeseries"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 19
+        },
+        "id": 45,
+        "panels": [],
+        "title": "Traces",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "type": "tempo",
+          "uid": "${traces_datasource}"
+        },
+        "description": "This panel shows detailed trace information for GenAI requests, including trace IDs, service names, operation names, and durations. Click on trace IDs to view detailed trace analysis and understand request flow through your system.",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "align": "auto",
+              "cellOptions": {
+                "type": "auto"
+              },
+              "inspect": false,
+              "wrapHeaderText": false
+            },
+            "links": [
+              {
+                "title": "Traces Link",
+                "url": "/d/isldpl4/mcp-observability?orgId=1&var-traceId=${__data.fields[\"traceID\"]}"
+              }
+            ],
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": 0
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Trace ID"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 301
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Start time"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 160
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Service"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 95
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Name"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 167
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Duration"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 73
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 18,
+          "w": 12,
+          "x": 0,
+          "y": 20
+        },
+        "id": 42,
+        "options": {
+          "cellHeight": "sm",
+          "footer": {
+            "countRows": false,
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": false
+          },
+          "frameIndex": 0,
+          "showHeader": true,
+          "sortBy": [
+            {
+              "desc": false,
+              "displayName": "Name"
+            }
+          ]
+        },
+        "pluginVersion": "12.2.0-16890666601.patch2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "tempo",
+              "uid": "${traces_datasource}"
+            },
+            "filters": [
+              {
+                "id": "b26b18f3",
+                "isCustomValue": false,
+                "operator": "=",
+                "scope": "span",
+                "tag": "mcp.system",
+                "value": [
+                  "mcp"
+                ],
+                "valueType": "string"
+              }
+            ],
+            "limit": 20,
+            "metricsQueryType": "range",
+            "queryType": "traceqlSearch",
+            "refId": "A",
+            "tableType": "traces"
+          }
+        ],
+        "title": "",
+        "transparent": true,
+        "type": "table"
+      },
+      {
+        "description": "Instructions for viewing detailed trace information. Click on trace IDs in the traces table, then click the traces link, and refresh the dashboard to see the complete trace visualization with span details.",
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 12,
+          "x": 12,
+          "y": 20
+        },
+        "id": 43,
+        "options": {
+          "code": {
+            "language": "plaintext",
+            "showLineNumbers": false,
+            "showMiniMap": false
+          },
+          "content": "> To View Traces:\n>  1. Click the **Trace ID** on the left table .\n>  2. Click **Traces link**.\n>  1. Refresh the dashboard.",
+          "mode": "markdown"
+        },
+        "pluginVersion": "12.2.0-16890666601.patch2",
+        "title": "",
+        "type": "text"
+      },
+      {
+        "datasource": {
+          "type": "tempo",
+          "uid": "${traces_datasource}"
+        },
+        "description": "This panel displays the selected trace visualization. Use the trace ID variable or click on traces in the table above to view detailed span information, timing, and request flow through your GenAI services.",
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 15,
+          "w": 12,
+          "x": 12,
+          "y": 23
+        },
+        "id": 44,
+        "options": {
+          "spanFilters": {
+            "criticalPathOnly": false,
+            "matchesOnly": false,
+            "serviceNameOperator": "=",
+            "spanNameOperator": "=",
+            "tags": [
+              {
+                "id": "233b1122-9ee",
+                "operator": "="
+              }
+            ]
+          }
+        },
+        "pluginVersion": "12.2.0-16890666601.patch2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "tempo",
+              "uid": "${traces_datasource}"
+            },
+            "limit": 20,
+            "metricsQueryType": "range",
+            "query": "${traceId}",
+            "queryType": "traceql",
+            "refId": "A",
+            "tableType": "traces"
+          }
+        ],
+        "title": "",
+        "transparent": true,
+        "type": "traces"
+      },
+      {
+        "collapsed": true,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 38
+        },
+        "id": 36,
+        "panels": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${metrics_datasource}"
+            },
+            "description": "Gauge showing performance status of tools",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "custom": {
+                  "neutral": 0
+                },
+                "mappings": [],
+                "max": 100,
+                "min": 0,
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": 0
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 50
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "percent"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 3,
+              "w": 4,
+              "x": 0,
+              "y": 39
+            },
+            "id": 34,
+            "options": {
+              "minVizHeight": 75,
+              "minVizWidth": 75,
+              "orientation": "auto",
+              "reduceOptions": {
+                "calcs": [
+                  "mean"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "showThresholdLabels": false,
+              "showThresholdMarkers": true,
+              "sizing": "auto",
+              "text": {}
+            },
+            "pluginVersion": "12.2.0-16890666601.patch2",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "${metrics_datasource}"
+                },
+                "editorMode": "code",
+                "expr": "100 - (100 * sum(mcp_errors_total{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}) / (sum(mcp_requests_total{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}) + 1))",
+                "hide": false,
+                "legendFormat": "Overall Success Rate",
+                "range": true,
+                "refId": "A"
+              }
+            ],
+            "title": "Tool Health Gauge",
+            "transparent": true,
+            "type": "gauge"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${metrics_datasource}"
+            },
+            "description": "Number of unique tools currently active in the system",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": 0
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 1
+                    },
+                    {
+                      "color": "green",
+                      "value": 2
+                    }
+                  ]
+                },
+                "unit": "short"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 3,
+              "w": 10,
+              "x": 4,
+              "y": 39
+            },
+            "id": 37,
+            "options": {
+              "colorMode": "background",
+              "displayMode": "basic",
+              "graphMode": "area",
+              "justifyMode": "center",
+              "orientation": "horizontal",
+              "percentChangeColorMode": "standard",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "showPercentChange": true,
+              "textMode": "auto",
+              "wideLayout": true
+            },
+            "pluginVersion": "12.2.0-16890666601.patch2",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "${metrics_datasource}"
+                },
+                "editorMode": "code",
+                "expr": "count(count by (mcp_tool_name) (mcp_tool_calls_total{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}))",
+                "hide": false,
+                "legendFormat": "",
+                "range": true,
+                "refId": "A"
+              }
+            ],
+            "title": "Active Tools",
+            "transparent": true,
+            "type": "stat"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${metrics_datasource}"
+            },
+            "description": "Total number of tool calls across all tools",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": 0
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 1
+                    },
+                    {
+                      "color": "green",
+                      "value": 5
+                    }
+                  ]
+                },
+                "unit": "short"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 3,
+              "w": 10,
+              "x": 14,
+              "y": 39
+            },
+            "id": 38,
+            "options": {
+              "colorMode": "background",
+              "displayMode": "basic",
+              "graphMode": "area",
+              "justifyMode": "center",
+              "orientation": "horizontal",
+              "percentChangeColorMode": "standard",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "showPercentChange": true,
+              "textMode": "auto",
+              "wideLayout": true
+            },
+            "pluginVersion": "12.2.0-16890666601.patch2",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "${metrics_datasource}"
+                },
+                "editorMode": "code",
+                "expr": "sum(mcp_tool_calls_total{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"})",
+                "hide": false,
+                "legendFormat": "",
+                "range": true,
+                "refId": "A"
+              }
+            ],
+            "title": "Total Tool Calls",
+            "transparent": true,
+            "type": "stat"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${metrics_datasource}"
+            },
+            "description": "Comparison of request vs response payload sizes by tool",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": 0
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "bytes"
+              },
+              "overrides": [
+                {
+                  "matcher": {
+                    "id": "byRegexp",
+                    "options": ".*Request.*"
+                  },
+                  "properties": [
+                    {
+                      "id": "color",
+                      "value": {
+                        "fixedColor": "blue",
+                        "mode": "fixed"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "matcher": {
+                    "id": "byRegexp",
+                    "options": ".*Response.*"
+                  },
+                  "properties": [
+                    {
+                      "id": "color",
+                      "value": {
+                        "fixedColor": "green",
+                        "mode": "fixed"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            "gridPos": {
+              "h": 6,
+              "w": 8,
+              "x": 0,
+              "y": 42
+            },
+            "id": 41,
+            "options": {
+              "displayMode": "gradient",
+              "legend": {
+                "calcs": [],
+                "displayMode": "list",
+                "placement": "bottom",
+                "showLegend": false
+              },
+              "maxVizHeight": 300,
+              "minVizHeight": 16,
+              "minVizWidth": 8,
+              "namePlacement": "auto",
+              "orientation": "horizontal",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "showUnfilled": true,
+              "sizing": "auto",
+              "valueMode": "color"
+            },
+            "pluginVersion": "12.2.0-16890666601.patch2",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "${metrics_datasource}"
+                },
+                "editorMode": "code",
+                "expr": "sum by (mcp_tool_name) (mcp_request_size_bytes_sum{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}) / sum by (mcp_tool_name) (mcp_request_size_bytes_count{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"})",
+                "hide": false,
+                "legendFormat": "{{mcp_tool_name}} Request",
+                "range": true,
+                "refId": "A"
+              },
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "${metrics_datasource}"
+                },
+                "editorMode": "code",
+                "expr": "sum by (mcp_tool_name) (mcp_response_size_bytes_sum{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}) / sum by (mcp_tool_name) (mcp_response_size_bytes_count{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"})",
+                "hide": false,
+                "legendFormat": "{{mcp_tool_name}} Response",
+                "range": true,
+                "refId": "B"
+              }
+            ],
+            "title": "Tool Payload Sizes",
+            "transparent": true,
+            "type": "bargauge"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${metrics_datasource}"
+            },
+            "description": "Real-time tool call rates showing current activity",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisBorderShow": false,
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "barWidthFactor": 0.6,
+                  "drawStyle": "line",
+                  "fillOpacity": 100,
+                  "gradientMode": "opacity",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "vis": false,
+                    "viz": false
+                  },
+                  "insertNulls": false,
+                  "lineInterpolation": "smooth",
+                  "lineWidth": 2,
+                  "pointSize": 5,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "auto",
+                  "spanNulls": false,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": 0
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "ops"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 6,
+              "w": 16,
+              "x": 8,
+              "y": 42
+            },
+            "id": 40,
+            "options": {
+              "legend": {
+                "calcs": [],
+                "displayMode": "table",
+                "placement": "bottom",
+                "showLegend": false,
+                "values": [
+                  "current",
+                  "max"
+                ]
+              },
+              "tooltip": {
+                "hideZeros": false,
+                "mode": "multi",
+                "sort": "desc"
+              }
+            },
+            "pluginVersion": "12.2.0-16890666601.patch2",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "${metrics_datasource}"
+                },
+                "editorMode": "code",
+                "expr": "rate(mcp_tool_calls_total{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])",
+                "hide": false,
+                "legendFormat": "{{mcp_tool_name}}",
+                "range": true,
+                "refId": "A"
+              }
+            ],
+            "title": "Tool Call Rates",
+            "transparent": true,
+            "type": "timeseries"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${metrics_datasource}"
+            },
+            "description": "Top 5 most frequently used tools by total calls",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic-by-name"
+                },
+                "custom": {
+                  "axisBorderShow": false,
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "barWidthFactor": 0.6,
+                  "drawStyle": "line",
+                  "fillOpacity": 100,
+                  "gradientMode": "opacity",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "insertNulls": false,
+                  "lineInterpolation": "linear",
+                  "lineWidth": 1,
+                  "pointSize": 5,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "auto",
+                  "spanNulls": false,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": 0
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "short"
+              },
+              "overrides": [
+                {
+                  "matcher": {
+                    "id": "byRegexp",
+                    "options": ".*"
+                  },
+                  "properties": [
+                    {
+                      "id": "color",
+                      "value": {
+                        "fixedColor": "green",
+                        "mode": "shades"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 0,
+              "y": 48
+            },
+            "id": 30,
+            "options": {
+              "legend": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "displayMode": "table",
+                "placement": "bottom",
+                "showLegend": true
+              },
+              "tooltip": {
+                "hideZeros": false,
+                "mode": "single",
+                "sort": "none"
+              }
+            },
+            "pluginVersion": "12.2.0-16890666601.patch2",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "${metrics_datasource}"
+                },
+                "editorMode": "code",
+                "expr": "topk(5, sum by (mcp_tool_name) (mcp_tool_calls_total{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}))",
+                "hide": false,
+                "legendFormat": "{{mcp_tool_name}}",
+                "range": true,
+                "refId": "A"
+              }
+            ],
+            "title": "Most Used Tools",
+            "transparent": true,
+            "type": "timeseries"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${metrics_datasource}"
+            },
+            "description": "Top 5 slowest tools by average operation duration",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisBorderShow": false,
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "barWidthFactor": 0.6,
+                  "drawStyle": "line",
+                  "fillOpacity": 100,
+                  "gradientMode": "opacity",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "insertNulls": false,
+                  "lineInterpolation": "linear",
+                  "lineWidth": 1,
+                  "pointSize": 5,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "auto",
+                  "spanNulls": false,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": 0
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "s"
+              },
+              "overrides": [
+                {
+                  "matcher": {
+                    "id": "byRegexp",
+                    "options": ".*"
+                  },
+                  "properties": [
+                    {
+                      "id": "color",
+                      "value": {
+                        "fixedColor": "orange",
+                        "mode": "shades"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 8,
+              "y": 48
+            },
+            "id": 31,
+            "options": {
+              "legend": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "displayMode": "table",
+                "placement": "bottom",
+                "showLegend": true
+              },
+              "tooltip": {
+                "hideZeros": false,
+                "mode": "single",
+                "sort": "none"
+              }
+            },
+            "pluginVersion": "12.2.0-16890666601.patch2",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "${metrics_datasource}"
+                },
+                "editorMode": "code",
+                "expr": "topk(5, sum by (mcp_tool_name) (mcp_client_operation_duration_seconds_sum{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}) / sum by (mcp_tool_name) (mcp_client_operation_duration_seconds_count{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}))",
+                "hide": false,
+                "legendFormat": "{{mcp_tool_name}}",
+                "range": true,
+                "refId": "A"
+              }
+            ],
+            "title": "Slowest Tools by Duration",
+            "transparent": true,
+            "type": "timeseries"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${metrics_datasource}"
+            },
+            "description": "Top 5 tools with highest error counts",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisBorderShow": false,
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "barWidthFactor": 0.6,
+                  "drawStyle": "line",
+                  "fillOpacity": 100,
+                  "gradientMode": "opacity",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "insertNulls": false,
+                  "lineInterpolation": "linear",
+                  "lineWidth": 1,
+                  "pointSize": 5,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "auto",
+                  "spanNulls": false,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": 0
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "short"
+              },
+              "overrides": [
+                {
+                  "matcher": {
+                    "id": "byRegexp",
+                    "options": ".*"
+                  },
+                  "properties": [
+                    {
+                      "id": "color",
+                      "value": {
+                        "fixedColor": "red",
+                        "mode": "shades"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 16,
+              "y": 48
+            },
+            "id": 32,
+            "options": {
+              "legend": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "displayMode": "table",
+                "placement": "bottom",
+                "showLegend": true
+              },
+              "tooltip": {
+                "hideZeros": false,
+                "mode": "single",
+                "sort": "none"
+              }
+            },
+            "pluginVersion": "12.2.0-16890666601.patch2",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "${metrics_datasource}"
+                },
+                "editorMode": "code",
+                "expr": "topk(5, sum by (mcp_tool_name) (mcp_errors_total{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}))",
+                "hide": false,
+                "legendFormat": "{{mcp_tool_name}}",
+                "range": true,
+                "refId": "A"
+              }
+            ],
+            "title": "Most Failing Tools",
+            "transparent": true,
+            "type": "timeseries"
+          }
+        ],
+        "title": "Tools",
+        "type": "row"
+      },
+      {
+        "collapsed": true,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 39
+        },
+        "id": 22,
+        "panels": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${metrics_datasource}"
+            },
+            "description": "Horizontal bar gauge showing distribution of requests by transport type",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "mappings": [],
+                "max": 100,
+                "min": 0,
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": 0
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "short"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 0,
+              "y": 75
+            },
+            "id": 18,
+            "options": {
+              "displayMode": "lcd",
+              "legend": {
+                "calcs": [],
+                "displayMode": "list",
+                "placement": "bottom",
+                "showLegend": false
+              },
+              "maxVizHeight": 300,
+              "minVizHeight": 10,
+              "minVizWidth": 0,
+              "namePlacement": "auto",
+              "orientation": "horizontal",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "showUnfilled": true,
+              "sizing": "auto",
+              "text": {
+                "titleSize": 10,
+                "valueSize": 18
+              },
+              "valueMode": "color"
+            },
+            "pluginVersion": "12.2.0-16890666601.patch2",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "${metrics_datasource}"
+                },
+                "editorMode": "code",
+                "expr": "sum by (mcp_transport_type) (mcp_requests_total{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"})",
+                "hide": false,
+                "legendFormat": "{{mcp_transport_type}}",
+                "range": true,
+                "refId": "A"
+              }
+            ],
+            "title": "Transport Type Distribution",
+            "transparent": true,
+            "type": "bargauge"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${metrics_datasource}"
+            },
+            "description": "Request rate trends by transport type over time",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisBorderShow": false,
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "barWidthFactor": 0.6,
+                  "drawStyle": "line",
+                  "fillOpacity": 15,
+                  "gradientMode": "none",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "vis": false,
+                    "viz": false
+                  },
+                  "insertNulls": false,
+                  "lineInterpolation": "linear",
+                  "lineWidth": 2,
+                  "pointSize": 5,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "auto",
+                  "spanNulls": false,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": 0
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "reqps"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 12,
+              "y": 75
+            },
+            "id": 19,
+            "options": {
+              "legend": {
+                "calcs": [],
+                "displayMode": "table",
+                "placement": "bottom",
+                "showLegend": false,
+                "values": [
+                  "current",
+                  "max",
+                  "min"
+                ]
+              },
+              "tooltip": {
+                "hideZeros": false,
+                "mode": "multi",
+                "sort": "desc"
+              }
+            },
+            "pluginVersion": "12.2.0-16890666601.patch2",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "${metrics_datasource}"
+                },
+                "editorMode": "code",
+                "expr": "sum by (mcp_transport_type) (rate(mcp_requests_total{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval]))",
+                "hide": false,
+                "legendFormat": "{{mcp_transport_type}}",
+                "range": true,
+                "refId": "A"
+              }
+            ],
+            "title": "Transport Type Request Rates",
+            "transparent": true,
+            "type": "timeseries"
+          }
+        ],
+        "title": "Transport",
+        "type": "row"
+      },
+      {
+        "collapsed": true,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 40
+        },
+        "id": 20,
+        "panels": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${metrics_datasource}"
+            },
+            "description": "Pie chart showing client type distribution by total requests",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "vis": false,
+                    "viz": false
+                  }
+                },
+                "mappings": [],
+                "unit": "short"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 6,
+              "w": 6,
+              "x": 0,
+              "y": 76
+            },
+            "id": 15,
+            "options": {
+              "displayLabels": [],
+              "legend": {
+                "displayMode": "table",
+                "placement": "right",
+                "showLegend": false,
+                "values": [
+                  "value",
+                  "percent"
+                ]
+              },
+              "pieType": "donut",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "tooltip": {
+                "hideZeros": false,
+                "mode": "single",
+                "sort": "none"
+              }
+            },
+            "pluginVersion": "12.2.0-16890666601.patch2",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "${metrics_datasource}"
+                },
+                "editorMode": "code",
+                "expr": "sum by (mcp_client_type) (mcp_requests_total{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"})",
+                "hide": false,
+                "legendFormat": "{{mcp_client_type}}",
+                "range": true,
+                "refId": "A"
+              }
+            ],
+            "title": "Client Type Distribution",
+            "transparent": true,
+            "type": "piechart"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${metrics_datasource}"
+            },
+            "description": "Time series showing client type request rates over time",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisBorderShow": false,
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "barWidthFactor": 0.6,
+                  "drawStyle": "line",
+                  "fillOpacity": 10,
+                  "gradientMode": "none",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "vis": false,
+                    "viz": false
+                  },
+                  "insertNulls": false,
+                  "lineInterpolation": "linear",
+                  "lineWidth": 2,
+                  "pointSize": 5,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "auto",
+                  "spanNulls": false,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": 0
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "reqps"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 6,
+              "w": 18,
+              "x": 6,
+              "y": 76
+            },
+            "id": 17,
+            "options": {
+              "legend": {
+                "calcs": [],
+                "displayMode": "table",
+                "placement": "bottom",
+                "showLegend": true,
+                "values": [
+                  "current",
+                  "max"
+                ]
+              },
+              "tooltip": {
+                "hideZeros": false,
+                "mode": "multi",
+                "sort": "desc"
+              }
+            },
+            "pluginVersion": "12.2.0-16890666601.patch2",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "${metrics_datasource}"
+                },
+                "editorMode": "code",
+                "expr": "sum by (mcp_client_type) (rate(mcp_requests_total{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval]))",
+                "hide": false,
+                "legendFormat": "{{mcp_client_type}}",
+                "range": true,
+                "refId": "A"
+              }
+            ],
+            "title": "Client Type Rates - Time Series",
+            "transparent": true,
+            "type": "timeseries"
+          }
+        ],
+        "title": "MCP Client",
+        "type": "row"
+      }
+    ],
+    "preload": false,
+    "schemaVersion": 41,
+    "tags": [
+      "ai-observability-integration"
+    ],
+    "templating": {
+      "list": [
+        {
+          "label": "Traces data source",
+          "name": "traces_datasource",
+          "options": [],
+          "query": "tempo",
+          "refresh": 1,
+          "regex": "",
+          "type": "datasource"
+        },
+        {
+          "label": "Metrics data source",
+          "name": "metrics_datasource",
+          "options": [],
+          "query": "prometheus",
+          "refresh": 1,
+          "regex": "(?!grafanacloud-usage|grafanacloud-ml-metrics).+",
+          "type": "datasource"
+        },
+        {
+          "definition": "label_values(service_name)",
+          "includeAll": true,
+          "label": "service_name",
+          "multi": true,
+          "name": "service_name",
+          "options": [],
+          "query": {
+            "qryType": 1,
+            "query": "label_values(service_name)",
+            "refId": "PrometheusVariableQueryEditor-VariableQuery"
+          },
+          "refresh": 2,
+          "regex": "",
+          "type": "query"
+        },
+        {
+          "definition": "label_values(deployment_environment)",
+          "includeAll": true,
+          "label": "deployment_environment",
+          "multi": true,
+          "name": "deployment_environment",
+          "options": [],
+          "query": {
+            "qryType": 1,
+            "query": "label_values(deployment_environment)",
+            "refId": "PrometheusVariableQueryEditor-VariableQuery"
+          },
+          "refresh": 2,
+          "regex": "",
+          "type": "query"
+        },
+        {
+          "label": "Trace ID",
+          "name": "traceId",
+          "options": [],
+          "query": "",
+          "type": "custom"
+        }
+      ]
+    },
+    "time": {
+      "from": "now-30m",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "browser",
+    "title": "MCP Observability",
+    "uid": "isldpl4",
+    "version": 108
+  }

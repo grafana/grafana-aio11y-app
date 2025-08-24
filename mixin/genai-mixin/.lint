@@ -9,3 +9,5 @@ exclusions:
     reason: Using OpenLIT which doesn't generate job label
   template-instance-rule:
     reason: Using OpenLIT which doesn't generate instance label
+  template-datasource-rule:
+    reason: Using metrics_datasource to align with traces_datasource (As it can be used with jaeger also)

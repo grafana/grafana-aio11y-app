@@ -1,0 +1,123 @@
+name: AI Observability Data Generator
+
+on:
+  workflow_dispatch:
+    inputs:
+      mock_type:
+        description: 'Select mock data type to generate'
+        required: true
+        default: 'llm'
+        type: choice
+        options:
+          - llm
+          - vectordb
+          - both
+      otel_endpoint:
+        description: 'OTEL Endpoint URL'
+        required: true
+        default: 'https://otlp-gateway-prod-us-east-1.grafana.net/otlp'
+        type: string
+      otel_headers:
+        description: 'OTEL Headers (Authorization header)'
+        required: true
+        type: string
+      service_name:
+        description: 'Service Name'
+        required: false
+        default: 'ai-observability-data'
+        type: string
+      deployment_environment:
+        description: 'Deployment Environment'
+        required: false
+        default: 'demo'
+        type: string
+      openai_api_key:
+        description: 'OpenAI API Key (optional but recommended)'
+        required: false
+        type: string
+      anthropic_api_key:
+        description: 'Anthropic API Key (optional but recommended)'
+        required: false
+        type: string
+
+jobs:
+  llm-mock-data:
+    if: ${{ github.event.inputs.mock_type == 'llm' || github.event.inputs.mock_type == 'both' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+          
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r .github/scripts/requirements.txt
+          
+      - name: Validate API Keys
+        run: |
+          if [ -z "${{ github.event.inputs.openai_api_key }}" ] && [ -z "${{ github.event.inputs.anthropic_api_key }}" ]; then
+            echo "❌ Error: At least one API key (OpenAI or Anthropic) must be provided"
+            exit 1
+          fi
+          if [ -n "${{ github.event.inputs.openai_api_key }}" ]; then
+            echo "✅ OpenAI API key provided"
+          fi
+          if [ -n "${{ github.event.inputs.anthropic_api_key }}" ]; then
+            echo "✅ Anthropic API key provided"
+          fi
+          
+      - name: Generate LLM Mock Data
+        timeout-minutes: 10
+        env:
+          OTEL_EXPORTER_OTLP_ENDPOINT: ${{ github.event.inputs.otel_endpoint }}
+          OTEL_EXPORTER_OTLP_HEADERS: ${{ github.event.inputs.otel_headers }}
+          OTEL_SERVICE_NAME: ${{ github.event.inputs.service_name }}
+          OTEL_DEPLOYMENT_ENVIRONMENT: ${{ github.event.inputs.deployment_environment }}
+          OPENAI_API_KEY: ${{ github.event.inputs.openai_api_key }}
+          ANTHROPIC_API_KEY: ${{ github.event.inputs.anthropic_api_key }}
+        run: |
+          echo "🚀 Starting LLM mock data generation with OpenLIT instrumentation for 10 minutes..."
+          echo "📊 Service: $OTEL_SERVICE_NAME"
+          echo "🌍 Environment: $OTEL_DEPLOYMENT_ENVIRONMENT"
+          echo "🔗 OTEL Endpoint: $OTEL_EXPORTER_OTLP_ENDPOINT"
+          python .github/scripts/llm_data_generator.py
+
+  vectordb-mock-data:
+    if: ${{ github.event.inputs.mock_type == 'vectordb' || github.event.inputs.mock_type == 'both' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+          
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r .github/scripts/requirements.txt
+          
+      - name: Generate Vector Database Mock Data
+        timeout-minutes: 10
+        env:
+          OTEL_EXPORTER_OTLP_ENDPOINT: ${{ github.event.inputs.otel_endpoint }}
+          OTEL_EXPORTER_OTLP_HEADERS: ${{ github.event.inputs.otel_headers }}
+          OTEL_SERVICE_NAME: ${{ github.event.inputs.service_name }}
+          OTEL_DEPLOYMENT_ENVIRONMENT: ${{ github.event.inputs.deployment_environment }}
+        run: |
+          echo "🚀 Starting Vector Database mock data generation with OpenLIT instrumentation for 10 minutes..."
+          echo "📊 Service: $OTEL_SERVICE_NAME"
+          echo "🌍 Environment: $OTEL_DEPLOYMENT_ENVIRONMENT"
+          echo "🔗 OTEL Endpoint: $OTEL_EXPORTER_OTLP_ENDPOINT"
+          python .github/scripts/vectordb_data_generator.py
