@@ -6,7 +6,7 @@ on:
       data_type:
         description: 'Select data type to generate'
         required: true
-        default: 'LLM'
+        default: 'All'
         type: choice
         options:
           - LLM
