@@ -34,6 +34,42 @@
     },
     {
       "asDropdown": false,
+      "icon": "dashboard",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [],
+      "targetBlank": false,
+      "title": "MCP Monitoring",
+      "tooltip": "",
+      "type": "link",
+      "url": "/d/isldpl4/mcp-observability"
+    },
+    {
+      "asDropdown": false,
+      "icon": "dashboard",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [],
+      "targetBlank": false,
+      "title": "VectorDB Observability",
+      "tooltip": "",
+      "type": "link",
+      "url": "/d/is5nc7p/vectordb-observability"
+    },
+    {
+      "asDropdown": false,
+      "icon": "doc",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [],
+      "targetBlank": true,
+      "title": "Documentation",
+      "tooltip": "",
+      "type": "link",
+      "url": "https://grafana.com/docs/grafana-cloud/monitor-applications/ai-observability/"
+    },
+    {
+      "asDropdown": false,
       "icon": "external link",
       "includeVars": false,
       "keepTime": false,
@@ -43,42 +79,29 @@
       "tooltip": "",
       "type": "link",
       "url": "https://github.com/openlit/openlit"
-    },
-    {
-      "asDropdown": false,
-      "icon": "doc",
-      "includeVars": false,
-      "keepTime": false,
-      "tags": [],
-      "targetBlank": false,
-      "title": "Documentation",
-      "tooltip": "",
-      "type": "link",
-      "url": "https://grafana.com/docs/grafana-cloud/monitor-applications/ai-observability/"
     }
   ],
   "panels": [
     {
-      "description": "This is the main header panel providing information about the GenAI Observability dashboard. It explains that this dashboard displays usage statistics of LLMs, Vector Databases and GPUs, tracking OpenTelemetry Traces and Metrics sent using OpenLIT.",
       "fieldConfig": {
         "defaults": {},
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
-        "w": 11,
+        "h": 4,
+        "w": 3,
         "x": 0,
         "y": 0
       },
-      "id": 2,
+      "id": 33,
       "options": {
         "code": {
           "language": "plaintext",
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "---\n# GenAI Evaluations\n\nThis dashboard displays AI evaluation metrics like Hallucination, Bias and Toxicity using [OpenLIT](https://github.com/openlit/openlit).\n\n<details>\n  <summary>Add the following two lines to your application code to enable evaluation metrics</summary>\n\n  Add the following two lines to your application code:\n  \n  ```python\n  import openlit\n\n  # Initialize OpenLIT for metrics collection (As you might have already done for Observability)\n  openlit.init()\n\n  # The 'All' evaluator runs checks for Hallucination, Bias, and Toxicity\n  evals = openlit.evals.All()\n  result = evals.measure()\n  ```\n\n  Here is a detailed example\n  \n  ```python\n  import openlit\n\n  # openlit can also read the OPENAI_API_KEY variable directy from env if not specified via function argument\n  openai_api_key=os.getenv(\"OPENAI_API_KEY\")\n\n  # Initialize OpenLIT for metrics collection (As you might have already done for Observability)\n  openlit.init()\n\n  # The 'All' evaluator runs checks for Hallucination, Bias, and Toxicity\n  evals = openlit.evals.All(provider=\"openai\", api_key=openai_api_key)\n\n  contexts = [\"Einstein won the Nobel Prize for his discovery of the photoelectric effect in 1921\"]\n  prompt = \"When and why did Einstein win the Nobel Prize?\"\n  text = \"Einstein won the Nobel Prize in 1969 for his discovery of the photoelectric effect\"\n\n  result = evals.measure(prompt=prompt, contexts=contexts, text=text)\n  ```\n</details>\n\n---",
-        "mode": "markdown"
+        "content": "<img\n src=\"https://grafana.com/media/docs/grafana-cloud/ai-observability/aio11y-logo.svg\"\n width=\"100%\"\n height=\"100%\">",
+        "mode": "html"
       },
       "pluginVersion": "12.2.0-16890666601.patch2",
       "title": "",
@@ -88,7 +111,76 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${prometheus_datasource}"
+        "uid": "${metrics_datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 3,
+        "y": 0
+      },
+      "id": 18,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.2.0-16890666601.patch2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${metrics_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum(increase(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range]))\n",
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Evaluated Requests",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${metrics_datasource}"
       },
       "description": "Rate of evaluation requests per second",
       "fieldConfig": {
@@ -119,9 +211,9 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 3,
-        "w": 7,
-        "x": 11,
+        "h": 4,
+        "w": 5,
+        "x": 8,
         "y": 0
       },
       "id": 17,
@@ -147,7 +239,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${prometheus_datasource}"
+            "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
           "expr": "sum(rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval]))",
@@ -164,76 +256,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${prometheus_datasource}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 6,
-        "x": 18,
-        "y": 0
-      },
-      "id": 18,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "12.2.0-16890666601.patch2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${prometheus_datasource}"
-          },
-          "editorMode": "code",
-          "expr": "sum(increase(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range]))\n",
-          "legendFormat": "__auto",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Evaluated Requests",
-      "transparent": true,
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${prometheus_datasource}"
+        "uid": "${metrics_datasource}"
       },
       "description": "",
       "fieldConfig": {
@@ -261,10 +284,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 3,
-        "w": 7,
-        "x": 11,
-        "y": 3
+        "h": 4,
+        "w": 5,
+        "x": 13,
+        "y": 0
       },
       "id": 16,
       "options": {
@@ -289,7 +312,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${prometheus_datasource}"
+            "uid": "${metrics_datasource}"
           },
           "disableTextWrap": false,
           "editorMode": "code",
@@ -311,7 +334,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${prometheus_datasource}"
+        "uid": "${metrics_datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -336,10 +359,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 3,
+        "h": 4,
         "w": 6,
         "x": 18,
-        "y": 3
+        "y": 0
       },
       "id": 15,
       "options": {
@@ -364,7 +387,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${prometheus_datasource}"
+            "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
           "expr": "topk(1, sum by (evals_classification) (evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_classification!=\"none\"}))\n",
@@ -381,7 +404,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${prometheus_datasource}"
+        "uid": "${metrics_datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -409,7 +432,7 @@
         "h": 5,
         "w": 14,
         "x": 0,
-        "y": 6
+        "y": 4
       },
       "id": 14,
       "options": {
@@ -432,7 +455,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${prometheus_datasource}"
+            "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
           "expr": "sum by (evals_classification) (evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_classification!=\"none\"})\n",
@@ -447,7 +470,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${prometheus_datasource}"
+        "uid": "${metrics_datasource}"
       },
       "description": "Time series of evaluation requests by classification",
       "fieldConfig": {
@@ -510,7 +533,7 @@
         "h": 7,
         "w": 10,
         "x": 14,
-        "y": 6
+        "y": 4
       },
       "id": 21,
       "options": {
@@ -531,7 +554,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${prometheus_datasource}"
+            "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
           "expr": "sum by(evals_classification) (rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval]))",
@@ -547,7 +570,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${prometheus_datasource}"
+        "uid": "${metrics_datasource}"
       },
       "description": "Correlation between classifications and verdicts",
       "fieldConfig": {
@@ -570,7 +593,7 @@
         "h": 8,
         "w": 14,
         "x": 0,
-        "y": 11
+        "y": 9
       },
       "id": 5,
       "options": {
@@ -613,7 +636,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${prometheus_datasource}"
+            "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
           "expr": "sum by(evals_classification, evals_verdict) (rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval]))",
@@ -629,7 +652,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${prometheus_datasource}"
+        "uid": "${metrics_datasource}"
       },
       "description": "Issue detection rate by confidence score levels",
       "fieldConfig": {
@@ -711,7 +734,7 @@
         "h": 6,
         "w": 10,
         "x": 14,
-        "y": 13
+        "y": 11
       },
       "id": 13,
       "options": {
@@ -749,7 +772,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${prometheus_datasource}"
+            "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
           "expr": "sum by(evals_score) (rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_verdict=\"yes\"}[$__rate_interval]))",
@@ -765,7 +788,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${prometheus_datasource}"
+        "uid": "${metrics_datasource}"
       },
       "description": "Evaluation rates by service name",
       "fieldConfig": {
@@ -789,7 +812,7 @@
         "h": 7,
         "w": 6,
         "x": 0,
-        "y": 19
+        "y": 17
       },
       "id": 11,
       "options": {
@@ -817,7 +840,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${prometheus_datasource}"
+            "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
           "expr": "sum by(service_name) (rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval]))",
@@ -834,7 +857,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${prometheus_datasource}"
+        "uid": "${metrics_datasource}"
       },
       "description": "Evaluation rates by deployment environment",
       "fieldConfig": {
@@ -858,7 +881,7 @@
         "h": 7,
         "w": 6,
         "x": 6,
-        "y": 19
+        "y": 17
       },
       "id": 10,
       "options": {
@@ -886,7 +909,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${prometheus_datasource}"
+            "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
           "expr": "sum by(deployment_environment) (rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval]))",
@@ -903,7 +926,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${prometheus_datasource}"
+        "uid": "${metrics_datasource}"
       },
       "description": "Yes/No verdicts from evaluations",
       "fieldConfig": {
@@ -958,7 +981,7 @@
         "h": 7,
         "w": 6,
         "x": 12,
-        "y": 19
+        "y": 17
       },
       "id": 8,
       "options": {
@@ -986,7 +1009,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${prometheus_datasource}"
+            "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
           "expr": "100 * sum(increase(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_verdict=\"yes\"}[$__range]))\n  / sum(increase(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range]))\n",
@@ -998,7 +1021,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${prometheus_datasource}"
+            "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
           "expr": "100 * sum(increase(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_verdict=\"no\"}[$__range]))\n  / sum(increase(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range]))\n",
@@ -1016,7 +1039,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${prometheus_datasource}"
+        "uid": "${metrics_datasource}"
       },
       "description": "Distribution of evaluation classifications",
       "fieldConfig": {
@@ -1040,7 +1063,7 @@
         "h": 7,
         "w": 6,
         "x": 18,
-        "y": 19
+        "y": 17
       },
       "id": 7,
       "options": {
@@ -1068,7 +1091,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${prometheus_datasource}"
+            "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
           "expr": "sum by(evals_classification) (rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval]))",
@@ -1088,7 +1111,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 26
+        "y": 24
       },
       "id": 20,
       "panels": [],
@@ -1098,7 +1121,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${prometheus_datasource}"
+        "uid": "${metrics_datasource}"
       },
       "description": "Top explanations for detected issues",
       "fieldConfig": {
@@ -1153,7 +1176,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 27
+        "y": 25
       },
       "id": 19,
       "options": {
@@ -1193,7 +1216,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${prometheus_datasource}"
+            "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
           "expr": "topk(10, sum by(evals_explanation) (rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\",evals_verdict=\"yes\"}[$__rate_interval])))",
@@ -1213,7 +1236,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 37
+        "y": 35
       },
       "id": 24,
       "panels": [],
@@ -1223,7 +1246,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${prometheus_datasource}"
+        "uid": "${metrics_datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1251,7 +1274,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 38
+        "y": 36
       },
       "id": 23,
       "options": {
@@ -1283,7 +1306,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${prometheus_datasource}"
+            "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -1318,7 +1341,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${prometheus_datasource}"
+        "uid": "${metrics_datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1394,7 +1417,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 38
+        "y": 36
       },
       "id": 22,
       "options": {
@@ -1415,7 +1438,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${prometheus_datasource}"
+            "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
           "expr": "sum(rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_validator=\"hallucination\"}[$__rate_interval]) ) by (evals_classification)",
@@ -1433,7 +1456,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 46
+        "y": 44
       },
       "id": 31,
       "panels": [],
@@ -1443,7 +1466,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${prometheus_datasource}"
+        "uid": "${metrics_datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1471,7 +1494,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 47
+        "y": 45
       },
       "id": 30,
       "options": {
@@ -1503,7 +1526,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${prometheus_datasource}"
+            "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -1530,7 +1553,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${prometheus_datasource}"
+        "uid": "${metrics_datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1606,7 +1629,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 47
+        "y": 45
       },
       "id": 29,
       "options": {
@@ -1627,7 +1650,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${prometheus_datasource}"
+            "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
           "expr": "\nsum(rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_validator=\"toxicity_detection\"}[$__rate_interval]) ) by (evals_classification)",
@@ -1645,7 +1668,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 55
+        "y": 53
       },
       "id": 26,
       "panels": [],
@@ -1655,7 +1678,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${prometheus_datasource}"
+        "uid": "${metrics_datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1683,7 +1706,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 56
+        "y": 54
       },
       "id": 28,
       "options": {
@@ -1715,7 +1738,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${prometheus_datasource}"
+            "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -1750,7 +1773,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${prometheus_datasource}"
+        "uid": "${metrics_datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1826,7 +1849,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 56
+        "y": 54
       },
       "id": 27,
       "options": {
@@ -1847,7 +1870,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${prometheus_datasource}"
+            "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
           "expr": "sum(rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_validator=\"bias_detection\"}[$__rate_interval]) ) by (evals_classification)",
@@ -1875,10 +1898,11 @@
     "list": [
       {
         "current": {
+          "text": "grafanacloud-ishanjain-prom",
           "value": "grafanacloud-prom"
         },
-        "label": "Prometheus data source",
-        "name": "prometheus_datasource",
+        "label": "Metrics data source",
+        "name": "metrics_datasource",
         "options": [],
         "query": "prometheus",
         "refresh": 1,
@@ -1887,9 +1911,7 @@
       },
       {
         "current": {
-          "text": [
-            "All"
-          ],
+          "text": "All",
           "value": [
             "$__all"
           ]
@@ -1911,11 +1933,9 @@
       },
       {
         "current": {
-          "text": [
-            "development"
-          ],
+          "text": "All",
           "value": [
-            "development"
+            "$__all"
           ]
         },
         "definition": "label_values(deployment_environment)",
@@ -1936,12 +1956,12 @@
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-7d",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "GenAI Evaluations",
   "uid": "is7rtn8",
-  "version": 69
+  "version": 3
 }
