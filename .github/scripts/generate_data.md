@@ -20,7 +20,7 @@ Before running the workflow, you'll need your OTEL endpoint and headers from Gra
 
 ## Quick Start
 
-1. Go to your repository's **Actions** tab
+1. Go to this repository's [Actions tab](https://github.com/grafana/grafana-aio11y-app/actions/workflows/data-generator.yml)
 2. Select the **"AI Observability Data Generator"** workflow
 3. Click **"Run workflow"**
 4. Configure the required parameters:
