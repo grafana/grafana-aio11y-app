@@ -1,9 +1,5 @@
 name: AI Observability Data Generator
 
-# SECURITY NOTE: This workflow uses workflow inputs for demonstration purposes.
-# For production use, consider using GitHub Secrets instead of workflow inputs
-# to prevent sensitive data exposure in logs. See .github/scripts/README.md for details.
-
 on:
   workflow_dispatch:
     inputs:
@@ -80,29 +76,45 @@ jobs:
             echo "✅ Anthropic API key provided (${#ANTHROPIC_API_KEY} characters)"
           fi
           
-      - name: Mask sensitive values in logs
+      - name: Mask sensitive input parameters
         run: |
-          echo "🔐 Masking sensitive values to prevent exposure in logs..."
-          if [ -n "${{ github.event.inputs.openai_api_key }}" ]; then
-            echo "::add-mask::${{ github.event.inputs.openai_api_key }}"
+          echo "🔐 Masking sensitive input parameters..."
+          
+          # Extract and mask OpenAI API key if provided
+          OPENAI_KEY=$(jq -r '.inputs.openai_api_key // empty' $GITHUB_EVENT_PATH)
+          if [ -n "$OPENAI_KEY" ]; then
+            echo "::add-mask::$OPENAI_KEY"
+            echo "OPENAI_API_KEY=$OPENAI_KEY" >> $GITHUB_ENV
+            echo "✅ OpenAI API key masked"
           fi
-          if [ -n "${{ github.event.inputs.anthropic_api_key }}" ]; then
-            echo "::add-mask::${{ github.event.inputs.anthropic_api_key }}"
+          
+          # Extract and mask Anthropic API key if provided
+          ANTHROPIC_KEY=$(jq -r '.inputs.anthropic_api_key // empty' $GITHUB_EVENT_PATH)
+          if [ -n "$ANTHROPIC_KEY" ]; then
+            echo "::add-mask::$ANTHROPIC_KEY"
+            echo "ANTHROPIC_API_KEY=$ANTHROPIC_KEY" >> $GITHUB_ENV
+            echo "✅ Anthropic API key masked"
           fi
-          if [ -n "${{ github.event.inputs.otel_headers }}" ]; then
-            echo "::add-mask::${{ github.event.inputs.otel_headers }}"
+          
+          # Extract and mask OTEL headers
+          OTEL_HEADERS=$(jq -r '.inputs.otel_headers // empty' $GITHUB_EVENT_PATH)
+          if [ -n "$OTEL_HEADERS" ]; then
+            echo "::add-mask::$OTEL_HEADERS"
+            echo "OTEL_EXPORTER_OTLP_HEADERS=$OTEL_HEADERS" >> $GITHUB_ENV
+            echo "✅ OTEL headers masked"
           fi
-          echo "✅ Sensitive values masked from GitHub Actions logs"
+          
+          echo "🔒 Sensitive parameters successfully masked from logs"
           
       - name: Generate LLM Mock Data
         timeout-minutes: 10
         env:
           OTEL_EXPORTER_OTLP_ENDPOINT: ${{ github.event.inputs.otel_endpoint }}
-          OTEL_EXPORTER_OTLP_HEADERS: ${{ github.event.inputs.otel_headers }}
+          OTEL_EXPORTER_OTLP_HEADERS: ${{ env.OTEL_EXPORTER_OTLP_HEADERS }}
           OTEL_SERVICE_NAME: ${{ github.event.inputs.service_name }}
           OTEL_DEPLOYMENT_ENVIRONMENT: ${{ github.event.inputs.deployment_environment }}
-          OPENAI_API_KEY: ${{ github.event.inputs.openai_api_key }}
-          ANTHROPIC_API_KEY: ${{ github.event.inputs.anthropic_api_key }}
+          OPENAI_API_KEY: ${{ env.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ env.ANTHROPIC_API_KEY }}
         run: python .github/scripts/llm_data_generator.py
 
   vectordb-mock-data:
@@ -124,19 +136,25 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r .github/scripts/requirements.txt
           
-      - name: Mask sensitive values in logs
+      - name: Mask sensitive input parameters
         run: |
-          echo "🔐 Masking sensitive values to prevent exposure in logs..."
-          if [ -n "${{ github.event.inputs.otel_headers }}" ]; then
-            echo "::add-mask::${{ github.event.inputs.otel_headers }}"
+          echo "🔐 Masking sensitive input parameters..."
+          
+          # Extract and mask OTEL headers
+          OTEL_HEADERS=$(jq -r '.inputs.otel_headers // empty' $GITHUB_EVENT_PATH)
+          if [ -n "$OTEL_HEADERS" ]; then
+            echo "::add-mask::$OTEL_HEADERS"
+            echo "OTEL_EXPORTER_OTLP_HEADERS=$OTEL_HEADERS" >> $GITHUB_ENV
+            echo "✅ OTEL headers masked"
           fi
-          echo "✅ Sensitive values masked from GitHub Actions logs"
+          
+          echo "🔒 Sensitive parameters successfully masked from logs"
           
       - name: Generate Vector Database Mock Data
         timeout-minutes: 10
         env:
           OTEL_EXPORTER_OTLP_ENDPOINT: ${{ github.event.inputs.otel_endpoint }}
-          OTEL_EXPORTER_OTLP_HEADERS: ${{ github.event.inputs.otel_headers }}
+          OTEL_EXPORTER_OTLP_HEADERS: ${{ env.OTEL_EXPORTER_OTLP_HEADERS }}
           OTEL_SERVICE_NAME: ${{ github.event.inputs.service_name }}
           OTEL_DEPLOYMENT_ENVIRONMENT: ${{ github.event.inputs.deployment_environment }}
         run: python .github/scripts/vectordb_data_generator.py
