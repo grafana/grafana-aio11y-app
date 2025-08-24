@@ -795,7 +795,8 @@
             "type": "prometheus",
             "uid": "${metrics_datasource}"
           },
-          "expr": "histogram_quantile(0.95, sum by (le, gen_ai_system) (rate(gen_ai_server_time_to_first_token_seconds_bucket{deployment_environment=\"development\"}[$__rate_interval])))",
+          "editorMode": "code",
+          "expr": "histogram_quantile(0.95, sum by (le, gen_ai_system) (rate(gen_ai_server_time_to_first_token_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])))",
           "hide": false,
           "legendFormat": "{{gen_ai_system}} P95",
           "range": true,
@@ -955,7 +956,8 @@
             "type": "prometheus",
             "uid": "${metrics_datasource}"
           },
-          "expr": "histogram_quantile(0.50, sum(rate(gen_ai_client_operation_duration_seconds_bucket{deployment_environment=\"development\"}[$__rate_interval])) by (le)) * on() (sum(rate(gen_ai_client_token_usage_bucket{deployment_environment=\"development\", le=\"16\"}[$__rate_interval])) - sum(rate(gen_ai_client_token_usage_bucket{deployment_environment=\"development\", le=\"4\"}[$__rate_interval])) > 0)",
+          "editorMode": "code",
+          "expr": "histogram_quantile(0.50, sum(rate(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (le)) * on() (sum(rate(gen_ai_client_token_usage_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", le=\"16\"}[$__rate_interval])) - sum(rate(gen_ai_client_token_usage_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", le=\"4\"}[$__rate_interval])) > 0)",
           "hide": false,
           "legendFormat": "5-16 tokens",
           "range": true,
@@ -966,7 +968,8 @@
             "type": "prometheus",
             "uid": "${metrics_datasource}"
           },
-          "expr": "histogram_quantile(0.50, sum(rate(gen_ai_client_operation_duration_seconds_bucket{deployment_environment=\"development\"}[$__rate_interval])) by (le)) * on() (sum(rate(gen_ai_client_token_usage_bucket{deployment_environment=\"development\", le=\"64\"}[$__rate_interval])) - sum(rate(gen_ai_client_token_usage_bucket{deployment_environment=\"development\", le=\"16\"}[$__rate_interval])) > 0)",
+          "editorMode": "code",
+          "expr": "histogram_quantile(0.50, sum(rate(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (le)) * on() (sum(rate(gen_ai_client_token_usage_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", le=\"64\"}[$__rate_interval])) - sum(rate(gen_ai_client_token_usage_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", le=\"16\"}[$__rate_interval])) > 0)",
           "hide": false,
           "legendFormat": "17-64 tokens",
           "range": true,
@@ -977,7 +980,8 @@
             "type": "prometheus",
             "uid": "${metrics_datasource}"
           },
-          "expr": "histogram_quantile(0.50, sum(rate(gen_ai_client_operation_duration_seconds_bucket{deployment_environment=\"development\"}[$__rate_interval])) by (le)) * on() (sum(rate(gen_ai_client_token_usage_bucket{deployment_environment=\"development\", le=\"256\"}[$__rate_interval])) - sum(rate(gen_ai_client_token_usage_bucket{deployment_environment=\"development\", le=\"64\"}[$__rate_interval])) > 0)",
+          "editorMode": "code",
+          "expr": "histogram_quantile(0.50, sum(rate(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (le)) * on() (sum(rate(gen_ai_client_token_usage_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", le=\"256\"}[$__rate_interval])) - sum(rate(gen_ai_client_token_usage_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", le=\"64\"}[$__rate_interval])) > 0)",
           "hide": false,
           "legendFormat": "65-256 tokens",
           "range": true,
@@ -988,7 +992,8 @@
             "type": "prometheus",
             "uid": "${metrics_datasource}"
           },
-          "expr": "histogram_quantile(0.50, sum(rate(gen_ai_client_operation_duration_seconds_bucket{deployment_environment=\"development\"}[$__rate_interval])) by (le)) * on() (sum(rate(gen_ai_client_token_usage_bucket{deployment_environment=\"development\", le=\"1024\"}[$__rate_interval])) - sum(rate(gen_ai_client_token_usage_bucket{deployment_environment=\"development\", le=\"256\"}[$__rate_interval])) > 0)",
+          "editorMode": "code",
+          "expr": "histogram_quantile(0.50, sum(rate(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (le)) * on() (sum(rate(gen_ai_client_token_usage_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", le=\"1024\"}[$__rate_interval])) - sum(rate(gen_ai_client_token_usage_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", le=\"256\"}[$__rate_interval])) > 0)",
           "hide": false,
           "legendFormat": "257-1024 tokens",
           "range": true,
@@ -999,7 +1004,8 @@
             "type": "prometheus",
             "uid": "${metrics_datasource}"
           },
-          "expr": "histogram_quantile(0.50, sum(rate(gen_ai_client_operation_duration_seconds_bucket{deployment_environment=\"development\"}[$__rate_interval])) by (le)) * on() (sum(rate(gen_ai_client_token_usage_bucket{deployment_environment=\"development\", le=\"4096\"}[$__rate_interval])) - sum(rate(gen_ai_client_token_usage_bucket{deployment_environment=\"development\", le=\"1024\"}[$__rate_interval])) > 0)",
+          "editorMode": "code",
+          "expr": "histogram_quantile(0.50, sum(rate(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (le)) * on() (sum(rate(gen_ai_client_token_usage_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", le=\"4096\"}[$__rate_interval])) - sum(rate(gen_ai_client_token_usage_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", le=\"1024\"}[$__rate_interval])) > 0)",
           "hide": false,
           "legendFormat": "1025-4096 tokens",
           "range": true,
@@ -3370,6 +3376,10 @@
   "templating": {
     "list": [
       {
+        "current": {
+          "text": "grafanacloud-ishanjain-traces",
+          "value": "grafanacloud-traces"
+        },
         "includeAll": false,
         "label": "Traces data source",
         "name": "traces_datasource",
@@ -3380,6 +3390,10 @@
         "type": "datasource"
       },
       {
+        "current": {
+          "text": "grafanacloud-ishanjain-prom",
+          "value": "grafanacloud-prom"
+        },
         "includeAll": false,
         "label": "Metrics data source",
         "name": "metrics_datasource",
@@ -3390,6 +3404,12 @@
         "type": "datasource"
       },
       {
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
         "datasource": {
           "type": "prometheus",
           "uid": "${metrics_datasource}"
@@ -3410,6 +3430,12 @@
         "type": "query"
       },
       {
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
         "datasource": {
           "type": "prometheus",
           "uid": "${metrics_datasource}"
@@ -3431,6 +3457,10 @@
         "type": "query"
       },
       {
+        "current": {
+          "text": "",
+          "value": ""
+        },
         "hide": 1,
         "label": "Trace ID",
         "name": "traceId",
@@ -3448,5 +3478,5 @@
   "timezone": "browser",
   "title": "GenAI Observability",
   "uid": "cdiz9piuoa3gge",
-  "version": 2
+  "version": 3
 }
