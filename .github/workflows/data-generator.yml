@@ -17,16 +17,16 @@ on:
         required: true
         type: string
       otel_headers:
-        description: 'OTEL Headers (e.g., Authorization=Basic <your-base64-credentials>)'
+        description: 'OTEL Headers (e.g., Authorization=Basic%20MTM1NDYzMzpnbGNfZXlK...)'
         required: true
         type: string
       service_name:
-        description: 'Service Name (e.g., my-ai-service)'
+        description: 'Service Name (e.g., cart-service)'
         required: false
         default: 'example-service'
         type: string
       deployment_environment:
-        description: 'Deployment Environment (e.g., production, staging, demo)'
+        description: 'Deployment Environment (e.g., production)'
         required: false
         default: 'example-environment'
         type: string
