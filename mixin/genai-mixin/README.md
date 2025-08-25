@@ -2,16 +2,28 @@
 
 The GenAI Observability mixin is a configurable Grafana dashboard.
 
-The GenAI Observability mixin contains the following dashboard:
+The GenAI Observability mixin contains the following dashboards:
 
 - GenAI Observability
-- GPU Observability
+- GenAI Evaluations
+- GPU Monitoring
+- VectorDB Observability
+- MCP Observability
 
 ## GenAI Observability Dashboard Overview
-GenAI Observability dashboard provides details overall LLMs and VectorDB usage. The dashboard includes visualizations for requests, overall costs and token usage. The dashboard is sourced from https://docs.openlit.io/latest/connections/grafanacloud#dashboard
+GenAI Observability dashboard provides details overall LLMs and VectorDB usage. The dashboard includes visualizations for requests, overall costs and token usage.
 
-## GPU Observability Dashboard Overview
-GPU Observability dashboard provides details overall GPU performance stats like temperature, Utilizatio and more. The dashboard is sourced from https://docs.openlit.io/latest/connections/grafanacloud#gpu-dashboard
+## GenAI Evaluations Dashboard Overview
+GenAI Evaluations dashboard focuses on AI quality and safety metrics including hallucination detection, toxicity analysis, bias evaluation, and confidence scoring for AI-generated content.
+
+## GPU Monitoring Dashboard Overview
+GPU Monitoring dashboard provides detailed GPU performance statistics including temperature, utilization, memory usage, and fan speed monitoring across GPU instances.
+
+## VectorDB Observability Dashboard Overview
+VectorDB Observability dashboard monitors vector database performance with metrics for request volume, response times, database operations, and service-level analytics.
+
+## MCP Observability Dashboard Overview
+MCP (Model Context Protocol) Observability dashboard tracks tool usage analytics, transport types, method call patterns, and client distribution for MCP implementations.
 
 ## Tools
 To use them, you need to have `mixtool` and `jsonnetfmt` installed. If you have a working Go development environment, it's easiest to run the following:
