@@ -11,7 +11,7 @@ The GenAI Observability mixin contains the following dashboards:
 - MCP Observability
 
 ## GenAI Observability Dashboard Overview
-GenAI Observability dashboard provides details overall LLMs and VectorDB usage. The dashboard includes visualizations for requests, overall costs and token usage.
+GenAI Observability dashboard provides details overall LLMs usage. The dashboard includes visualizations for requests, overall costs and token usage.
 
 ## GenAI Evaluations Dashboard Overview
 GenAI Evaluations dashboard focuses on AI quality and safety metrics including hallucination detection, toxicity analysis, bias evaluation, and confidence scoring for AI-generated content.
