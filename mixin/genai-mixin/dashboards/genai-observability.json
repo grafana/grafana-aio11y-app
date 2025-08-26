@@ -148,7 +148,7 @@
       "gridPos": {
         "h": 4,
         "w": 5,
-        "x": 3,
+        "x": 4,
         "y": 0
       },
       "id": 22,
@@ -225,7 +225,7 @@
       "gridPos": {
         "h": 4,
         "w": 5,
-        "x": 8,
+        "x": 9,
         "y": 0
       },
       "id": 3,
@@ -306,7 +306,7 @@
       "gridPos": {
         "h": 4,
         "w": 5,
-        "x": 13,
+        "x": 14,
         "y": 0
       },
       "id": 5,
@@ -382,8 +382,8 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 6,
-        "x": 18,
+        "w": 5,
+        "x": 19,
         "y": 0
       },
       "id": 2,
@@ -1223,13 +1223,16 @@
         "type": "prometheus",
         "uid": "${metrics_datasource}"
       },
-      "description": "This panel displays the ranking of GenAI models based on their usage frequency. It identifies which models are most popular or in-demand, providing insights into user preferences and operational trends. Analyzing this helps in resource allocation, optimizing model availability, and understanding which GenAI features are driving usage.",
+      "description": "This panel displays the ranking of GenAI models based on their usage frequency. It identifies which models are most popular or in-demand, providing insights into user preferences and operational trends. Analyzing this helps in resource allocation, optimizing model availability, and understanding which GenAI models are driving usage.",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "continuous-BlYlRd"
+            "fixedColor": "purple",
+            "mode": "shades"
           },
           "mappings": [],
+          "min": 0,
+          "noValue": "0",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1253,7 +1256,7 @@
         "x": 14,
         "y": 14
       },
-      "id": 17,
+      "id": 62,
       "options": {
         "displayMode": "gradient",
         "legend": {
@@ -1272,7 +1275,7 @@
             "lastNotNull"
           ],
           "fields": "",
-          "values": true
+          "values": false
         },
         "showUnfilled": true,
         "sizing": "auto",
@@ -1285,38 +1288,14 @@
             "type": "prometheus",
             "uid": "${metrics_datasource}"
           },
-          "disableTextWrap": false,
           "editorMode": "code",
-          "exemplar": false,
           "expr": "topk(5, sum by(gen_ai_request_model) (gen_ai_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}))",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "instant": true,
           "legendFormat": "__auto",
-          "range": false,
-          "refId": "A",
-          "useBackend": false
+          "range": true,
+          "refId": "A"
         }
       ],
       "title": "Top GenAI Models by Usage",
-      "transformations": [
-        {
-          "id": "seriesToRows",
-          "options": {}
-        },
-        {
-          "id": "sortBy",
-          "options": {
-            "fields": {},
-            "sort": [
-              {
-                "desc": true,
-                "field": "Value"
-              }
-            ]
-          }
-        }
-      ],
       "transparent": true,
       "type": "bargauge"
     },
@@ -2250,6 +2229,7 @@
         }
       ],
       "title": "GenAI Requests by Environment",
+      "transparent": true,
       "type": "piechart"
     },
     {
@@ -2323,6 +2303,7 @@
         }
       ],
       "title": "GenAI Requests by Platform",
+      "transparent": true,
       "type": "piechart"
     },
     {
@@ -2396,6 +2377,7 @@
         }
       ],
       "title": "GenAI Requests by Type",
+      "transparent": true,
       "type": "piechart"
     },
     {
@@ -2551,6 +2533,7 @@
         }
       ],
       "title": "Latency Distribution",
+      "transparent": true,
       "type": "heatmap"
     },
     {
@@ -2641,6 +2624,7 @@
         }
       ],
       "title": "Latency Distribution",
+      "transparent": true,
       "type": "heatmap"
     },
     {
@@ -2832,7 +2816,7 @@
           "useBackend": false
         }
       ],
-      "title": "Token Generation Time",
+      "title": "Tokens Generation Duration (P95)",
       "transformations": [
         {
           "id": "seriesToRows",
@@ -2936,7 +2920,7 @@
           "useBackend": false
         }
       ],
-      "title": "Token Generation Time",
+      "title": "Tokens Generation Duration (P95)",
       "transformations": [
         {
           "id": "seriesToRows",
@@ -3260,7 +3244,7 @@
           "refId": "A"
         }
       ],
-      "title": "Token Generation Time",
+      "title": "Tokens Generation Duration",
       "transparent": true,
       "type": "timeseries"
     },
@@ -3362,7 +3346,7 @@
           "refId": "A"
         }
       ],
-      "title": "Token Generation Time",
+      "title": "Tokens Generation Duration",
       "transparent": true,
       "type": "timeseries"
     }
@@ -3376,10 +3360,6 @@
   "templating": {
     "list": [
       {
-        "current": {
-          "text": "grafanacloud-ishanjain-traces",
-          "value": "grafanacloud-traces"
-        },
         "includeAll": false,
         "label": "Traces data source",
         "name": "traces_datasource",
@@ -3390,10 +3370,6 @@
         "type": "datasource"
       },
       {
-        "current": {
-          "text": "grafanacloud-ishanjain-prom",
-          "value": "grafanacloud-prom"
-        },
         "includeAll": false,
         "label": "Metrics data source",
         "name": "metrics_datasource",
@@ -3404,12 +3380,6 @@
         "type": "datasource"
       },
       {
-        "current": {
-          "text": "All",
-          "value": [
-            "$__all"
-          ]
-        },
         "datasource": {
           "type": "prometheus",
           "uid": "${metrics_datasource}"
@@ -3430,12 +3400,6 @@
         "type": "query"
       },
       {
-        "current": {
-          "text": "All",
-          "value": [
-            "$__all"
-          ]
-        },
         "datasource": {
           "type": "prometheus",
           "uid": "${metrics_datasource}"
@@ -3457,10 +3421,6 @@
         "type": "query"
       },
       {
-        "current": {
-          "text": "5809c91518a6196f13de420820d71b8b",
-          "value": "5809c91518a6196f13de420820d71b8b"
-        },
         "hide": 1,
         "label": "Trace ID",
         "name": "traceId",
@@ -3471,12 +3431,12 @@
     ]
   },
   "time": {
-    "from": "now-15m",
-    "to": "now"
+    "from": "2025-08-22T01:48:05.195Z",
+    "to": "2025-08-22T13:20:30.241Z"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "GenAI Observability",
   "uid": "cdiz9piuoa3gge",
-  "version": 7
+  "version": 20
 }
