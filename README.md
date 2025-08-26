@@ -9,7 +9,7 @@ App plugin for production AI observability. This includes monitoring:
 
 ## GenAI Mixin Dashboards
 
-The GenAI mixin provides comprehensive monitoring with 5 specialized dashboards:
+The GenAI mixin provides monitoring with 5 specialized dashboards:
 
 ### 1. GenAI Observability
 Main dashboard for LLM monitoring including:
