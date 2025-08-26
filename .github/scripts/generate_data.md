@@ -1,4 +1,5 @@
 # AI Observability Data Generator
+<img width="1337" height="938" alt="Screenshot 2025-08-26 at 3 42 50 PM" src="https://github.com/user-attachments/assets/ccf23ef4-d230-4279-be4c-0cb30c66f669" />
 
 Generate sample AI observability data for your Grafana dashboards using OpenLIT instrumentation. This workflow creates realistic LLM interactions and vector database operations with telemetry data.
 
