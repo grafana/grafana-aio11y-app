@@ -107,9 +107,9 @@ def generate_llm_interactions():
     # Add Anthropic scenarios if client is available  
     if anthropic_client:
         mock_scenarios.extend([
-            ("anthropic", "claude-3-opus-20240229", "What is LLM Observability and why is it important?", 
+            ("anthropic", "claude-sonnet-4-20250514", "What is LLM Observability and why is it important?", 
              ["LLM Observability involves monitoring and analyzing the performance, behavior, and outputs of Large Language Models to ensure they operate effectively and safely."]),
-            ("anthropic", "claude-3-sonnet-20240229", "How do you detect bias in AI model outputs?", 
+            ("anthropic", "claude-opus-4-1-20250805", "How do you detect bias in AI model outputs?", 
              ["Bias detection in AI models requires systematic evaluation, diverse datasets, and continuous monitoring."]),
         ])
     
