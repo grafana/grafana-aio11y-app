@@ -106,7 +106,7 @@
         "content": "<img\n src=\"https://grafana.com/media/docs/grafana-cloud/ai-observability/aio11y-logo.svg\"\n width=\"100%\"\n height=\"100%\">",
         "mode": "html"
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "title": "",
       "transparent": true,
       "type": "text"
@@ -169,7 +169,7 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -177,8 +177,8 @@
             "uid": "${metrics_datasource}"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "sum(rate(gen_ai_requests_total{telemetry_sdk_name=\"openlit\"}[$__rate_interval]))",
+          "editorMode": "code",
+          "expr": "sum(rate(gen_ai_requests_total{telemetry_sdk_name=\"openlit\"}[$__rate_interval])) or vector(0)",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
@@ -246,7 +246,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -255,7 +255,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "sum(gen_ai_client_token_usage_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"})",
+          "expr": "sum(gen_ai_client_token_usage_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}) or vector(0)",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
@@ -327,7 +327,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -336,7 +336,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "(sum(\n  increase(\n    gen_ai_usage_cost_USD_sum{\n      telemetry_sdk_name=\"openlit\",\n      service_name=~\"$service_name\",\n      deployment_environment=~\"$deployment_environment\"\n    }[$__range]\n  )\n)\n/\nsum(\n  increase(\n    gen_ai_usage_cost_USD_count{\n      telemetry_sdk_name=\"openlit\",\n      service_name=~\"$service_name\",\n      deployment_environment=~\"$deployment_environment\"\n    }[$__range]\n  )\n)) / 10000",
+          "expr": "(sum(\n  increase(\n    gen_ai_usage_cost_USD_sum{\n      telemetry_sdk_name=\"openlit\",\n      service_name=~\"$service_name\",\n      deployment_environment=~\"$deployment_environment\"\n    }[$__range]\n  )\n)\n/\nsum(\n  increase(\n    gen_ai_usage_cost_USD_count{\n      telemetry_sdk_name=\"openlit\",\n      service_name=~\"$service_name\",\n      deployment_environment=~\"$deployment_environment\"\n    }[$__range]\n  )\n)) / 10000 or vector(0)",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
@@ -404,7 +404,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -413,7 +413,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "sum(increase(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range])) / 10000",
+          "expr": "sum(increase(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range])) / 10000 or vector(0)",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
@@ -462,6 +462,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -510,15 +511,15 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${metrics_datasource}"
           },
-          "expr": "sum(rate(gen_ai_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (gen_ai_system)",
-          "hide": false,
+          "editorMode": "code",
+          "expr": "sum(rate(gen_ai_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (gen_ai_system) or vector(0)",
           "legendFormat": "{{gen_ai_system}}",
           "range": true,
           "refId": "A"
@@ -563,6 +564,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -611,7 +613,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -619,8 +621,7 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "increase(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[1h]) / 1000",
-          "hide": false,
+          "expr": "increase(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[1h]) / 1000 or vector(0)",
           "legendFormat": "{{gen_ai_system}}",
           "range": true,
           "refId": "A"
@@ -665,6 +666,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -713,15 +715,15 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${metrics_datasource}"
           },
-          "expr": "sum(rate(gen_ai_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval]))",
-          "hide": false,
+          "editorMode": "code",
+          "expr": "sum(rate(gen_ai_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) or vector(0)",
           "legendFormat": "Total Requests",
           "range": true,
           "refId": "A"
@@ -788,7 +790,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -796,8 +798,7 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, sum by (le, gen_ai_system) (rate(gen_ai_server_time_to_first_token_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])))",
-          "hide": false,
+          "expr": "histogram_quantile(0.95, sum by (le, gen_ai_system) (rate(gen_ai_server_time_to_first_token_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval]))) or vector(0)",
           "legendFormat": "{{gen_ai_system}} P95",
           "range": true,
           "refId": "A"
@@ -949,7 +950,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -957,8 +958,7 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.50, sum(rate(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (le)) * on() (sum(rate(gen_ai_client_token_usage_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", le=\"16\"}[$__rate_interval])) - sum(rate(gen_ai_client_token_usage_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", le=\"4\"}[$__rate_interval])) > 0)",
-          "hide": false,
+          "expr": "histogram_quantile(0.50, sum(rate(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (le)) * on() (sum(rate(gen_ai_client_token_usage_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", le=\"16\"}[$__rate_interval])) - sum(rate(gen_ai_client_token_usage_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", le=\"4\"}[$__rate_interval])) > 0) or vector(0)",
           "legendFormat": "5-16 tokens",
           "range": true,
           "refId": "A"
@@ -970,7 +970,6 @@
           },
           "editorMode": "code",
           "expr": "histogram_quantile(0.50, sum(rate(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (le)) * on() (sum(rate(gen_ai_client_token_usage_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", le=\"64\"}[$__rate_interval])) - sum(rate(gen_ai_client_token_usage_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", le=\"16\"}[$__rate_interval])) > 0)",
-          "hide": false,
           "legendFormat": "17-64 tokens",
           "range": true,
           "refId": "B"
@@ -982,7 +981,6 @@
           },
           "editorMode": "code",
           "expr": "histogram_quantile(0.50, sum(rate(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (le)) * on() (sum(rate(gen_ai_client_token_usage_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", le=\"256\"}[$__rate_interval])) - sum(rate(gen_ai_client_token_usage_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", le=\"64\"}[$__rate_interval])) > 0)",
-          "hide": false,
           "legendFormat": "65-256 tokens",
           "range": true,
           "refId": "C"
@@ -994,7 +992,6 @@
           },
           "editorMode": "code",
           "expr": "histogram_quantile(0.50, sum(rate(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (le)) * on() (sum(rate(gen_ai_client_token_usage_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", le=\"1024\"}[$__rate_interval])) - sum(rate(gen_ai_client_token_usage_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", le=\"256\"}[$__rate_interval])) > 0)",
-          "hide": false,
           "legendFormat": "257-1024 tokens",
           "range": true,
           "refId": "D"
@@ -1006,7 +1003,6 @@
           },
           "editorMode": "code",
           "expr": "histogram_quantile(0.50, sum(rate(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (le)) * on() (sum(rate(gen_ai_client_token_usage_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", le=\"4096\"}[$__rate_interval])) - sum(rate(gen_ai_client_token_usage_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", le=\"1024\"}[$__rate_interval])) > 0)",
-          "hide": false,
           "legendFormat": "1025-4096 tokens",
           "range": true,
           "refId": "E"
@@ -1080,7 +1076,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -1112,6 +1108,7 @@
           "query": "{status=ok && span.telemetry.sdk.name=\"openlit\" && span.service.name=~\"$service_name\" && span.deployment.environment=~\"$deployment_environment\"}",
           "queryType": "traceql",
           "refId": "A",
+          "serviceMapUseNativeHistograms": false,
           "tableType": "traces"
         }
       ],
@@ -1153,6 +1150,7 @@
               "type": "linear"
             },
             "showPoints": "always",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -1200,7 +1198,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -1208,7 +1206,7 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(rate(gen_ai_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval]) ) by (gen_ai_request_model)",
+          "expr": "sum(rate(gen_ai_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval]) ) by (gen_ai_request_model) or vector(0)",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -1281,7 +1279,7 @@
         "sizing": "auto",
         "valueMode": "text"
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -1289,7 +1287,7 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "topk(5, sum by(gen_ai_request_model) (gen_ai_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}))",
+          "expr": "topk(5, sum by(gen_ai_request_model) (gen_ai_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"})) or vector(0)",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -1337,6 +1335,7 @@
               "type": "linear"
             },
             "showPoints": "always",
+            "showValues": false,
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -1384,7 +1383,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -1393,7 +1392,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "avg(gen_ai_usage_input_tokens_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"})",
+          "expr": "avg(gen_ai_usage_input_tokens_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}) or vector(0)",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
@@ -1411,7 +1410,6 @@
           "editorMode": "code",
           "expr": "avg(gen_ai_usage_output_tokens_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"})",
           "fullMetaSearch": false,
-          "hide": false,
           "includeNullMetadata": true,
           "instant": false,
           "legendFormat": "Completion Tokens",
@@ -1428,7 +1426,6 @@
           "editorMode": "code",
           "expr": "avg(gen_ai_usage_cost_USD_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"})",
           "fullMetaSearch": false,
-          "hide": false,
           "includeNullMetadata": true,
           "instant": false,
           "legendFormat": "Usage Cost",
@@ -1469,6 +1466,9 @@
             "align": "auto",
             "cellOptions": {
               "type": "auto"
+            },
+            "footer": {
+              "reducers": []
             },
             "inspect": false,
             "wrapHeaderText": false
@@ -1566,14 +1566,6 @@
       "id": 44,
       "options": {
         "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
         "frameIndex": 0,
         "showHeader": true,
         "sortBy": [
@@ -1583,7 +1575,7 @@
           }
         ]
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -1642,7 +1634,7 @@
         "content": "> To View Traces:\n>  1. Click the **Trace ID** on the left table .\n>  2. Click **Traces link**.\n>  1. Refresh the dashboard.",
         "mode": "markdown"
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "title": "",
       "type": "text"
     },
@@ -1665,19 +1657,20 @@
       "id": 45,
       "options": {
         "spanFilters": {
+          "adhocFilters": [],
           "criticalPathOnly": false,
           "matchesOnly": false,
           "serviceNameOperator": "=",
           "spanNameOperator": "=",
           "tags": [
             {
-              "id": "233b1122-9ee",
+              "id": "72cb6ac9-e4d",
               "operator": "="
             }
           ]
         }
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -1744,6 +1737,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -1753,7 +1747,7 @@
               "mode": "off"
             }
           },
-          "decimals": 2,
+          "decimals": 3,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -1813,7 +1807,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -1821,7 +1815,7 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(increase(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"} [$__rate_interval])) / 1000",
+          "expr": "sum(increase(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"} [$__rate_interval])) / 1000 or vector(0)",
           "legendFormat": "Total Cost",
           "range": true,
           "refId": "A"
@@ -1833,7 +1827,6 @@
           },
           "editorMode": "code",
           "expr": "sum(increase(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by(gen_ai_system) / 1000",
-          "hide": false,
           "instant": false,
           "legendFormat": "Cost by {{gen_ai_system}}",
           "range": true,
@@ -1882,6 +1875,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -1891,7 +1885,7 @@
               "mode": "off"
             }
           },
-          "decimals": 2,
+          "decimals": 3,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -1932,7 +1926,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -1940,7 +1934,7 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(increase(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by(gen_ai_request_model) / 1000",
+          "expr": "sum(increase(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by(gen_ai_request_model) / 1000 or vector(0)",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -1961,7 +1955,7 @@
           "color": {
             "mode": "continuous-GrYlRd"
           },
-          "decimals": 2,
+          "decimals": 4,
           "mappings": [],
           "min": 0,
           "thresholds": {
@@ -1989,7 +1983,7 @@
       },
       "id": 30,
       "options": {
-        "displayMode": "lcd",
+        "displayMode": "gradient",
         "legend": {
           "calcs": [],
           "displayMode": "list",
@@ -2012,7 +2006,7 @@
         "sizing": "auto",
         "valueMode": "text"
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -2022,7 +2016,7 @@
           "disableTextWrap": false,
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum(increase(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range])) by(gen_ai_system) / 10000",
+          "expr": "sum(increase(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range])) by(gen_ai_system) / 10000 or vector(0)",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": true,
@@ -2065,7 +2059,7 @@
           "color": {
             "mode": "continuous-GrYlRd"
           },
-          "decimals": 2,
+          "decimals": 4,
           "mappings": [],
           "min": 0,
           "thresholds": {
@@ -2093,7 +2087,7 @@
       },
       "id": 33,
       "options": {
-        "displayMode": "lcd",
+        "displayMode": "gradient",
         "legend": {
           "calcs": [],
           "displayMode": "list",
@@ -2116,7 +2110,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -2126,7 +2120,7 @@
           "disableTextWrap": false,
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum(increase(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range])) by(gen_ai_request_model) / 10000",
+          "expr": "sum(increase(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range])) by(gen_ai_request_model) / 10000 or vector(0)",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": true,
@@ -2203,13 +2197,14 @@
           "fields": "",
           "values": false
         },
+        "sort": "desc",
         "tooltip": {
           "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -2218,7 +2213,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "sum by(deployment_environment) (gen_ai_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"})",
+          "expr": "sum by(deployment_environment) (gen_ai_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}) or vector(0)",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
@@ -2277,13 +2272,14 @@
           "fields": "",
           "values": false
         },
+        "sort": "desc",
         "tooltip": {
           "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -2292,7 +2288,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "sum by(gen_ai_system) (gen_ai_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"})",
+          "expr": "sum by(gen_ai_system) (gen_ai_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}) or vector(0)",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
@@ -2351,13 +2347,14 @@
           "fields": "",
           "values": false
         },
+        "sort": "desc",
         "tooltip": {
           "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -2366,7 +2363,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "sum by(gen_ai_operation_name) (gen_ai_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"})",
+          "expr": "sum by(gen_ai_operation_name) (gen_ai_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}) or vector(0)",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
@@ -2415,7 +2412,7 @@
         "content": "### By System",
         "mode": "markdown"
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "title": "",
       "type": "text"
     },
@@ -2441,7 +2438,7 @@
         "content": "### By Model",
         "mode": "markdown"
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "title": "",
       "type": "text"
     },
@@ -2518,15 +2515,15 @@
           "unit": "s"
         }
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${metrics_datasource}"
           },
-          "expr": "histogram_quantile(0.95, sum(rate(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (le, gen_ai_system))",
-          "hide": false,
+          "editorMode": "code",
+          "expr": "histogram_quantile(0.95, sum(rate(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (le, gen_ai_system)) or vector(0)",
           "legendFormat": "{{gen_ai_system}}",
           "range": true,
           "refId": "A"
@@ -2609,15 +2606,15 @@
           "unit": "none"
         }
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${metrics_datasource}"
           },
-          "expr": "histogram_quantile(0.95, sum(rate(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (le, gen_ai_request_model))",
-          "hide": false,
+          "editorMode": "code",
+          "expr": "histogram_quantile(0.95, sum(rate(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (le, gen_ai_request_model)) or vector(0)",
           "legendFormat": "{{gen_ai_request_model}}",
           "range": true,
           "refId": "A"
@@ -2670,7 +2667,7 @@
         {
           "editorMode": "code",
           "exemplar": false,
-          "expr": "histogram_quantile(0.95, \n  sum by(le, token_count_group, gen_ai_system) (\n    increase(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range])\n  )\n)",
+          "expr": "histogram_quantile(0.95, sum by(le, token_count_group, gen_ai_system) \n  (\n    increase(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range]\n  )\n)\n)",
           "format": "table",
           "instant": false,
           "legendFormat": "__auto",
@@ -2773,7 +2770,7 @@
       },
       "id": 38,
       "options": {
-        "displayMode": "lcd",
+        "displayMode": "gradient",
         "legend": {
           "calcs": [],
           "displayMode": "list",
@@ -2796,7 +2793,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -2806,7 +2803,7 @@
           "disableTextWrap": false,
           "editorMode": "code",
           "exemplar": false,
-          "expr": "histogram_quantile(0.95, \n  sum by(le, gen_ai_system) (\n    increase(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range])\n  )\n)",
+          "expr": "histogram_quantile(0.95, \n  sum by(le, gen_ai_system) (\n    increase(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range])\n  )\n)  or vector(0)",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": true,
@@ -2877,7 +2874,7 @@
       },
       "id": 37,
       "options": {
-        "displayMode": "lcd",
+        "displayMode": "gradient",
         "legend": {
           "calcs": [],
           "displayMode": "list",
@@ -2900,7 +2897,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -2910,7 +2907,7 @@
           "disableTextWrap": false,
           "editorMode": "code",
           "exemplar": false,
-          "expr": "histogram_quantile(0.95, \n  sum by(le, gen_ai_request_model) (\n    increase(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range])\n  )\n)",
+          "expr": "histogram_quantile(0.95, \n  sum by(le, gen_ai_request_model) (\n    increase(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range])\n  )\n)  or vector(0)",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": true,
@@ -2977,6 +2974,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -3026,7 +3024,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -3034,7 +3032,7 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, sum(rate(gen_ai_server_time_to_first_token_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (gen_ai_system, le))",
+          "expr": "histogram_quantile(0.95, sum(rate(gen_ai_server_time_to_first_token_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (gen_ai_system, le))  or vector(0)",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -3079,6 +3077,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -3128,7 +3127,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -3136,7 +3135,7 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, sum(rate(gen_ai_server_time_to_first_token_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (gen_ai_request_model, le))",
+          "expr": "histogram_quantile(0.95, sum(rate(gen_ai_server_time_to_first_token_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (gen_ai_request_model, le))  or vector(0)",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -3181,6 +3180,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -3230,7 +3230,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -3238,7 +3238,7 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, sum(rate(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (gen_ai_system, le))",
+          "expr": "histogram_quantile(0.95, sum(rate(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (gen_ai_system, le))  or vector(0)",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -3283,6 +3283,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -3332,7 +3333,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -3340,7 +3341,7 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, sum(rate(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (gen_ai_request_model, le))",
+          "expr": "histogram_quantile(0.95, sum(rate(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (gen_ai_request_model, le))  or vector(0)",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -3353,13 +3354,17 @@
   ],
   "preload": false,
   "refresh": "30s",
-  "schemaVersion": 41,
+  "schemaVersion": 42,
   "tags": [
     "ai-observability-integration"
   ],
   "templating": {
     "list": [
       {
+        "current": {
+          "text": "grafanacloud-genaio11y-traces",
+          "value": "grafanacloud-traces"
+        },
         "includeAll": false,
         "label": "Traces data source",
         "name": "traces_datasource",
@@ -3370,6 +3375,10 @@
         "type": "datasource"
       },
       {
+        "current": {
+          "text": "grafanacloud-genaio11y-prom",
+          "value": "grafanacloud-prom"
+        },
         "includeAll": false,
         "label": "Metrics data source",
         "name": "metrics_datasource",
@@ -3380,6 +3389,10 @@
         "type": "datasource"
       },
       {
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
         "datasource": {
           "type": "prometheus",
           "uid": "${metrics_datasource}"
@@ -3397,9 +3410,14 @@
         },
         "refresh": 2,
         "regex": "",
+        "regexApplyTo": "value",
         "type": "query"
       },
       {
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
         "datasource": {
           "type": "prometheus",
           "uid": "${metrics_datasource}"
@@ -3417,26 +3435,33 @@
         },
         "refresh": 2,
         "regex": "",
+        "regexApplyTo": "value",
         "sort": 1,
         "type": "query"
       },
       {
+        "current": {
+          "text": "",
+          "value": ""
+        },
         "hide": 1,
         "label": "Trace ID",
         "name": "traceId",
         "options": [],
         "query": "",
-        "type": "custom"
+        "type": "custom",
+        "valuesFormat": "csv"
       }
     ]
   },
   "time": {
-    "from": "2025-08-22T01:48:05.195Z",
-    "to": "2025-08-22T13:20:30.241Z"
+    "from": "now-30m",
+    "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "GenAI Observability",
   "uid": "cdiz9piuoa3gge",
-  "version": 20
+  "version": 28,
+  "weekStart": ""
 }

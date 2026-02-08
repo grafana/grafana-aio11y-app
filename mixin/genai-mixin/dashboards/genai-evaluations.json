@@ -103,7 +103,7 @@
         "content": "<img\n src=\"https://grafana.com/media/docs/grafana-cloud/ai-observability/aio11y-logo.svg\"\n width=\"100%\"\n height=\"100%\">",
         "mode": "html"
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "title": "",
       "transparent": true,
       "type": "text"
@@ -159,7 +159,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -167,7 +167,7 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(increase(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range]))\n",
+          "expr": "sum(increase(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range])) or vector(0)\n",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -234,7 +234,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -242,8 +242,7 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval]))",
-          "hide": false,
+          "expr": "sum(rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) or vector(0)",
           "legendFormat": "Evaluations/sec",
           "range": true,
           "refId": "A"
@@ -258,7 +257,6 @@
         "type": "prometheus",
         "uid": "${metrics_datasource}"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -307,7 +305,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -317,7 +315,7 @@
           "disableTextWrap": false,
           "editorMode": "code",
           "exemplar": false,
-          "expr": "100 * sum(increase(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_verdict=\"yes\"}[$__range]))\n  / sum(increase(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range]))",
+          "expr": "100 * sum(increase(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_verdict=\"yes\"}[$__range]))\n  / sum(increase(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range])) or vector(0)",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": true,
@@ -382,7 +380,7 @@
         "textMode": "name",
         "wideLayout": true
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -390,7 +388,7 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "topk(1, sum by (evals_classification) (evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_classification!=\"none\"}))\n",
+          "expr": "topk(1, sum by (evals_classification) (evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_classification!=\"none\"})) or vector(0)\n",
           "format": "time_series",
           "legendFormat": "{{evals_classification}}",
           "range": true,
@@ -450,7 +448,7 @@
         "showThresholdMarkers": true,
         "sizing": "auto"
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -458,7 +456,7 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "sum by (evals_classification) (evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_classification!=\"none\"})\n",
+          "expr": "sum by (evals_classification) (evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_classification!=\"none\"}) or vector(0)\n",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -502,6 +500,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -549,7 +548,7 @@
           "sort": "desc"
         }
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -557,8 +556,7 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "sum by(evals_classification) (rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval]))",
-          "hide": false,
+          "expr": "sum by(evals_classification) (rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) or vector(0)",
           "legendFormat": "{{evals_classification}}",
           "range": true,
           "refId": "A"
@@ -631,7 +629,7 @@
           "unit": "short"
         }
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -639,8 +637,7 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "sum by(evals_classification, evals_verdict) (rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval]))",
-          "hide": false,
+          "expr": "sum by(evals_classification, evals_verdict) (rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) or vector(0)",
           "legendFormat": "{{evals_classification}} - {{evals_verdict}}",
           "range": true,
           "refId": "A"
@@ -767,7 +764,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -775,8 +772,7 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "sum by(evals_score) (rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_verdict=\"yes\"}[$__rate_interval]))",
-          "hide": false,
+          "expr": "sum by(evals_score) (rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_verdict=\"yes\"}[$__rate_interval])) or vector(0)",
           "legendFormat": "Issues with Score {{evals_score}}",
           "range": true,
           "refId": "A"
@@ -829,13 +825,14 @@
           "fields": "",
           "values": false
         },
+        "sort": "desc",
         "tooltip": {
           "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -843,8 +840,7 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "sum by(service_name) (rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval]))",
-          "hide": false,
+          "expr": "sum by(service_name) (rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) or vector(0)",
           "legendFormat": "{{service_name}}",
           "range": true,
           "refId": "A"
@@ -898,13 +894,14 @@
           "fields": "",
           "values": false
         },
+        "sort": "desc",
         "tooltip": {
           "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -912,8 +909,7 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "sum by(deployment_environment) (rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval]))",
-          "hide": false,
+          "expr": "sum by(deployment_environment) (rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) or vector(0)",
           "legendFormat": "{{deployment_environment}}",
           "range": true,
           "refId": "A"
@@ -998,13 +994,14 @@
           "fields": "",
           "values": false
         },
+        "sort": "desc",
         "tooltip": {
           "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -1012,8 +1009,7 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "100 * sum(increase(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_verdict=\"yes\"}[$__range]))\n  / sum(increase(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range]))\n",
-          "hide": false,
+          "expr": "100 * sum(increase(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_verdict=\"yes\"}[$__range]))\n  / sum(increase(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range])) or vector(0)\n",
           "legendFormat": "Yes",
           "range": true,
           "refId": "A"
@@ -1025,7 +1021,6 @@
           },
           "editorMode": "code",
           "expr": "100 * sum(increase(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_verdict=\"no\"}[$__range]))\n  / sum(increase(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range]))\n",
-          "hide": false,
           "instant": false,
           "legendFormat": "No",
           "range": true,
@@ -1080,13 +1075,14 @@
           "fields": "",
           "values": false
         },
+        "sort": "desc",
         "tooltip": {
           "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -1094,8 +1090,7 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "sum by(evals_classification) (rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval]))",
-          "hide": false,
+          "expr": "sum by(evals_classification) (rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) or vector(0)",
           "legendFormat": "{{evals_classification}}",
           "range": true,
           "refId": "A"
@@ -1211,7 +1206,7 @@
         "xTickLabelRotation": -45,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -1219,8 +1214,7 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "topk(10, sum by(evals_explanation) (rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\",evals_verdict=\"yes\"}[$__rate_interval])))",
-          "hide": false,
+          "expr": "topk(10, sum by(evals_explanation) (rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\",evals_verdict=\"yes\"}[$__rate_interval]))) or vector(0)",
           "legendFormat": "{{evals_explanation}}",
           "range": true,
           "refId": "A"
@@ -1255,7 +1249,6 @@
           },
           "decimals": 0,
           "mappings": [],
-          "min": 0,
           "noValue": "0",
           "thresholds": {
             "mode": "absolute",
@@ -1278,7 +1271,7 @@
       },
       "id": 23,
       "options": {
-        "displayMode": "lcd",
+        "displayMode": "gradient",
         "legend": {
           "calcs": [],
           "displayMode": "list",
@@ -1301,7 +1294,7 @@
         "sizing": "auto",
         "valueMode": "text"
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -1310,7 +1303,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum(increase(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_validator=\"hallucination\"}[$__range]) ) by (evals_classification)",
+          "expr": "sum(increase(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_validator=\"hallucination\"}[$__range]) ) by (evals_classification) or vector(0)",
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
@@ -1373,6 +1366,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -1433,7 +1427,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -1441,7 +1435,7 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_validator=\"hallucination\"}[$__rate_interval]) ) by (evals_classification)",
+          "expr": "sum(rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_validator=\"hallucination\"}[$__rate_interval]) ) by (evals_classification) or vector(0)",
           "legendFormat": "Rate",
           "range": true,
           "refId": "A"
@@ -1498,7 +1492,7 @@
       },
       "id": 30,
       "options": {
-        "displayMode": "lcd",
+        "displayMode": "gradient",
         "legend": {
           "calcs": [],
           "displayMode": "list",
@@ -1521,7 +1515,7 @@
         "sizing": "auto",
         "valueMode": "text"
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -1530,7 +1524,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "\nsum(increase(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_validator=\"toxicity_detection\"}[$__range]) ) by (evals_classification)",
+          "expr": "sum(increase(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_validator=\"toxicity_detection\"}[$__range]) ) by (evals_classification) or vector(0)",
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
@@ -1585,6 +1579,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -1645,7 +1640,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -1653,7 +1648,7 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "\nsum(rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_validator=\"toxicity_detection\"}[$__rate_interval]) ) by (evals_classification)",
+          "expr": "sum(rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_validator=\"toxicity_detection\"}[$__rate_interval]) ) by (evals_classification) or vector(0)",
           "legendFormat": "Rate",
           "range": true,
           "refId": "A"
@@ -1710,7 +1705,7 @@
       },
       "id": 28,
       "options": {
-        "displayMode": "lcd",
+        "displayMode": "gradient",
         "legend": {
           "calcs": [],
           "displayMode": "list",
@@ -1733,7 +1728,7 @@
         "sizing": "auto",
         "valueMode": "text"
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -1742,7 +1737,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum(increase(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_validator=\"bias_detection\"}[$__range]) ) by (evals_classification)",
+          "expr": "sum(increase(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_validator=\"bias_detection\"}[$__range]) ) by (evals_classification) or vector(0)",
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
@@ -1805,6 +1800,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -1865,7 +1861,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.2.0-16890666601.patch2",
+      "pluginVersion": "12.4.0-21490573584",
       "targets": [
         {
           "datasource": {
@@ -1873,7 +1869,7 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_validator=\"bias_detection\"}[$__rate_interval]) ) by (evals_classification)",
+          "expr": "sum(rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_validator=\"bias_detection\"}[$__rate_interval]) ) by (evals_classification) or vector(0)",
           "legendFormat": "Rate",
           "range": true,
           "refId": "A"
@@ -1890,13 +1886,18 @@
     }
   ],
   "preload": false,
-  "schemaVersion": 41,
+  "refresh": "30s",
+  "schemaVersion": 42,
   "tags": [
     "ai-observability-integration"
   ],
   "templating": {
     "list": [
       {
+        "current": {
+          "text": "grafanacloud-genaio11y-prom",
+          "value": "grafanacloud-prom"
+        },
         "label": "Metrics data source",
         "name": "metrics_datasource",
         "options": [],
@@ -1906,6 +1907,10 @@
         "type": "datasource"
       },
       {
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
         "definition": "label_values(service_name)",
         "includeAll": true,
         "label": "service_name",
@@ -1919,9 +1924,14 @@
         },
         "refresh": 2,
         "regex": "",
+        "regexApplyTo": "value",
         "type": "query"
       },
       {
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
         "definition": "label_values(deployment_environment)",
         "includeAll": true,
         "label": "deployment_environment",
@@ -1935,6 +1945,7 @@
         },
         "refresh": 2,
         "regex": "",
+        "regexApplyTo": "value",
         "type": "query"
       }
     ]
@@ -1947,5 +1958,6 @@
   "timezone": "browser",
   "title": "GenAI Evaluations",
   "uid": "is7rtn8",
-  "version": 3
+  "version": 25,
+  "weekStart": ""
 }
