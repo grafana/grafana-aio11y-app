@@ -18,7 +18,6 @@
   "editable": false,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": 0,
   "links": [
     {
       "asDropdown": false,
@@ -106,7 +105,7 @@
         "content": "<img\n src=\"https://grafana.com/media/docs/grafana-cloud/ai-observability/aio11y-logo.svg\"\n width=\"100%\"\n height=\"100%\">",
         "mode": "html"
       },
-      "pluginVersion": "12.4.0-21490573584",
+      "pluginVersion": "12.4.0-21959849188.patch2",
       "title": "",
       "transparent": true,
       "type": "text"
@@ -141,7 +140,7 @@
               }
             ]
           },
-          "unit": "reqps"
+          "unit": "none"
         },
         "overrides": []
       },
@@ -169,7 +168,7 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.0-21490573584",
+      "pluginVersion": "12.4.0-21959849188.patch2",
       "targets": [
         {
           "datasource": {
@@ -177,12 +176,12 @@
             "uid": "${metrics_datasource}"
           },
           "disableTextWrap": false,
-          "editorMode": "code",
-          "expr": "sum(rate(gen_ai_requests_total{telemetry_sdk_name=\"openlit\"}[$__rate_interval])) or vector(0)",
+          "editorMode": "builder",
+          "expr": "sum(last_over_time(gen_ai_client_operation_duration_seconds_count{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__interval]))",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
-          "legendFormat": "Request Rate",
+          "legendFormat": "Total Requests",
           "range": true,
           "refId": "A",
           "useBackend": false
@@ -246,7 +245,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.0-21490573584",
+      "pluginVersion": "12.4.0-21959849188.patch2",
       "targets": [
         {
           "datasource": {
@@ -255,7 +254,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "sum(gen_ai_client_token_usage_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}) or vector(0)",
+          "expr": "sum(gen_ai_client_token_usage_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"})",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
@@ -327,7 +326,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.0-21490573584",
+      "pluginVersion": "12.4.0-21959849188.patch2",
       "targets": [
         {
           "datasource": {
@@ -336,7 +335,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "(sum(\n  increase(\n    gen_ai_usage_cost_USD_sum{\n      telemetry_sdk_name=\"openlit\",\n      service_name=~\"$service_name\",\n      deployment_environment=~\"$deployment_environment\"\n    }[$__range]\n  )\n)\n/\nsum(\n  increase(\n    gen_ai_usage_cost_USD_count{\n      telemetry_sdk_name=\"openlit\",\n      service_name=~\"$service_name\",\n      deployment_environment=~\"$deployment_environment\"\n    }[$__range]\n  )\n)) / 10000 or vector(0)",
+          "expr": "sum(last_over_time(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__interval])) \n/ \n(sum(last_over_time(gen_ai_usage_cost_USD_count{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__interval])))",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
@@ -404,7 +403,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.0-21490573584",
+      "pluginVersion": "12.4.0-21959849188.patch2",
       "targets": [
         {
           "datasource": {
@@ -413,7 +412,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "sum(increase(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range])) / 10000 or vector(0)",
+          "expr": "sum(last_over_time(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__interval]))",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
@@ -426,108 +425,6 @@
       "title": "",
       "transparent": true,
       "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${metrics_datasource}"
-      },
-      "description": "Request volume distribution across different GenAI systems",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 30,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "normal"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "reqps"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 6,
-        "x": 0,
-        "y": 4
-      },
-      "id": 54,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.4.0-21490573584",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${metrics_datasource}"
-          },
-          "editorMode": "code",
-          "expr": "sum(rate(gen_ai_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (gen_ai_system) or vector(0)",
-          "legendFormat": "{{gen_ai_system}}",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Request Volume by Platform",
-      "transparent": true,
-      "type": "timeseries"
     },
     {
       "datasource": {
@@ -549,8 +446,8 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 20,
-            "gradientMode": "none",
+            "fillOpacity": 100,
+            "gradientMode": "opacity",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
@@ -595,8 +492,8 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 6,
-        "x": 6,
+        "w": 12,
+        "x": 0,
         "y": 4
       },
       "id": 55,
@@ -613,7 +510,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.4.0-21490573584",
+      "pluginVersion": "12.4.0-21959849188.patch2",
       "targets": [
         {
           "datasource": {
@@ -621,8 +518,8 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "increase(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[1h]) / 1000 or vector(0)",
-          "legendFormat": "{{gen_ai_system}}",
+          "expr": "increase(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[1h]) / 1000",
+          "legendFormat": "{{gen_ai_provider_name}}",
           "range": true,
           "refId": "A"
         }
@@ -651,8 +548,8 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 20,
-            "gradientMode": "none",
+            "fillOpacity": 100,
+            "gradientMode": "opacity",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
@@ -691,7 +588,7 @@
               }
             ]
           },
-          "unit": "reqps"
+          "unit": "percent"
         },
         "overrides": []
       },
@@ -707,7 +604,7 @@
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": false
         },
         "tooltip": {
           "hideZeros": false,
@@ -715,7 +612,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.4.0-21490573584",
+      "pluginVersion": "12.4.0-21959849188.patch2",
       "targets": [
         {
           "datasource": {
@@ -723,7 +620,7 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(rate(gen_ai_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) or vector(0)",
+          "expr": "sum(last_over_time(gen_ai_client_operation_duration_seconds_count{http_status_code!~\"4..|5..\", telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[30m])) / sum(last_over_time(gen_ai_client_operation_duration_seconds_count{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[30m])) * 100",
           "legendFormat": "Total Requests",
           "range": true,
           "refId": "A"
@@ -738,11 +635,45 @@
         "type": "prometheus",
         "uid": "${metrics_datasource}"
       },
-      "description": "This panel displays the current 95th percentile time to first token across GenAI systems. Time to first token is critical for streaming applications and real-time user interactions, representing the delay before content generation begins.",
+      "description": "Requests per second broken down by AI provider and model, derived from operation duration counter",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 100,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
           },
           "mappings": [],
           "thresholds": {
@@ -753,59 +684,57 @@
                 "value": 0
               },
               {
-                "color": "yellow",
-                "value": 2
-              },
-              {
                 "color": "red",
-                "value": 5
+                "value": 80
               }
             ]
           },
-          "unit": "s"
+          "unit": "reqps"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 2,
+        "h": 9,
         "w": 12,
         "x": 0,
         "y": 8
       },
-      "id": 58,
+      "id": 64,
       "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
+        "legend": {
           "calcs": [
+            "mean",
+            "max",
             "lastNotNull"
           ],
-          "fields": "",
-          "values": false
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
         },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
       },
-      "pluginVersion": "12.4.0-21490573584",
+      "pluginVersion": "12.4.0-21959849188.patch2",
       "targets": [
         {
+          "app": "grafana-assistant-app",
           "datasource": {
             "type": "prometheus",
             "uid": "${metrics_datasource}"
           },
-          "editorMode": "code",
-          "expr": "histogram_quantile(0.95, sum by (le, gen_ai_system) (rate(gen_ai_server_time_to_first_token_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval]))) or vector(0)",
-          "legendFormat": "{{gen_ai_system}} P95",
+          "expr": "sum by(gen_ai_provider_name, gen_ai_request_model) (rate(gen_ai_client_operation_duration_seconds_count[$__rate_interval]))",
+          "instant": false,
+          "legendFormat": "{{gen_ai_provider_name}} / {{gen_ai_request_model}}",
+          "queryType": "range",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Time to First Token",
-      "type": "stat"
+      "title": "Request Rate by Platform & Model",
+      "type": "timeseries"
     },
     {
       "datasource": {
@@ -931,7 +860,7 @@
         ]
       },
       "gridPos": {
-        "h": 6,
+        "h": 5,
         "w": 12,
         "x": 12,
         "y": 8
@@ -950,7 +879,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.4.0-21490573584",
+      "pluginVersion": "12.4.0-21959849188.patch2",
       "targets": [
         {
           "datasource": {
@@ -958,7 +887,7 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.50, sum(rate(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (le)) * on() (sum(rate(gen_ai_client_token_usage_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", le=\"16\"}[$__rate_interval])) - sum(rate(gen_ai_client_token_usage_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", le=\"4\"}[$__rate_interval])) > 0) or vector(0)",
+          "expr": "histogram_quantile(0.50, sum(rate(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (le)) * on() (sum(rate(gen_ai_client_token_usage_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", le=\"16\"}[$__rate_interval])) - sum(rate(gen_ai_client_token_usage_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", le=\"4\"}[$__rate_interval])) > 0)",
           "legendFormat": "5-16 tokens",
           "range": true,
           "refId": "A"
@@ -1013,30 +942,27 @@
     },
     {
       "datasource": {
-        "type": "tempo",
-        "uid": "${traces_datasource}"
+        "type": "prometheus",
+        "uid": "${metrics_datasource}"
       },
-      "description": "This panel displays the distribution of request durations for both GenAI and VectorDB services. It highlights how long requests take to complete, from the shortest to the longest durations, offering insights into system performance and efficiency. Understanding this distribution helps in identifying bottlenecks and optimizing response times for both services.",
+      "description": "Top 5 GenAI models ranked by total request count",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "blue",
             "mode": "palette-classic"
           },
           "custom": {
-            "fillOpacity": 100,
-            "gradientMode": "hue",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
+            "align": "left",
+            "cellOptions": {
+              "mode": "basic",
+              "type": "gauge"
             },
-            "lineWidth": 3,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            }
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
           },
+          "decimals": 0,
           "mappings": [],
           "min": 0,
           "thresholds": {
@@ -1048,7 +974,119 @@
               },
               {
                 "color": "red",
-                "value": 10
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Metric"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Model"
+              },
+              {
+                "id": "custom.width",
+                "value": 150
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "auto"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 13
+      },
+      "id": 65,
+      "options": {
+        "cellHeight": "md",
+        "frameIndex": 0,
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Last *"
+          }
+        ]
+      },
+      "pluginVersion": "12.4.0-21959849188.patch2",
+      "targets": [
+        {
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${metrics_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "topk(5, sum by(gen_ai_request_model) (last_over_time(gen_ai_client_operation_duration_seconds_count{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range])))",
+          "instant": true,
+          "legendFormat": "{{gen_ai_request_model}}",
+          "queryType": "instant",
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "title": "Top 5 Models by Requests",
+      "transformations": [
+        {
+          "id": "seriesToRows",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true
+            },
+            "renameByName": {
+              "Metric": "Model",
+              "Value": "Requests"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${metrics_datasource}"
+      },
+      "description": "This panel displays the current 95th percentile time to first token across GenAI systems. Time to first token is critical for streaming applications and real-time user interactions, representing the delay before content generation begins.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 2
+              },
+              {
+                "color": "red",
+                "value": 5
               }
             ]
           },
@@ -1057,217 +1095,18 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
+        "h": 3,
         "w": 12,
         "x": 0,
-        "y": 10
+        "y": 17
       },
-      "id": 4,
+      "id": 58,
       "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.4.0-21490573584",
-      "targets": [
-        {
-          "datasource": {
-            "type": "tempo",
-            "uid": "${traces_datasource}"
-          },
-          "filters": [
-            {
-              "id": "status",
-              "operator": "=",
-              "scope": "intrinsic",
-              "tag": "status",
-              "value": "ok",
-              "valueType": "keyword"
-            },
-            {
-              "id": "f755ab99",
-              "operator": "=",
-              "scope": "span",
-              "tag": "telemetry.sdk.name",
-              "value": [
-                "openlit"
-              ],
-              "valueType": "string"
-            }
-          ],
-          "limit": 20,
-          "metricsQueryType": "range",
-          "query": "{status=ok && span.telemetry.sdk.name=\"openlit\" && span.service.name=~\"$service_name\" && span.deployment.environment=~\"$deployment_environment\"}",
-          "queryType": "traceql",
-          "refId": "A",
-          "serviceMapUseNativeHistograms": false,
-          "tableType": "traces"
-        }
-      ],
-      "title": "Request Duration Distribution",
-      "type": "histogram"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${metrics_datasource}"
-      },
-      "description": "This panel shows the request rate breakdown by individual GenAI models over time. It helps identify which models are most frequently used and track demand patterns for specific models, enabling better resource allocation and performance monitoring at the model level.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "bars",
-            "fillOpacity": 0,
-            "gradientMode": "hue",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "always",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "normal"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "reqps"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 14,
-        "x": 0,
-        "y": 14
-      },
-      "id": 28,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.4.0-21490573584",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${metrics_datasource}"
-          },
-          "editorMode": "code",
-          "expr": "sum(rate(gen_ai_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval]) ) by (gen_ai_request_model) or vector(0)",
-          "legendFormat": "__auto",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Request Rate by Model",
-      "transparent": true,
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${metrics_datasource}"
-      },
-      "description": "This panel displays the ranking of GenAI models based on their usage frequency. It identifies which models are most popular or in-demand, providing insights into user preferences and operational trends. Analyzing this helps in resource allocation, optimizing model availability, and understanding which GenAI models are driving usage.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "purple",
-            "mode": "shades"
-          },
-          "mappings": [],
-          "min": 0,
-          "noValue": "0",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 10,
-        "x": 14,
-        "y": 14
-      },
-      "id": 62,
-      "options": {
-        "displayMode": "gradient",
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "maxVizHeight": 300,
-        "minVizHeight": 16,
-        "minVizWidth": 8,
-        "namePlacement": "auto",
-        "orientation": "horizontal",
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -1275,11 +1114,11 @@
           "fields": "",
           "values": false
         },
-        "showUnfilled": true,
-        "sizing": "auto",
-        "valueMode": "text"
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "12.4.0-21490573584",
+      "pluginVersion": "12.4.0-21959849188.patch2",
       "targets": [
         {
           "datasource": {
@@ -1287,15 +1126,14 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "topk(5, sum by(gen_ai_request_model) (gen_ai_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"})) or vector(0)",
-          "legendFormat": "__auto",
+          "expr": "histogram_quantile(0.95, sum by (le, gen_ai_provider_name) (rate(gen_ai_server_time_to_first_token_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])))",
+          "legendFormat": "{{gen_ai_provider_name}} P95",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Top GenAI Models by Usage",
-      "transparent": true,
-      "type": "bargauge"
+      "title": "Time to First Token",
+      "type": "stat"
     },
     {
       "datasource": {
@@ -1317,8 +1155,8 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "bars",
-            "fillOpacity": 30,
-            "gradientMode": "hue",
+            "fillOpacity": 100,
+            "gradientMode": "opacity",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
@@ -1339,7 +1177,7 @@
             "spanNulls": true,
             "stacking": {
               "group": "A",
-              "mode": "none"
+              "mode": "normal"
             },
             "thresholdsStyle": {
               "mode": "off"
@@ -1367,7 +1205,7 @@
         "h": 6,
         "w": 24,
         "x": 0,
-        "y": 21
+        "y": 20
       },
       "id": 6,
       "options": {
@@ -1383,7 +1221,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.4.0-21490573584",
+      "pluginVersion": "12.4.0-21959849188.patch2",
       "targets": [
         {
           "datasource": {
@@ -1392,7 +1230,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "avg(gen_ai_usage_input_tokens_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}) or vector(0)",
+          "expr": "avg(gen_ai_client_token_usage_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", gen_ai_token_type=\"input\"})",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
@@ -1408,7 +1246,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "avg(gen_ai_usage_output_tokens_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"})",
+          "expr": "avg(gen_ai_client_token_usage_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", gen_ai_token_type=\"output\"})",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
@@ -1444,42 +1282,101 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 27
+        "y": 26
       },
       "id": 47,
       "panels": [],
-      "title": "Traces",
+      "title": "Requests",
       "type": "row"
     },
     {
       "datasource": {
-        "type": "tempo",
-        "uid": "${traces_datasource}"
+        "type": "loki",
+        "uid": "${logs_datasource}"
       },
-      "description": "This panel shows detailed trace information for GenAI requests, including trace IDs, service names, operation names, and durations. Click on trace IDs to view detailed trace analysis and understand request flow through your system.",
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 17,
+        "w": 24,
+        "x": 0,
+        "y": 27
+      },
+      "id": 71,
+      "options": {
+        "dedupStrategy": "none",
+        "detailsMode": "sidebar",
+        "enableInfiniteScrolling": true,
+        "enableLogDetails": true,
+        "fontSize": "default",
+        "prettifyLogMessage": false,
+        "showControls": false,
+        "showLabels": true,
+        "showTime": true,
+        "sortOrder": "Descending",
+        "syntaxHighlighting": true,
+        "timestampResolution": "ms",
+        "unwrappedColumns": false,
+        "wrapLogMessage": true
+      },
+      "pluginVersion": "12.4.0-21959849188.patch2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${logs_datasource}"
+          },
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"} |= ``",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "",
+      "transparent": true,
+      "type": "logs"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 44
+      },
+      "id": 31,
+      "panels": [],
+      "title": "Cost",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${metrics_datasource}"
+      },
+      "description": "Top 5 GenAI providers ranked by total cost in USD",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "palette-classic"
           },
           "custom": {
-            "align": "auto",
+            "align": "left",
             "cellOptions": {
-              "type": "auto"
+              "mode": "basic",
+              "type": "gauge"
             },
             "footer": {
               "reducers": []
             },
-            "inspect": false,
-            "wrapHeaderText": false
+            "inspect": false
           },
-          "links": [
-            {
-              "title": "Traces Link",
-              "url": "/d/cdiz9piuoa3gge/genai-observability?orgId=1&var-traceId=${__data.fields[\"traceID\"]}"
-            }
-          ],
+          "decimals": 4,
           "mappings": [],
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1492,215 +1389,210 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unit": "currencyUSD"
         },
         "overrides": [
           {
             "matcher": {
               "id": "byName",
-              "options": "Trace ID"
+              "options": "Metric"
             },
             "properties": [
               {
-                "id": "custom.width",
-                "value": 301
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Start time"
-            },
-            "properties": [
+                "id": "displayName",
+                "value": "Model"
+              },
               {
                 "id": "custom.width",
-                "value": 160
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Service"
-            },
-            "properties": [
+                "value": 150
+              },
               {
-                "id": "custom.width",
-                "value": 95
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Name"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 167
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Duration"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 73
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "auto"
+                }
               }
             ]
           }
         ]
       },
       "gridPos": {
-        "h": 21,
-        "w": 11,
+        "h": 8,
+        "w": 12,
         "x": 0,
-        "y": 28
+        "y": 45
       },
-      "id": 44,
+      "id": 67,
       "options": {
-        "cellHeight": "sm",
+        "cellHeight": "md",
         "frameIndex": 0,
         "showHeader": true,
         "sortBy": [
           {
-            "desc": false,
-            "displayName": "Name"
+            "desc": true,
+            "displayName": "Last *"
           }
         ]
       },
-      "pluginVersion": "12.4.0-21490573584",
+      "pluginVersion": "12.4.0-21959849188.patch2",
       "targets": [
         {
+          "app": "grafana-assistant-app",
           "datasource": {
-            "type": "tempo",
-            "uid": "${traces_datasource}"
+            "type": "prometheus",
+            "uid": "${metrics_datasource}"
           },
-          "filters": [
-            {
-              "id": "472c13f9",
-              "operator": "=",
-              "scope": "span"
-            },
-            {
-              "id": "service-name",
-              "isCustomValue": false,
-              "operator": "=",
-              "scope": "resource",
-              "tag": "service.name",
-              "value": [
-                "openlit-test"
-              ],
-              "valueType": "string"
-            }
-          ],
-          "limit": 20,
-          "metricsQueryType": "range",
-          "query": "{span.telemetry.sdk.name=\"openlit\" && span.gen_ai.operation.name!=\"vectordb\"} | select(span.gen_ai.prompt, span.gen_ai.completion, span.gen_ai.usage.cost)",
-          "queryType": "traceql",
-          "refId": "A",
-          "tableType": "traces"
+          "editorMode": "code",
+          "expr": "topk(5, sum by(gen_ai_provider_name) (last_over_time(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range])))",
+          "instant": true,
+          "legendFormat": "{{gen_ai_provider_name}}",
+          "queryType": "instant",
+          "range": false,
+          "refId": "A"
         }
       ],
-      "title": "",
-      "transparent": true,
+      "title": "Top 5 Providers by Cost",
+      "transformations": [
+        {
+          "id": "seriesToRows",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true
+            },
+            "renameByName": {
+              "Metric": "Model",
+              "Value": "Cost (USD)"
+            }
+          }
+        }
+      ],
       "type": "table"
     },
     {
-      "description": "Instructions for viewing detailed trace information. Click on trace IDs in the traces table, then click the traces link, and refresh the dashboard to see the complete trace visualization with span details.",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 13,
-        "x": 11,
-        "y": 28
-      },
-      "id": 48,
-      "options": {
-        "code": {
-          "language": "plaintext",
-          "showLineNumbers": false,
-          "showMiniMap": false
-        },
-        "content": "> To View Traces:\n>  1. Click the **Trace ID** on the left table .\n>  2. Click **Traces link**.\n>  1. Refresh the dashboard.",
-        "mode": "markdown"
-      },
-      "pluginVersion": "12.4.0-21490573584",
-      "title": "",
-      "type": "text"
-    },
-    {
       "datasource": {
-        "type": "tempo",
-        "uid": "${traces_datasource}"
+        "type": "prometheus",
+        "uid": "${metrics_datasource}"
       },
-      "description": "This panel displays the selected trace visualization. Use the trace ID variable or click on traces in the table above to view detailed span information, timing, and request flow through your GenAI services.",
+      "description": "Top 5 GenAI models ranked by total cost in USD",
       "fieldConfig": {
-        "defaults": {},
-        "overrides": []
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "mode": "basic",
+              "type": "gauge"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "decimals": 4,
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Metric"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Model"
+              },
+              {
+                "id": "custom.width",
+                "value": 150
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "auto"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
-        "h": 17,
-        "w": 13,
-        "x": 11,
-        "y": 32
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 45
       },
-      "id": 45,
+      "id": 66,
       "options": {
-        "spanFilters": {
-          "adhocFilters": [],
-          "criticalPathOnly": false,
-          "matchesOnly": false,
-          "serviceNameOperator": "=",
-          "spanNameOperator": "=",
-          "tags": [
-            {
-              "id": "72cb6ac9-e4d",
-              "operator": "="
-            }
-          ]
-        }
+        "cellHeight": "md",
+        "frameIndex": 0,
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Last *"
+          }
+        ]
       },
-      "pluginVersion": "12.4.0-21490573584",
+      "pluginVersion": "12.4.0-21959849188.patch2",
       "targets": [
         {
+          "app": "grafana-assistant-app",
           "datasource": {
-            "type": "tempo",
-            "uid": "${traces_datasource}"
+            "type": "prometheus",
+            "uid": "${metrics_datasource}"
           },
-          "limit": 20,
-          "metricsQueryType": "range",
-          "query": "${traceId}",
-          "queryType": "traceql",
-          "refId": "A",
-          "tableType": "traces"
+          "editorMode": "builder",
+          "expr": "topk(5, sum by(gen_ai_request_model) (last_over_time(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range])))",
+          "instant": true,
+          "legendFormat": "{{gen_ai_request_model}}",
+          "queryType": "instant",
+          "range": false,
+          "refId": "A"
         }
       ],
-      "title": "",
-      "transparent": true,
-      "type": "traces"
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 49
-      },
-      "id": 31,
-      "panels": [],
-      "title": "Cost",
-      "type": "row"
+      "title": "Top 5 Models by Cost",
+      "transformations": [
+        {
+          "id": "seriesToRows",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true
+            },
+            "renameByName": {
+              "Metric": "Model",
+              "Value": "Cost (USD)"
+            }
+          }
+        }
+      ],
+      "type": "table"
     },
     {
       "datasource": {
@@ -1722,8 +1614,8 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
+            "fillOpacity": 100,
+            "gradientMode": "opacity",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
@@ -1747,8 +1639,9 @@
               "mode": "off"
             }
           },
-          "decimals": 3,
+          "decimals": 4,
           "mappings": [],
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1789,7 +1682,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 50
+        "y": 53
       },
       "id": 29,
       "options": {
@@ -1807,7 +1700,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.4.0-21490573584",
+      "pluginVersion": "12.4.0-21959849188.patch2",
       "targets": [
         {
           "datasource": {
@@ -1815,22 +1708,10 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(increase(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"} [$__rate_interval])) / 1000 or vector(0)",
-          "legendFormat": "Total Cost",
+          "expr": "sum by(gen_ai_provider_name) (last_over_time(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__interval]))",
+          "legendFormat": "{{gen_ai_provider_name}}",
           "range": true,
           "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${metrics_datasource}"
-          },
-          "editorMode": "code",
-          "expr": "sum(increase(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by(gen_ai_system) / 1000",
-          "instant": false,
-          "legendFormat": "Cost by {{gen_ai_system}}",
-          "range": true,
-          "refId": "B"
         }
       ],
       "title": "Total Cost By System",
@@ -1857,8 +1738,8 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "hue",
+            "fillOpacity": 100,
+            "gradientMode": "opacity",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
@@ -1885,7 +1766,7 @@
               "mode": "off"
             }
           },
-          "decimals": 3,
+          "decimals": 2,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -1908,7 +1789,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 50
+        "y": 53
       },
       "id": 32,
       "options": {
@@ -1926,7 +1807,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.4.0-21490573584",
+      "pluginVersion": "12.4.0-21959849188.patch2",
       "targets": [
         {
           "datasource": {
@@ -1934,7 +1815,7 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(increase(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by(gen_ai_request_model) / 1000 or vector(0)",
+          "expr": "sum(increase(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by(gen_ai_request_model) / 1000",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -1949,219 +1830,11 @@
         "type": "prometheus",
         "uid": "${metrics_datasource}"
       },
-      "description": "This panel displays the total cost breakdown by GenAI system as a horizontal bar chart. It shows which platforms (OpenAI, Anthropic, Cohere, etc.) are consuming the most budget, enabling cost analysis and platform comparison for better financial decision making.",
+      "description": "Distribution of requests across deployment environments",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "continuous-GrYlRd"
-          },
-          "decimals": 4,
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "currencyUSD"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 58
-      },
-      "id": 30,
-      "options": {
-        "displayMode": "gradient",
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "maxVizHeight": 300,
-        "minVizHeight": 16,
-        "minVizWidth": 8,
-        "namePlacement": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": true
-        },
-        "showUnfilled": true,
-        "sizing": "auto",
-        "valueMode": "text"
-      },
-      "pluginVersion": "12.4.0-21490573584",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${metrics_datasource}"
-          },
-          "disableTextWrap": false,
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "sum(increase(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range])) by(gen_ai_system) / 10000 or vector(0)",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "instant": true,
-          "legendFormat": "{{gen_ai_system}}",
-          "range": false,
-          "refId": "A",
-          "useBackend": false
-        }
-      ],
-      "title": "Total Cost By System",
-      "transformations": [
-        {
-          "id": "seriesToRows",
-          "options": {}
-        },
-        {
-          "id": "sortBy",
-          "options": {
-            "fields": {},
-            "sort": [
-              {
-                "desc": true,
-                "field": "Value"
-              }
-            ]
-          }
-        }
-      ],
-      "transparent": true,
-      "type": "bargauge"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${metrics_datasource}"
-      },
-      "description": "This panel shows the total cost breakdown by model as a horizontal bar chart. It provides a clear view of which GenAI models consume the most budget, helping prioritize cost optimization efforts and model selection strategies.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "continuous-GrYlRd"
-          },
-          "decimals": 4,
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "currencyUSD"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 58
-      },
-      "id": 33,
-      "options": {
-        "displayMode": "gradient",
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "maxVizHeight": 300,
-        "minVizHeight": 16,
-        "minVizWidth": 8,
-        "namePlacement": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": true
-        },
-        "showUnfilled": true,
-        "sizing": "auto",
-        "valueMode": "color"
-      },
-      "pluginVersion": "12.4.0-21490573584",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${metrics_datasource}"
-          },
-          "disableTextWrap": false,
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "sum(increase(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range])) by(gen_ai_request_model) / 10000 or vector(0)",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "instant": true,
-          "legendFormat": "__auto",
-          "range": false,
-          "refId": "A",
-          "useBackend": false
-        }
-      ],
-      "title": "Total Cost By Model",
-      "transformations": [
-        {
-          "id": "seriesToRows",
-          "options": {}
-        },
-        {
-          "id": "sortBy",
-          "options": {
-            "fields": {},
-            "sort": [
-              {
-                "desc": true,
-                "field": "Value"
-              }
-            ]
-          }
-        }
-      ],
-      "transparent": true,
-      "type": "bargauge"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${metrics_datasource}"
-      },
-      "description": "This panel displays the distribution of GenAI requests based on the environment, such as production, development, testing, etc. It shows where the requests are being utilized, providing a clear picture of operational focus and deployment strategies. Tracking this helps in aligning resources appropriately and optimizing the performance across different environments.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
+            "mode": "palette-classic-by-name"
           },
           "custom": {
             "hideFrom": {
@@ -2170,26 +1843,34 @@
               "viz": false
             }
           },
+          "decimals": 0,
           "mappings": [],
-          "min": 0,
-          "unit": "none"
+          "unit": "short"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
+        "h": 6,
         "w": 8,
         "x": 0,
-        "y": 66
+        "y": 61
       },
-      "id": 15,
+      "id": 70,
       "options": {
+        "displayLabels": [
+          "name",
+          "percent"
+        ],
         "legend": {
-          "displayMode": "list",
+          "displayMode": "table",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": false,
+          "values": [
+            "value",
+            "percent"
+          ]
         },
-        "pieType": "pie",
+        "pieType": "donut",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -2204,26 +1885,24 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.4.0-21490573584",
+      "pluginVersion": "12.4.0-21959849188.patch2",
       "targets": [
         {
+          "app": "grafana-assistant-app",
           "datasource": {
             "type": "prometheus",
             "uid": "${metrics_datasource}"
           },
-          "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "sum by(deployment_environment) (gen_ai_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}) or vector(0)",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "instant": false,
+          "expr": "sum by(deployment_environment) (last_over_time(gen_ai_client_operation_duration_seconds_count{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range]))",
+          "instant": true,
           "legendFormat": "{{deployment_environment}}",
-          "range": true,
-          "refId": "A",
-          "useBackend": false
+          "queryType": "instant",
+          "range": false,
+          "refId": "A"
         }
       ],
-      "title": "GenAI Requests by Environment",
+      "title": "Requests by Environment",
       "transparent": true,
       "type": "piechart"
     },
@@ -2232,11 +1911,11 @@
         "type": "prometheus",
         "uid": "${metrics_datasource}"
       },
-      "description": "This panel displays the distribution of GenAI requests across different platforms such as OpenAI, Cohere, Anthropic, etc. It shows where requests are being sent, giving insights into platform popularity and usage patterns. Monitoring this helps in understanding platform preferences, and it can guide strategic decisions for integration or diversification of GenAI services.",
+      "description": "Distribution of requests across AI providers / platforms",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "mode": "palette-classic-by-name"
           },
           "custom": {
             "hideFrom": {
@@ -2245,26 +1924,34 @@
               "viz": false
             }
           },
+          "decimals": 0,
           "mappings": [],
-          "min": 0,
-          "unit": "none"
+          "unit": "short"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
+        "h": 6,
         "w": 8,
         "x": 8,
-        "y": 66
+        "y": 61
       },
-      "id": 16,
+      "id": 69,
       "options": {
+        "displayLabels": [
+          "name",
+          "percent"
+        ],
         "legend": {
-          "displayMode": "list",
+          "displayMode": "table",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": false,
+          "values": [
+            "value",
+            "percent"
+          ]
         },
-        "pieType": "pie",
+        "pieType": "donut",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -2279,26 +1966,24 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.4.0-21490573584",
+      "pluginVersion": "12.4.0-21959849188.patch2",
       "targets": [
         {
+          "app": "grafana-assistant-app",
           "datasource": {
             "type": "prometheus",
             "uid": "${metrics_datasource}"
           },
-          "disableTextWrap": false,
-          "editorMode": "code",
-          "expr": "sum by(gen_ai_system) (gen_ai_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}) or vector(0)",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "instant": false,
-          "legendFormat": "__auto",
-          "range": true,
-          "refId": "A",
-          "useBackend": false
+          "editorMode": "builder",
+          "expr": "sum by(gen_ai_provider_name) (last_over_time(gen_ai_client_operation_duration_seconds_count{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range]))",
+          "instant": true,
+          "legendFormat": "{{gen_ai_provider_name}}",
+          "queryType": "instant",
+          "range": false,
+          "refId": "A"
         }
       ],
-      "title": "GenAI Requests by Platform",
+      "title": "Requests by Platform",
       "transparent": true,
       "type": "piechart"
     },
@@ -2307,11 +1992,11 @@
         "type": "prometheus",
         "uid": "${metrics_datasource}"
       },
-      "description": "This panel displays the breakdown of GenAI requests by type, such as Chat, Embedding, Image, Audio, and Fine Tuning. It reveals the diversity in usage, highlighting which types of requests are most common. Understanding this distribution assists in optimizing resources for the most demanded services and planning for future needs based on usage trends.",
+      "description": "Distribution of requests by GenAI operation type (chat, image, etc.)",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "mode": "palette-classic-by-name"
           },
           "custom": {
             "hideFrom": {
@@ -2320,26 +2005,34 @@
               "viz": false
             }
           },
+          "decimals": 0,
           "mappings": [],
-          "min": 0,
-          "unit": "none"
+          "unit": "short"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
+        "h": 6,
         "w": 8,
         "x": 16,
-        "y": 66
+        "y": 61
       },
-      "id": 13,
+      "id": 68,
       "options": {
+        "displayLabels": [
+          "name",
+          "percent"
+        ],
         "legend": {
-          "displayMode": "list",
+          "displayMode": "table",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": false,
+          "values": [
+            "value",
+            "percent"
+          ]
         },
-        "pieType": "pie",
+        "pieType": "donut",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -2354,26 +2047,24 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.4.0-21490573584",
+      "pluginVersion": "12.4.0-21959849188.patch2",
       "targets": [
         {
+          "app": "grafana-assistant-app",
           "datasource": {
             "type": "prometheus",
             "uid": "${metrics_datasource}"
           },
-          "disableTextWrap": false,
-          "editorMode": "code",
-          "expr": "sum by(gen_ai_operation_name) (gen_ai_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}) or vector(0)",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "instant": false,
+          "editorMode": "builder",
+          "expr": "sum by(gen_ai_operation_name) (last_over_time(gen_ai_client_operation_duration_seconds_count{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range]))",
+          "instant": true,
           "legendFormat": "{{gen_ai_operation_name}}",
-          "range": true,
-          "refId": "A",
-          "useBackend": false
+          "queryType": "instant",
+          "range": false,
+          "refId": "A"
         }
       ],
-      "title": "GenAI Requests by Type",
+      "title": "Requests by Type",
       "transparent": true,
       "type": "piechart"
     },
@@ -2383,64 +2074,12 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 71
+        "y": 75
       },
       "id": 46,
       "panels": [],
       "title": "Latency",
       "type": "row"
-    },
-    {
-      "description": "This panel displays section header for system-level latency analysis. It provides visual separation between system-level and model-level latency breakdowns.",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 2,
-        "w": 12,
-        "x": 0,
-        "y": 72
-      },
-      "id": 59,
-      "options": {
-        "code": {
-          "language": "plaintext",
-          "showLineNumbers": false,
-          "showMiniMap": false
-        },
-        "content": "### By System",
-        "mode": "markdown"
-      },
-      "pluginVersion": "12.4.0-21490573584",
-      "title": "",
-      "type": "text"
-    },
-    {
-      "description": "This panel displays section header for model-level latency analysis. It provides visual separation between system-level and model-level latency breakdowns.",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 2,
-        "w": 12,
-        "x": 12,
-        "y": 72
-      },
-      "id": 60,
-      "options": {
-        "code": {
-          "language": "plaintext",
-          "showLineNumbers": false,
-          "showMiniMap": false
-        },
-        "content": "### By Model",
-        "mode": "markdown"
-      },
-      "pluginVersion": "12.4.0-21490573584",
-      "title": "",
-      "type": "text"
     },
     {
       "datasource": {
@@ -2467,7 +2106,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 74
+        "y": 67
       },
       "id": 57,
       "options": {
@@ -2515,7 +2154,7 @@
           "unit": "s"
         }
       },
-      "pluginVersion": "12.4.0-21490573584",
+      "pluginVersion": "12.4.0-21959849188.patch2",
       "targets": [
         {
           "datasource": {
@@ -2523,8 +2162,8 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, sum(rate(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (le, gen_ai_system)) or vector(0)",
-          "legendFormat": "{{gen_ai_system}}",
+          "expr": "histogram_quantile(0.95, sum(rate(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (le, gen_ai_provider_name))",
+          "legendFormat": "{{gen_ai_provider_name}}",
           "range": true,
           "refId": "A"
         }
@@ -2558,7 +2197,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 74
+        "y": 67
       },
       "id": 53,
       "options": {
@@ -2606,15 +2245,14 @@
           "unit": "none"
         }
       },
-      "pluginVersion": "12.4.0-21490573584",
+      "pluginVersion": "12.4.0-21959849188.patch2",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${metrics_datasource}"
           },
-          "editorMode": "code",
-          "expr": "histogram_quantile(0.95, sum(rate(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (le, gen_ai_request_model)) or vector(0)",
+          "expr": "histogram_quantile(0.95, sum(rate(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (le, gen_ai_request_model))",
           "legendFormat": "{{gen_ai_request_model}}",
           "range": true,
           "refId": "A"
@@ -2625,111 +2263,56 @@
       "type": "heatmap"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${metrics_datasource}"
-      },
-      "description": "This panel displays the 95th percentile token generation time grouped by token count ranges and systems. It shows performance patterns across different system capabilities and token volumes, helping understand how different platforms handle various workload sizes.",
+      "description": "This panel displays section header for system-level latency analysis. It provides visual separation between system-level and model-level latency breakdowns.",
       "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "continuous-GrYlRd"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
+        "defaults": {},
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 2,
         "w": 12,
         "x": 0,
-        "y": 82
+        "y": 76
       },
-      "id": 40,
+      "id": 59,
       "options": {
-        "tiling": "treemapSquarify"
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "### By System",
+        "mode": "markdown"
       },
-      "pluginVersion": "2.1.1",
-      "targets": [
-        {
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "histogram_quantile(0.95, sum by(le, token_count_group, gen_ai_system) \n  (\n    increase(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range]\n  )\n)\n)",
-          "format": "table",
-          "instant": false,
-          "legendFormat": "__auto",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Token Generation time by token count",
-      "transparent": true,
-      "type": "marcusolsson-treemap-panel"
+      "pluginVersion": "12.4.0-21959849188.patch2",
+      "title": "",
+      "type": "text"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${metrics_datasource}"
-      },
-      "description": "This panel displays the 95th percentile token generation time grouped by token count ranges and models. It shows performance patterns across different model sizes and token volumes, helping identify performance bottlenecks and optimize model selection based on throughput requirements.",
+      "description": "This panel displays section header for model-level latency analysis. It provides visual separation between system-level and model-level latency breakdowns.",
       "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "continuous-GrYlRd"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "s"
-        },
+        "defaults": {},
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 2,
         "w": 12,
         "x": 12,
-        "y": 82
+        "y": 76
       },
-      "id": 36,
+      "id": 60,
       "options": {
-        "tiling": "treemapSquarify"
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "### By Model",
+        "mode": "markdown"
       },
-      "pluginVersion": "2.1.1",
-      "targets": [
-        {
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "histogram_quantile(0.95, \n  sum by(le, token_count_group, gen_ai_request_model, gen_ai_system) (\n    increase(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range])\n  )\n)",
-          "format": "table",
-          "instant": true,
-          "legendFormat": "__auto",
-          "range": false,
-          "refId": "A"
-        }
-      ],
-      "title": "Token Generation time by token count",
-      "transparent": true,
-      "type": "marcusolsson-treemap-panel"
+      "pluginVersion": "12.4.0-21959849188.patch2",
+      "title": "",
+      "type": "text"
     },
     {
       "datasource": {
@@ -2766,11 +2349,11 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 90
+        "y": 78
       },
       "id": 38,
       "options": {
-        "displayMode": "gradient",
+        "displayMode": "lcd",
         "legend": {
           "calcs": [],
           "displayMode": "list",
@@ -2793,7 +2376,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.4.0-21490573584",
+      "pluginVersion": "12.4.0-21959849188.patch2",
       "targets": [
         {
           "datasource": {
@@ -2803,7 +2386,7 @@
           "disableTextWrap": false,
           "editorMode": "code",
           "exemplar": false,
-          "expr": "histogram_quantile(0.95, \n  sum by(le, gen_ai_system) (\n    increase(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range])\n  )\n)  or vector(0)",
+          "expr": "histogram_quantile(0.95, \n  sum by(le, gen_ai_provider_name) (\n    increase(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range])\n  )\n)",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": true,
@@ -2870,11 +2453,11 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 90
+        "y": 78
       },
       "id": 37,
       "options": {
-        "displayMode": "gradient",
+        "displayMode": "lcd",
         "legend": {
           "calcs": [],
           "displayMode": "list",
@@ -2897,7 +2480,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.4.0-21490573584",
+      "pluginVersion": "12.4.0-21959849188.patch2",
       "targets": [
         {
           "datasource": {
@@ -2907,7 +2490,7 @@
           "disableTextWrap": false,
           "editorMode": "code",
           "exemplar": false,
-          "expr": "histogram_quantile(0.95, \n  sum by(le, gen_ai_request_model) (\n    increase(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range])\n  )\n)  or vector(0)",
+          "expr": "histogram_quantile(0.95, \n  sum by(le, gen_ai_request_model) (\n    increase(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range])\n  )\n)",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": true,
@@ -3006,7 +2589,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 98
+        "y": 86
       },
       "id": 41,
       "options": {
@@ -3024,7 +2607,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.4.0-21490573584",
+      "pluginVersion": "12.4.0-21959849188.patch2",
       "targets": [
         {
           "datasource": {
@@ -3032,7 +2615,7 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, sum(rate(gen_ai_server_time_to_first_token_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (gen_ai_system, le))  or vector(0)",
+          "expr": "histogram_quantile(0.95, sum(rate(gen_ai_server_time_to_first_token_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (gen_ai_provider_name, le))",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -3109,7 +2692,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 98
+        "y": 86
       },
       "id": 42,
       "options": {
@@ -3127,7 +2710,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.4.0-21490573584",
+      "pluginVersion": "12.4.0-21959849188.patch2",
       "targets": [
         {
           "datasource": {
@@ -3135,7 +2718,7 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, sum(rate(gen_ai_server_time_to_first_token_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (gen_ai_request_model, le))  or vector(0)",
+          "expr": "histogram_quantile(0.95, sum(rate(gen_ai_server_time_to_first_token_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (gen_ai_request_model, le))",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -3212,7 +2795,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 106
+        "y": 94
       },
       "id": 39,
       "options": {
@@ -3230,7 +2813,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.4.0-21490573584",
+      "pluginVersion": "12.4.0-21959849188.patch2",
       "targets": [
         {
           "datasource": {
@@ -3238,7 +2821,7 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, sum(rate(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (gen_ai_system, le))  or vector(0)",
+          "expr": "histogram_quantile(0.95, sum(rate(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (gen_ai_provider_name, le))",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -3315,7 +2898,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 106
+        "y": 94
       },
       "id": 43,
       "options": {
@@ -3333,7 +2916,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.4.0-21490573584",
+      "pluginVersion": "12.4.0-21959849188.patch2",
       "targets": [
         {
           "datasource": {
@@ -3341,7 +2924,7 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, sum(rate(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (gen_ai_request_model, le))  or vector(0)",
+          "expr": "histogram_quantile(0.95, sum(rate(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (gen_ai_request_model, le))",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -3361,24 +2944,6 @@
   "templating": {
     "list": [
       {
-        "current": {
-          "text": "grafanacloud-genaio11y-traces",
-          "value": "grafanacloud-traces"
-        },
-        "includeAll": false,
-        "label": "Traces data source",
-        "name": "traces_datasource",
-        "options": [],
-        "query": "tempo",
-        "refresh": 1,
-        "regex": "",
-        "type": "datasource"
-      },
-      {
-        "current": {
-          "text": "grafanacloud-genaio11y-prom",
-          "value": "grafanacloud-prom"
-        },
         "includeAll": false,
         "label": "Metrics data source",
         "name": "metrics_datasource",
@@ -3389,10 +2954,16 @@
         "type": "datasource"
       },
       {
-        "current": {
-          "text": "All",
-          "value": "$__all"
-        },
+        "includeAll": false,
+        "label": "Logs data source",
+        "name": "logs_datasource",
+        "options": [],
+        "query": "loki",
+        "refresh": 1,
+        "regex": "^(?!.*(?:-alert-state-history|-usage-insights)$).*",
+        "type": "datasource"
+      },
+      {
         "datasource": {
           "type": "prometheus",
           "uid": "${metrics_datasource}"
@@ -3414,10 +2985,6 @@
         "type": "query"
       },
       {
-        "current": {
-          "text": "All",
-          "value": "$__all"
-        },
         "datasource": {
           "type": "prometheus",
           "uid": "${metrics_datasource}"
@@ -3438,19 +3005,6 @@
         "regexApplyTo": "value",
         "sort": 1,
         "type": "query"
-      },
-      {
-        "current": {
-          "text": "",
-          "value": ""
-        },
-        "hide": 1,
-        "label": "Trace ID",
-        "name": "traceId",
-        "options": [],
-        "query": "",
-        "type": "custom",
-        "valuesFormat": "csv"
       }
     ]
   },
@@ -3462,6 +3016,6 @@
   "timezone": "browser",
   "title": "GenAI Observability",
   "uid": "cdiz9piuoa3gge",
-  "version": 28,
+  "version": 66,
   "weekStart": ""
 }
