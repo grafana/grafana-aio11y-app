@@ -18,7 +18,6 @@
   "editable": false,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 0,
   "links": [
     {
       "asDropdown": false,
@@ -103,49 +102,48 @@
         "content": "<img\n src=\"https://grafana.com/media/docs/grafana-cloud/ai-observability/aio11y-logo.svg\"\n width=\"100%\"\n height=\"100%\">",
         "mode": "html"
       },
-      "pluginVersion": "12.4.0-21490573584",
+      "pluginVersion": "13.0.0-22326976726",
       "title": "",
       "transparent": true,
       "type": "text"
     },
     {
       "datasource": {
-        "type": "prometheus",
-        "uid": "${metrics_datasource}"
+        "type": "loki",
+        "uid": "${logs_datasource}"
       },
+      "description": "Total number of evaluation results in the selected time range",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "fixedColor": "blue",
+            "mode": "fixed"
           },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "blue",
                 "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
-          }
+          },
+          "unit": "short"
         },
         "overrides": []
       },
       "gridPos": {
         "h": 4,
-        "w": 5,
+        "w": 7,
         "x": 3,
         "y": 0
       },
-      "id": 18,
+      "id": 37,
       "options": {
-        "colorMode": "value",
+        "colorMode": "background",
         "graphMode": "area",
-        "justifyMode": "auto",
+        "justifyMode": "center",
         "orientation": "auto",
         "percentChangeColorMode": "standard",
         "reduceOptions": {
@@ -159,17 +157,21 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.0-21490573584",
+      "pluginVersion": "13.0.0-22326976726",
       "targets": [
         {
+          "app": "grafana-assistant-app",
           "datasource": {
-            "type": "prometheus",
-            "uid": "${metrics_datasource}"
+            "type": "loki",
+            "uid": "${logs_datasource}"
           },
+          "direction": "backward",
           "editorMode": "code",
-          "expr": "sum(increase(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range])) or vector(0)\n",
-          "legendFormat": "__auto",
-          "range": true,
+          "expr": "sum(count_over_time({service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"} | logfmt | event_name = `gen_ai.evaluation.result` [$__auto]))",
+          "instant": true,
+          "legendFormat": "Requests",
+          "queryType": "instant",
+          "range": false,
           "refId": "A"
         }
       ],
@@ -179,83 +181,8 @@
     },
     {
       "datasource": {
-        "type": "prometheus",
-        "uid": "${metrics_datasource}"
-      },
-      "description": "Rate of evaluation requests per second",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "yellow",
-                "value": 1
-              },
-              {
-                "color": "red",
-                "value": 10
-              }
-            ]
-          },
-          "unit": "reqps"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 5,
-        "x": 8,
-        "y": 0
-      },
-      "id": 17,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "12.4.0-21490573584",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${metrics_datasource}"
-          },
-          "editorMode": "code",
-          "expr": "sum(rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) or vector(0)",
-          "legendFormat": "Evaluations/sec",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Total Evaluation Rate",
-      "transparent": true,
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${metrics_datasource}"
+        "type": "loki",
+        "uid": "${logs_datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -283,13 +210,13 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 5,
-        "x": 13,
+        "w": 7,
+        "x": 10,
         "y": 0
       },
       "id": 16,
       "options": {
-        "colorMode": "value",
+        "colorMode": "background",
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
@@ -305,24 +232,18 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.0-21490573584",
+      "pluginVersion": "13.0.0-22326976726",
       "targets": [
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "${metrics_datasource}"
+            "type": "loki",
+            "uid": "${logs_datasource}"
           },
-          "disableTextWrap": false,
+          "direction": "backward",
           "editorMode": "code",
-          "exemplar": false,
-          "expr": "100 * sum(increase(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_verdict=\"yes\"}[$__range]))\n  / sum(increase(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range])) or vector(0)",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "instant": true,
-          "legendFormat": "Evaluation Ratio (%)",
-          "range": false,
-          "refId": "A",
-          "useBackend": false
+          "expr": "100 * sum(count_over_time({service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"} | logfmt | event_name=\"gen_ai.evaluation.result\" | gen_ai_evaluation_score_label=\"fail\" [$__auto])) / sum(count_over_time({service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"} | logfmt | event_name=\"gen_ai.evaluation.result\" [$__auto]))",
+          "queryType": "range",
+          "refId": "A"
         }
       ],
       "title": "Problematic Response Ratio",
@@ -331,25 +252,24 @@
     },
     {
       "datasource": {
-        "type": "prometheus",
-        "uid": "${metrics_datasource}"
+        "type": "loki",
+        "uid": "${logs_datasource}"
       },
+      "description": "Evaluation name with the most failures",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "continuous-reds"
+            "fixedColor": "red",
+            "mode": "fixed"
           },
+          "displayName": "",
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": 0
-              },
-              {
                 "color": "red",
-                "value": 80
+                "value": 0
               }
             ]
           }
@@ -358,40 +278,43 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 6,
-        "x": 18,
+        "w": 7,
+        "x": 17,
         "y": 0
       },
-      "id": 15,
+      "id": 34,
       "options": {
         "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
+        "graphMode": "none",
+        "justifyMode": "center",
         "orientation": "auto",
         "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
           ],
-          "fields": "",
+          "fields": "/^gen_ai_evaluation_name$/",
           "values": false
         },
         "showPercentChange": false,
-        "textMode": "name",
+        "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.0-21490573584",
+      "pluginVersion": "13.0.0-22326976726",
       "targets": [
         {
+          "app": "grafana-assistant-app",
           "datasource": {
-            "type": "prometheus",
-            "uid": "${metrics_datasource}"
+            "type": "loki",
+            "uid": "${logs_datasource}"
           },
+          "direction": "backward",
           "editorMode": "code",
-          "expr": "topk(1, sum by (evals_classification) (evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_classification!=\"none\"})) or vector(0)\n",
-          "format": "time_series",
-          "legendFormat": "{{evals_classification}}",
-          "range": true,
+          "expr": "topk(1, sum by (gen_ai_evaluation_name) (count_over_time({service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}| logfmt | event_name=\"gen_ai.evaluation.result\" | gen_ai_evaluation_score_label=\"fail\" [$__auto])))",
+          "instant": true,
+          "legendFormat": "",
+          "queryType": "instant",
+          "range": false,
           "refId": "A"
         }
       ],
@@ -401,15 +324,18 @@
     },
     {
       "datasource": {
-        "type": "prometheus",
-        "uid": "${metrics_datasource}"
+        "type": "loki",
+        "uid": "${logs_datasource}"
       },
+      "description": "Total count of evaluations per classification type in the selected time range",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "palette-classic"
           },
+          "displayName": "${__field.labels.gen_ai_evaluation_name}",
           "mappings": [],
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -418,57 +344,67 @@
                 "value": 0
               },
               {
+                "color": "orange",
+                "value": 5
+              },
+              {
                 "color": "red",
-                "value": 80
+                "value": 10
               }
             ]
-          }
+          },
+          "unit": "short"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
-        "w": 14,
+        "h": 6,
+        "w": 13,
         "x": 0,
         "y": 4
       },
-      "id": 14,
+      "id": 36,
       "options": {
         "minVizHeight": 75,
         "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "lastNotNull"
+            "sum"
           ],
           "fields": "",
           "values": false
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
-        "sizing": "auto"
+        "sizing": "auto",
+        "textMode": "auto"
       },
-      "pluginVersion": "12.4.0-21490573584",
+      "pluginVersion": "13.0.0-22326976726",
       "targets": [
         {
+          "app": "grafana-assistant-app",
           "datasource": {
-            "type": "prometheus",
-            "uid": "${metrics_datasource}"
+            "type": "loki",
+            "uid": "${logs_datasource}"
           },
+          "direction": "backward",
           "editorMode": "code",
-          "expr": "sum by (evals_classification) (evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_classification!=\"none\"}) or vector(0)\n",
-          "legendFormat": "__auto",
+          "expr": "sum by (gen_ai_evaluation_name) (count_over_time({service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}| logfmt | event_name=\"gen_ai.evaluation.result\" [$__auto]))",
+          "instant": false,
+          "legendFormat": "{{gen_ai_evaluation_name}}",
+          "queryType": "range",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Evaluation Classifications Counts",
+      "title": "Evaluation Classification Counts",
       "type": "gauge"
     },
     {
       "datasource": {
-        "type": "prometheus",
-        "uid": "${metrics_datasource}"
+        "type": "loki",
+        "uid": "${logs_datasource}"
       },
       "description": "Time series of evaluation requests by classification",
       "fieldConfig": {
@@ -485,8 +421,8 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
+            "fillOpacity": 100,
+            "gradientMode": "opacity",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
@@ -501,7 +437,7 @@
             },
             "showPoints": "auto",
             "showValues": false,
-            "spanNulls": false,
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -529,9 +465,9 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
-        "w": 10,
-        "x": 14,
+        "h": 6,
+        "w": 11,
+        "x": 13,
         "y": 4
       },
       "id": 21,
@@ -548,17 +484,18 @@
           "sort": "desc"
         }
       },
-      "pluginVersion": "12.4.0-21490573584",
+      "pluginVersion": "13.0.0-22326976726",
       "targets": [
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "${metrics_datasource}"
+            "type": "loki",
+            "uid": "${logs_datasource}"
           },
+          "direction": "backward",
           "editorMode": "code",
-          "expr": "sum by(evals_classification) (rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) or vector(0)",
-          "legendFormat": "{{evals_classification}}",
-          "range": true,
+          "expr": "sum by (gen_ai_evaluation_name) (rate({service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}  | logfmt | event_name=\"gen_ai.evaluation.result\" [$__auto]))",
+          "legendFormat": "{{gen_ai_evaluation_name}}",
+          "queryType": "range",
           "refId": "A"
         }
       ],
@@ -567,43 +504,44 @@
     },
     {
       "datasource": {
-        "type": "prometheus",
-        "uid": "${metrics_datasource}"
+        "type": "loki",
+        "uid": "${logs_datasource}"
       },
-      "description": "Correlation between classifications and verdicts",
+      "description": "Heatmap showing evaluation counts across classification names and pass/fail verdicts over time",
       "fieldConfig": {
         "defaults": {
           "custom": {
             "hideFrom": {
               "legend": false,
               "tooltip": false,
-              "vis": false,
               "viz": false
             },
             "scaleDistribution": {
               "type": "linear"
             }
-          }
+          },
+          "unit": "short"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
-        "w": 14,
+        "h": 7,
+        "w": 13,
         "x": 0,
-        "y": 9
+        "y": 10
       },
-      "id": 5,
+      "id": 38,
       "options": {
         "calculate": false,
         "cellGap": 2,
         "color": {
           "exponent": 0.5,
           "fill": "dark-orange",
+          "min": 0,
           "mode": "scheme",
           "reverse": false,
           "scale": "exponential",
-          "scheme": "Spectral",
+          "scheme": "Oranges",
           "steps": 128
         },
         "exemplars": {
@@ -613,7 +551,7 @@
           "le": 1e-9
         },
         "legend": {
-          "show": false
+          "show": true
         },
         "rowsFrame": {
           "layout": "auto"
@@ -629,16 +567,20 @@
           "unit": "short"
         }
       },
-      "pluginVersion": "12.4.0-21490573584",
+      "pluginVersion": "13.0.0-22326976726",
       "targets": [
         {
+          "app": "grafana-assistant-app",
           "datasource": {
-            "type": "prometheus",
-            "uid": "${metrics_datasource}"
+            "type": "loki",
+            "uid": "${logs_datasource}"
           },
+          "direction": "backward",
           "editorMode": "code",
-          "expr": "sum by(evals_classification, evals_verdict) (rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) or vector(0)",
-          "legendFormat": "{{evals_classification}} - {{evals_verdict}}",
+          "expr": "sum by (gen_ai_evaluation_name, gen_ai_evaluation_score_label) (count_over_time({service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}  | logfmt | event_name=\"gen_ai.evaluation.result\" [$__auto]))",
+          "instant": false,
+          "legendFormat": "{{gen_ai_evaluation_name}} / {{gen_ai_evaluation_score_label}}",
+          "queryType": "range",
           "range": true,
           "refId": "A"
         }
@@ -648,14 +590,14 @@
     },
     {
       "datasource": {
-        "type": "prometheus",
-        "uid": "${metrics_datasource}"
+        "type": "loki",
+        "uid": "${logs_datasource}"
       },
-      "description": "Issue detection rate by confidence score levels",
+      "description": "Count of detected issues (fail verdicts) grouped by confidence score level: Low (<0.3), Medium (0.3–0.7), High (≥0.7)",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "continuous-RdYlGr"
+            "mode": "thresholds"
           },
           "custom": {
             "axisBorderShow": false,
@@ -687,469 +629,142 @@
                 "value": 0
               },
               {
+                "color": "orange",
+                "value": 1
+              },
+              {
                 "color": "red",
-                "value": 80
+                "value": 3
               }
             ]
           },
-          "unit": "reqps"
+          "unit": "short"
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": ".*0\\.7.*"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "green",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": ".*0.*"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "red",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
-        "h": 6,
-        "w": 10,
-        "x": 14,
-        "y": 11
+        "h": 7,
+        "w": 11,
+        "x": 13,
+        "y": 10
       },
-      "id": 13,
+      "id": 39,
       "options": {
         "barRadius": 0,
-        "barWidth": 0.97,
-        "displayMode": "gradient",
+        "barWidth": 0.5,
         "fullHighlight": false,
         "groupWidth": 0.7,
         "legend": {
           "calcs": [],
-          "displayMode": "table",
+          "displayMode": "list",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": false
         },
         "orientation": "vertical",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showValue": "auto",
+        "showValue": "always",
         "stacking": "none",
         "tooltip": {
           "hideZeros": false,
           "mode": "single",
           "sort": "none"
         },
+        "xField": "Metric",
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "12.4.0-21490573584",
+      "pluginVersion": "13.0.0-22326976726",
       "targets": [
         {
+          "app": "grafana-assistant-app",
           "datasource": {
-            "type": "prometheus",
-            "uid": "${metrics_datasource}"
+            "type": "loki",
+            "uid": "${logs_datasource}"
           },
+          "direction": "backward",
           "editorMode": "code",
-          "expr": "sum by(evals_score) (rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_verdict=\"yes\"}[$__rate_interval])) or vector(0)",
-          "legendFormat": "Issues with Score {{evals_score}}",
-          "range": true,
+          "expr": "sum(count_over_time({service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"} | logfmt | event_name=\"gen_ai.evaluation.result\" | gen_ai_evaluation_score_label=\"fail\" | gen_ai_evaluation_score_value < 0.3 [$__auto]))",
+          "instant": true,
+          "legendFormat": "Low (<0.3)",
+          "queryType": "instant",
+          "range": false,
           "refId": "A"
+        },
+        {
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "loki",
+            "uid": "${logs_datasource}"
+          },
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "sum(count_over_time({service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"} | logfmt | event_name=\"gen_ai.evaluation.result\" | gen_ai_evaluation_score_label=\"fail\" | gen_ai_evaluation_score_value >= 0.3 | gen_ai_evaluation_score_value < 0.7 [$__auto]))",
+          "instant": true,
+          "legendFormat": "Medium (0.3–0.7)",
+          "queryType": "instant",
+          "range": false,
+          "refId": "B"
+        },
+        {
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "loki",
+            "uid": "${logs_datasource}"
+          },
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "sum(count_over_time({service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}| logfmt | event_name=\"gen_ai.evaluation.result\" | gen_ai_evaluation_score_label=\"fail\" | gen_ai_evaluation_score_value >= 0.7 [$__auto]))",
+          "instant": true,
+          "legendFormat": "High (≥0.7)",
+          "queryType": "instant",
+          "range": false,
+          "refId": "C"
         }
       ],
-      "title": "Issues by Confidence Score",
+      "title": "Issue Detection Rate by Confidence Score Level",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "renameByName": {
+              "Value #A": "Low (<0.3)",
+              "Value #B": "Medium (0.3–0.7)",
+              "Value #C": "High (≥0.7)"
+            }
+          }
+        },
+        {
+          "id": "seriesToRows",
+          "options": {}
+        }
+      ],
       "type": "barchart"
     },
     {
       "datasource": {
-        "type": "prometheus",
-        "uid": "${metrics_datasource}"
+        "type": "loki",
+        "uid": "${logs_datasource}"
       },
-      "description": "Evaluation rates by service name",
+      "description": "Total count of pass vs fail evaluations in the selected time range",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "mode": "thresholds"
           },
           "custom": {
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            }
-          },
-          "mappings": [],
-          "unit": "reqps"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 6,
-        "x": 0,
-        "y": 17
-      },
-      "id": 11,
-      "options": {
-        "legend": {
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "pieType": "pie",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "sort": "desc",
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.4.0-21490573584",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${metrics_datasource}"
-          },
-          "editorMode": "code",
-          "expr": "sum by(service_name) (rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) or vector(0)",
-          "legendFormat": "{{service_name}}",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Evaluations by Service",
-      "transparent": true,
-      "type": "piechart"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${metrics_datasource}"
-      },
-      "description": "Evaluation rates by deployment environment",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            }
-          },
-          "mappings": [],
-          "unit": "reqps"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 6,
-        "x": 6,
-        "y": 17
-      },
-      "id": 10,
-      "options": {
-        "legend": {
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "pieType": "pie",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "sort": "desc",
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.4.0-21490573584",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${metrics_datasource}"
-          },
-          "editorMode": "code",
-          "expr": "sum by(deployment_environment) (rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) or vector(0)",
-          "legendFormat": "{{deployment_environment}}",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Evaluations by Environment",
-      "transparent": true,
-      "type": "piechart"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${metrics_datasource}"
-      },
-      "description": "Yes/No verdicts from evaluations",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            }
-          },
-          "mappings": [],
-          "unit": "percent"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "yes"
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
             },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "red",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "no"
+            "footer": {
+              "reducers": []
             },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "green",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 6,
-        "x": 12,
-        "y": 17
-      },
-      "id": 8,
-      "options": {
-        "legend": {
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "pieType": "pie",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "sort": "desc",
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.4.0-21490573584",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${metrics_datasource}"
-          },
-          "editorMode": "code",
-          "expr": "100 * sum(increase(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_verdict=\"yes\"}[$__range]))\n  / sum(increase(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range])) or vector(0)\n",
-          "legendFormat": "Yes",
-          "range": true,
-          "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${metrics_datasource}"
-          },
-          "editorMode": "code",
-          "expr": "100 * sum(increase(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_verdict=\"no\"}[$__range]))\n  / sum(increase(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range]))\n",
-          "instant": false,
-          "legendFormat": "No",
-          "range": true,
-          "refId": "B"
-        }
-      ],
-      "title": "Evaluation Verdicts",
-      "transparent": true,
-      "type": "piechart"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${metrics_datasource}"
-      },
-      "description": "Distribution of evaluation classifications",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            }
+            "inspect": false
           },
           "mappings": [],
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 6,
-        "x": 18,
-        "y": 17
-      },
-      "id": 7,
-      "options": {
-        "legend": {
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "pieType": "pie",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "sort": "desc",
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.4.0-21490573584",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${metrics_datasource}"
-          },
-          "editorMode": "code",
-          "expr": "sum by(evals_classification) (rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) or vector(0)",
-          "legendFormat": "{{evals_classification}}",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Evaluation Classifications",
-      "transparent": true,
-      "type": "piechart"
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 24
-      },
-      "id": 20,
-      "panels": [],
-      "title": "Top Issue Explanations",
-      "type": "row"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${metrics_datasource}"
-      },
-      "description": "Top explanations for detected issues",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisGridShow": false,
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "fillOpacity": 57,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineWidth": 2,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "fieldMinMax": false,
-          "mappings": [],
-          "min": 0,
-          "noValue": "No Top Explanations",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1163,726 +778,450 @@
               }
             ]
           },
-          "unit": "percentunit"
+          "unit": "short"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Verdict"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 200
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "fail": {
+                        "color": "red",
+                        "index": 0,
+                        "text": "Fail"
+                      },
+                      "pass": {
+                        "color": "green",
+                        "index": 1,
+                        "text": "Pass"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Count"
+            },
+            "properties": [
+              {
+                "id": "min",
+                "value": 0
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "gauge"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
-        "h": 10,
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 17
+      },
+      "id": 43,
+      "options": {
+        "cellHeight": "md",
+        "enablePagination": false,
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Count"
+          }
+        ]
+      },
+      "pluginVersion": "13.0.0-22326976726",
+      "targets": [
+        {
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "loki",
+            "uid": "${logs_datasource}"
+          },
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "sum by (gen_ai_evaluation_score_label) (count_over_time({service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"} | logfmt | event_name=\"gen_ai.evaluation.result\" [$__auto]))",
+          "instant": true,
+          "legendFormat": "",
+          "queryType": "instant",
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "title": "Pass vs Fail Request Count",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true
+            },
+            "renameByName": {
+              "Value #A": "Count",
+              "gen_ai_evaluation_score_label": "Verdict"
+            }
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "${logs_datasource}"
+      },
+      "description": "Count of evaluations per classification type in the selected time range",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Classification"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 161
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Count"
+            },
+            "properties": [
+              {
+                "id": "min",
+                "value": 0
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "gauge"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 17
+      },
+      "id": 41,
+      "options": {
+        "cellHeight": "md",
+        "enablePagination": false,
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Count"
+          }
+        ]
+      },
+      "pluginVersion": "13.0.0-22326976726",
+      "targets": [
+        {
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "loki",
+            "uid": "${logs_datasource}"
+          },
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "sum by (gen_ai_evaluation_name) (count_over_time({service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"} | logfmt | event_name=\"gen_ai.evaluation.result\" [$__auto]))",
+          "instant": true,
+          "legendFormat": "",
+          "queryType": "instant",
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "title": "Eval Classification Counts",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true
+            },
+            "renameByName": {
+              "Value #A": "Count",
+              "gen_ai_evaluation_name": "Classification"
+            }
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
         "w": 24,
         "x": 0,
         "y": 25
       },
-      "id": 19,
-      "options": {
-        "barRadius": 0.3,
-        "barWidth": 1,
-        "displayMode": "basic",
-        "fullHighlight": false,
-        "groupWidth": 0.7,
-        "legend": {
-          "calcs": [
-            "count"
-          ],
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true
-        },
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showValue": "never",
-        "stacking": "normal",
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        },
-        "xTickLabelRotation": -45,
-        "xTickLabelSpacing": 0
+      "id": 20,
+      "panels": [],
+      "title": "Top Issue Explanations",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "${logs_datasource}"
       },
-      "pluginVersion": "12.4.0-21490573584",
+      "description": "Top evaluation failure reasons ranked by occurrence count in the selected time range",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Reason"
+            },
+            "properties": [
+              {
+                "id": "custom.wrapText",
+                "value": true
+              },
+              {
+                "id": "custom.width",
+                "value": 851
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Count"
+            },
+            "properties": [
+              {
+                "id": "min",
+                "value": 0
+              },
+              {
+                "id": "custom.width",
+                "value": 453
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "gauge"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 26
+      },
+      "id": 44,
+      "options": {
+        "cellHeight": "lg",
+        "enablePagination": false,
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Count"
+          }
+        ]
+      },
+      "pluginVersion": "13.0.0-22326976726",
       "targets": [
         {
+          "app": "grafana-assistant-app",
           "datasource": {
-            "type": "prometheus",
-            "uid": "${metrics_datasource}"
+            "type": "loki",
+            "uid": "${logs_datasource}"
           },
+          "direction": "backward",
           "editorMode": "code",
-          "expr": "topk(10, sum by(evals_explanation) (rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\",evals_verdict=\"yes\"}[$__rate_interval]))) or vector(0)",
-          "legendFormat": "{{evals_explanation}}",
-          "range": true,
+          "expr": "topk(10, sum by (gen_ai_evaluation_explanation) (count_over_time({service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"} | logfmt | event_name=\"gen_ai.evaluation.result\" [$__auto])))",
+          "instant": true,
+          "legendFormat": "",
+          "queryType": "instant",
+          "range": false,
           "refId": "A"
         }
       ],
       "title": "",
+      "transformations": [
+        {
+          "disabled": false,
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true
+            },
+            "renameByName": {
+              "Value #A": "Count",
+              "gen_ai_evaluation_explanation": "Reason"
+            }
+          }
+        }
+      ],
       "transparent": true,
-      "type": "barchart"
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 35
-      },
-      "id": 24,
-      "panels": [],
-      "title": "Hallucination",
-      "type": "row"
+      "type": "table"
     },
     {
       "datasource": {
-        "type": "prometheus",
-        "uid": "${metrics_datasource}"
+        "type": "loki",
+        "uid": "${logs_datasource}"
       },
       "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 0,
-          "mappings": [],
-          "noValue": "0",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "blue",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "requests"
-        },
+        "defaults": {},
         "overrides": []
       },
       "gridPos": {
         "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 36
-      },
-      "id": 23,
-      "options": {
-        "displayMode": "gradient",
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "maxVizHeight": 300,
-        "minVizHeight": 16,
-        "minVizWidth": 8,
-        "namePlacement": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "sum"
-          ],
-          "fields": "",
-          "values": true
-        },
-        "showUnfilled": true,
-        "sizing": "auto",
-        "valueMode": "text"
-      },
-      "pluginVersion": "12.4.0-21490573584",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${metrics_datasource}"
-          },
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "sum(increase(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_validator=\"hallucination\"}[$__range]) ) by (evals_classification) or vector(0)",
-          "instant": true,
-          "legendFormat": "__auto",
-          "range": false,
-          "refId": "A"
-        }
-      ],
-      "title": "Hallucination Classification",
-      "transformations": [
-        {
-          "id": "seriesToRows",
-          "options": {}
-        },
-        {
-          "id": "sortBy",
-          "options": {
-            "fields": {},
-            "sort": [
-              {
-                "desc": true,
-                "field": "Value"
-              }
-            ]
-          }
-        }
-      ],
-      "type": "bargauge"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${metrics_datasource}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "green",
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "bars",
-            "fillOpacity": 100,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "normal"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "noValue": "No LLM interactions with hallucination were detected in this range",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "reqps"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Unevaluated Requests"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "blue",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 36
-      },
-      "id": 22,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.4.0-21490573584",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${metrics_datasource}"
-          },
-          "editorMode": "code",
-          "expr": "sum(rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_validator=\"hallucination\"}[$__rate_interval]) ) by (evals_classification) or vector(0)",
-          "legendFormat": "Rate",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Hallucination Rate",
-      "type": "timeseries"
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
         "w": 24,
         "x": 0,
-        "y": 44
+        "y": 34
       },
-      "id": 31,
-      "panels": [],
-      "title": "Toxicity",
-      "type": "row"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${metrics_datasource}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 0,
-          "mappings": [],
-          "min": 0,
-          "noValue": "0",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "blue",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "requests"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 45
-      },
-      "id": 30,
+      "id": 40,
       "options": {
-        "displayMode": "gradient",
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "maxVizHeight": 300,
-        "minVizHeight": 16,
-        "minVizWidth": 8,
-        "namePlacement": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "sum"
-          ],
-          "fields": "",
-          "values": true
-        },
-        "showUnfilled": true,
-        "sizing": "auto",
-        "valueMode": "text"
+        "dedupStrategy": "none",
+        "detailsMode": "sidebar",
+        "enableInfiniteScrolling": true,
+        "enableLogDetails": true,
+        "showControls": false,
+        "showFieldSelector": false,
+        "showLabels": true,
+        "showTime": true,
+        "sortOrder": "Descending",
+        "syntaxHighlighting": false,
+        "unwrappedColumns": false,
+        "wrapLogMessage": false
       },
-      "pluginVersion": "12.4.0-21490573584",
+      "pluginVersion": "13.0.0-22326976726",
       "targets": [
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "${metrics_datasource}"
+            "type": "loki",
+            "uid": "${logs_datasource}"
           },
+          "direction": "backward",
           "editorMode": "code",
-          "exemplar": false,
-          "expr": "sum(increase(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_validator=\"toxicity_detection\"}[$__range]) ) by (evals_classification) or vector(0)",
-          "instant": true,
-          "legendFormat": "__auto",
-          "range": false,
+          "expr": "{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"} | logfmt | event_name = `gen_ai.evaluation.result`",
+          "queryType": "range",
           "refId": "A"
         }
       ],
-      "title": "Toxicity Classification",
-      "transformations": [
-        {
-          "id": "seriesToRows",
-          "options": {}
-        },
-        {
-          "id": "sortBy",
-          "options": {}
-        }
-      ],
-      "type": "bargauge"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${metrics_datasource}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "green",
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "bars",
-            "fillOpacity": 100,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "normal"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "noValue": "No LLM interactions with toxicity were detected in this range",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "reqps"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Unevaluated Requests"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "blue",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 45
-      },
-      "id": 29,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.4.0-21490573584",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${metrics_datasource}"
-          },
-          "editorMode": "code",
-          "expr": "sum(rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_validator=\"toxicity_detection\"}[$__rate_interval]) ) by (evals_classification) or vector(0)",
-          "legendFormat": "Rate",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Toxicity Rate",
-      "type": "timeseries"
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 53
-      },
-      "id": 26,
-      "panels": [],
-      "title": "Bias",
-      "type": "row"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${metrics_datasource}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 0,
-          "mappings": [],
-          "min": 0,
-          "noValue": "0",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "blue",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "requests"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 54
-      },
-      "id": 28,
-      "options": {
-        "displayMode": "gradient",
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "maxVizHeight": 300,
-        "minVizHeight": 16,
-        "minVizWidth": 8,
-        "namePlacement": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "sum"
-          ],
-          "fields": "",
-          "values": true
-        },
-        "showUnfilled": true,
-        "sizing": "auto",
-        "valueMode": "text"
-      },
-      "pluginVersion": "12.4.0-21490573584",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${metrics_datasource}"
-          },
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "sum(increase(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_validator=\"bias_detection\"}[$__range]) ) by (evals_classification) or vector(0)",
-          "instant": true,
-          "legendFormat": "__auto",
-          "range": false,
-          "refId": "A"
-        }
-      ],
-      "title": "Bias Classification",
-      "transformations": [
-        {
-          "id": "seriesToRows",
-          "options": {}
-        },
-        {
-          "id": "sortBy",
-          "options": {
-            "fields": {},
-            "sort": [
-              {
-                "desc": true,
-                "field": "Value"
-              }
-            ]
-          }
-        }
-      ],
-      "type": "bargauge"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${metrics_datasource}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "green",
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "bars",
-            "fillOpacity": 100,
-            "gradientMode": "hue",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "normal"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "noValue": "No LLM interactions with bias were detected in this range",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "reqps"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Unevaluated Requests"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "blue",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 54
-      },
-      "id": 27,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.4.0-21490573584",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${metrics_datasource}"
-          },
-          "editorMode": "code",
-          "expr": "sum(rate(evals_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", evals_validator=\"bias_detection\"}[$__rate_interval]) ) by (evals_classification) or vector(0)",
-          "legendFormat": "Rate",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Bias Rate",
-      "transformations": [
-        {
-          "id": "seriesToRows",
-          "options": {}
-        }
-      ],
-      "type": "timeseries"
+      "title": "Logs",
+      "transparent": true,
+      "type": "logs"
     }
   ],
   "preload": false,
@@ -1894,23 +1233,15 @@
   "templating": {
     "list": [
       {
-        "current": {
-          "text": "grafanacloud-genaio11y-prom",
-          "value": "grafanacloud-prom"
-        },
-        "label": "Metrics data source",
-        "name": "metrics_datasource",
+        "label": "Logs data source",
+        "name": "logs_datasource",
         "options": [],
-        "query": "prometheus",
+        "query": "loki",
         "refresh": 1,
-        "regex": "(?!grafanacloud-usage|grafanacloud-ml-metrics).+",
+        "regex": "^(?!.*(?:-alert-state-history|-usage-insights)$).*",
         "type": "datasource"
       },
       {
-        "current": {
-          "text": "All",
-          "value": "$__all"
-        },
         "definition": "label_values(service_name)",
         "includeAll": true,
         "label": "service_name",
@@ -1928,10 +1259,6 @@
         "type": "query"
       },
       {
-        "current": {
-          "text": "All",
-          "value": "$__all"
-        },
         "definition": "label_values(deployment_environment)",
         "includeAll": true,
         "label": "deployment_environment",
@@ -1958,6 +1285,6 @@
   "timezone": "browser",
   "title": "GenAI Evaluations",
   "uid": "is7rtn8",
-  "version": 25,
+  "version": 36,
   "weekStart": ""
 }
