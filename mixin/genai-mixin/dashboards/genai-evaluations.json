@@ -112,7 +112,7 @@
         "type": "loki",
         "uid": "${logs_datasource}"
       },
-      "description": "Total number of evaluation results in the selected time range",
+      "description": "Total number of LLM evaluation requests in the selected time range",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -124,8 +124,12 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue",
+                "color": "green",
                 "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
               }
             ]
           },
@@ -139,7 +143,7 @@
         "x": 3,
         "y": 0
       },
-      "id": 37,
+      "id": 45,
       "options": {
         "colorMode": "background",
         "graphMode": "area",
@@ -148,7 +152,7 @@
         "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
-            "lastNotNull"
+            "sum"
           ],
           "fields": "",
           "values": false
@@ -167,9 +171,8 @@
           },
           "direction": "backward",
           "editorMode": "code",
-          "expr": "sum(count_over_time({service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"} | logfmt | event_name = `gen_ai.evaluation.result` [$__auto]))",
+          "expr": "sum(count_over_time({service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"} |= `gen_ai.evaluation.name` [$__auto]))",
           "instant": true,
-          "legendFormat": "Requests",
           "queryType": "instant",
           "range": false,
           "refId": "A"
@@ -184,13 +187,15 @@
         "type": "loki",
         "uid": "${logs_datasource}"
       },
+      "description": "Percentage of failed evaluations out of all evaluations in the selected time range",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
           "mappings": [],
-          "noValue": "No Errors",
+          "max": 100,
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -199,8 +204,12 @@
                 "value": 0
               },
               {
+                "color": "yellow",
+                "value": 25
+              },
+              {
                 "color": "red",
-                "value": 0.5
+                "value": 50
               }
             ]
           },
@@ -214,11 +223,11 @@
         "x": 10,
         "y": 0
       },
-      "id": 16,
+      "id": 46,
       "options": {
         "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
+        "graphMode": "none",
+        "justifyMode": "center",
         "orientation": "auto",
         "percentChangeColorMode": "standard",
         "reduceOptions": {
@@ -235,14 +244,17 @@
       "pluginVersion": "13.0.0-22326976726",
       "targets": [
         {
+          "app": "grafana-assistant-app",
           "datasource": {
             "type": "loki",
             "uid": "${logs_datasource}"
           },
           "direction": "backward",
           "editorMode": "code",
-          "expr": "100 * sum(count_over_time({service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"} | logfmt | event_name=\"gen_ai.evaluation.result\" | gen_ai_evaluation_score_label=\"fail\" [$__auto])) / sum(count_over_time({service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"} | logfmt | event_name=\"gen_ai.evaluation.result\" [$__auto]))",
-          "queryType": "range",
+          "expr": "sum(count_over_time({service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"} |= \"gen_ai.evaluation\" | json | gen_ai_evaluation_score_label=\"fail\" [$__auto])) / sum(count_over_time({service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"} |= \"gen_ai.evaluation.name\" [$__auto])) * 100",
+          "instant": true,
+          "queryType": "instant",
+          "range": false,
           "refId": "A"
         }
       ],
@@ -255,24 +267,27 @@
         "type": "loki",
         "uid": "${logs_datasource}"
       },
-      "description": "Evaluation name with the most failures",
+      "description": "Count of failed evaluations grouped by evaluation type",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "red",
-            "mode": "fixed"
+            "mode": "thresholds"
           },
-          "displayName": "",
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
+                "color": "green",
                 "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
               }
             ]
-          }
+          },
+          "unit": "short"
         },
         "overrides": []
       },
@@ -282,22 +297,22 @@
         "x": 17,
         "y": 0
       },
-      "id": 34,
+      "id": 47,
       "options": {
         "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "center",
-        "orientation": "auto",
+        "orientation": "horizontal",
         "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
-            "lastNotNull"
+            "sum"
           ],
-          "fields": "/^gen_ai_evaluation_name$/",
-          "values": false
+          "fields": "",
+          "values": true
         },
         "showPercentChange": false,
-        "textMode": "value",
+        "textMode": "name",
         "wideLayout": true
       },
       "pluginVersion": "13.0.0-22326976726",
@@ -309,16 +324,16 @@
             "uid": "${logs_datasource}"
           },
           "direction": "backward",
-          "editorMode": "code",
-          "expr": "topk(1, sum by (gen_ai_evaluation_name) (count_over_time({service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}| logfmt | event_name=\"gen_ai.evaluation.result\" | gen_ai_evaluation_score_label=\"fail\" [$__auto])))",
+          "editorMode": "builder",
+          "expr": "topk(1, sum by(gen_ai_evaluation_name) (count_over_time({service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"} |= `gen_ai.evaluation` | json | gen_ai_evaluation_score_label = `fail` [$__auto])))",
           "instant": true,
-          "legendFormat": "",
+          "legendFormat": "{{gen_ai_evaluation_name}}",
           "queryType": "instant",
           "range": false,
           "refId": "A"
         }
       ],
-      "title": "Top Problem",
+      "title": "Top Problems",
       "transparent": true,
       "type": "stat"
     },
@@ -333,8 +348,8 @@
           "color": {
             "mode": "palette-classic"
           },
-          "displayName": "${__field.labels.gen_ai_evaluation_name}",
           "mappings": [],
+          "max": 100,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -344,12 +359,12 @@
                 "value": 0
               },
               {
-                "color": "orange",
-                "value": 5
+                "color": "yellow",
+                "value": 25
               },
               {
                 "color": "red",
-                "value": 10
+                "value": 75
               }
             ]
           },
@@ -363,22 +378,34 @@
         "x": 0,
         "y": 4
       },
-      "id": 36,
+      "id": 48,
       "options": {
+        "barShape": "flat",
+        "barWidthFactor": 0.5,
+        "effects": {
+          "barGlow": false,
+          "centerGlow": false,
+          "gradient": false
+        },
+        "endpointMarker": "point",
         "minVizHeight": 75,
         "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "sum"
+            "lastNotNull"
           ],
           "fields": "",
-          "values": false
+          "values": true
         },
+        "segmentCount": 1,
+        "segmentSpacing": 0.3,
+        "shape": "gauge",
         "showThresholdLabels": false,
-        "showThresholdMarkers": true,
+        "showThresholdMarkers": false,
         "sizing": "auto",
-        "textMode": "auto"
+        "sparkline": false,
+        "textMode": "value_and_name"
       },
       "pluginVersion": "13.0.0-22326976726",
       "targets": [
@@ -390,15 +417,15 @@
           },
           "direction": "backward",
           "editorMode": "code",
-          "expr": "sum by (gen_ai_evaluation_name) (count_over_time({service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}| logfmt | event_name=\"gen_ai.evaluation.result\" [$__auto]))",
-          "instant": false,
+          "expr": "sum by (gen_ai_evaluation_name) (count_over_time({service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"} |= \"gen_ai.evaluation\" | json [$__auto]))",
+          "instant": true,
           "legendFormat": "{{gen_ai_evaluation_name}}",
-          "queryType": "range",
-          "range": true,
+          "queryType": "instant",
+          "range": false,
           "refId": "A"
         }
       ],
-      "title": "Evaluation Classification Counts",
+      "title": "Evaluations by Classification Type",
       "type": "gauge"
     },
     {
@@ -406,7 +433,7 @@
         "type": "loki",
         "uid": "${logs_datasource}"
       },
-      "description": "Time series of evaluation requests by classification",
+      "description": "Time series of evaluation request counts grouped by classification type",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -429,8 +456,8 @@
               "viz": false
             },
             "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
@@ -459,8 +486,7 @@
                 "value": 80
               }
             ]
-          },
-          "unit": "reqps"
+          }
         },
         "overrides": []
       },
@@ -470,7 +496,7 @@
         "x": 13,
         "y": 4
       },
-      "id": 21,
+      "id": 49,
       "options": {
         "legend": {
           "calcs": [],
@@ -487,19 +513,22 @@
       "pluginVersion": "13.0.0-22326976726",
       "targets": [
         {
+          "app": "grafana-assistant-app",
           "datasource": {
             "type": "loki",
             "uid": "${logs_datasource}"
           },
           "direction": "backward",
           "editorMode": "code",
-          "expr": "sum by (gen_ai_evaluation_name) (rate({service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}  | logfmt | event_name=\"gen_ai.evaluation.result\" [$__auto]))",
+          "expr": "sum by (gen_ai_evaluation_name) (count_over_time({service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"} |= \"gen_ai.evaluation\" | json [$__auto]))",
+          "instant": false,
           "legendFormat": "{{gen_ai_evaluation_name}}",
           "queryType": "range",
+          "range": true,
           "refId": "A"
         }
       ],
-      "title": "Evaluation Rate Over Time",
+      "title": "Evaluation Requests by Classification",
       "type": "timeseries"
     },
     {
@@ -507,7 +536,7 @@
         "type": "loki",
         "uid": "${logs_datasource}"
       },
-      "description": "Heatmap showing evaluation counts across classification names and pass/fail verdicts over time",
+      "description": "Heatmap of evaluation counts across classification type and pass/fail verdict over time",
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -519,8 +548,7 @@
             "scaleDistribution": {
               "type": "linear"
             }
-          },
-          "unit": "short"
+          }
         },
         "overrides": []
       },
@@ -530,19 +558,18 @@
         "x": 0,
         "y": 10
       },
-      "id": 38,
+      "id": 50,
       "options": {
         "calculate": false,
         "cellGap": 2,
         "color": {
           "exponent": 0.5,
           "fill": "dark-orange",
-          "min": 0,
           "mode": "scheme",
           "reverse": false,
           "scale": "exponential",
           "scheme": "Oranges",
-          "steps": 128
+          "steps": 64
         },
         "exemplars": {
           "color": "rgba(255,0,255,0.7)"
@@ -556,15 +583,15 @@
         "rowsFrame": {
           "layout": "auto"
         },
+        "showValue": "auto",
         "tooltip": {
-          "mode": "single",
+          "mode": "multi",
           "showColorScale": false,
           "yHistogram": false
         },
         "yAxis": {
           "axisPlacement": "left",
-          "reverse": false,
-          "unit": "short"
+          "reverse": false
         }
       },
       "pluginVersion": "13.0.0-22326976726",
@@ -577,15 +604,15 @@
           },
           "direction": "backward",
           "editorMode": "code",
-          "expr": "sum by (gen_ai_evaluation_name, gen_ai_evaluation_score_label) (count_over_time({service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}  | logfmt | event_name=\"gen_ai.evaluation.result\" [$__auto]))",
+          "expr": "sum by (gen_ai_evaluation_name, gen_ai_evaluation_score_label) (count_over_time({service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"} |= \"gen_ai.evaluation\" | json [$__auto]))",
           "instant": false,
-          "legendFormat": "{{gen_ai_evaluation_name}} / {{gen_ai_evaluation_score_label}}",
+          "legendFormat": "{{gen_ai_evaluation_name}} · {{gen_ai_evaluation_score_label}}",
           "queryType": "range",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Classification vs Verdict Heatmap",
+      "title": "Evaluation Heatmap by Classification & Verdict",
       "type": "heatmap"
     },
     {
@@ -593,11 +620,11 @@
         "type": "loki",
         "uid": "${logs_datasource}"
       },
-      "description": "Count of detected issues (fail verdicts) grouped by confidence score level: Low (<0.3), Medium (0.3–0.7), High (≥0.7)",
+      "description": "Count of fail verdicts grouped by confidence score: Low (<0.3), Medium (0.3–0.7), High (≥0.7)",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "palette-classic"
           },
           "custom": {
             "axisBorderShow": false,
@@ -629,18 +656,60 @@
                 "value": 0
               },
               {
-                "color": "orange",
-                "value": 1
-              },
-              {
                 "color": "red",
-                "value": 3
+                "value": 80
               }
             ]
           },
           "unit": "short"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Low (<0.3)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Medium (0.3–0.7)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "High (≥0.7)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 7,
@@ -648,15 +717,16 @@
         "x": 13,
         "y": 10
       },
-      "id": 39,
+      "id": 51,
       "options": {
         "barRadius": 0,
         "barWidth": 0.5,
+        "colorByField": "Field",
         "fullHighlight": false,
         "groupWidth": 0.7,
         "legend": {
           "calcs": [],
-          "displayMode": "list",
+          "displayMode": "hidden",
           "placement": "bottom",
           "showLegend": false
         },
@@ -668,7 +738,6 @@
           "mode": "single",
           "sort": "none"
         },
-        "xField": "Metric",
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
@@ -682,9 +751,9 @@
           },
           "direction": "backward",
           "editorMode": "code",
-          "expr": "sum(count_over_time({service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"} | logfmt | event_name=\"gen_ai.evaluation.result\" | gen_ai_evaluation_score_label=\"fail\" | gen_ai_evaluation_score_value < 0.3 [$__auto]))",
+          "expr": "sum(count_over_time({service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"} |= \"gen_ai.evaluation\" | json | gen_ai_evaluation_score_label=\"fail\" | gen_ai_evaluation_score_value < 0.3 [$__auto]))",
           "instant": true,
-          "legendFormat": "Low (<0.3)",
+          "legendFormat": "Low",
           "queryType": "instant",
           "range": false,
           "refId": "A"
@@ -697,9 +766,9 @@
           },
           "direction": "backward",
           "editorMode": "code",
-          "expr": "sum(count_over_time({service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"} | logfmt | event_name=\"gen_ai.evaluation.result\" | gen_ai_evaluation_score_label=\"fail\" | gen_ai_evaluation_score_value >= 0.3 | gen_ai_evaluation_score_value < 0.7 [$__auto]))",
+          "expr": "sum(count_over_time({service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"} |= \"gen_ai.evaluation\" | json | gen_ai_evaluation_score_label=\"fail\" | gen_ai_evaluation_score_value >= 0.3 | gen_ai_evaluation_score_value < 0.7 [$__auto]))",
           "instant": true,
-          "legendFormat": "Medium (0.3–0.7)",
+          "legendFormat": "Medium",
           "queryType": "instant",
           "range": false,
           "refId": "B"
@@ -712,15 +781,15 @@
           },
           "direction": "backward",
           "editorMode": "code",
-          "expr": "sum(count_over_time({service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}| logfmt | event_name=\"gen_ai.evaluation.result\" | gen_ai_evaluation_score_label=\"fail\" | gen_ai_evaluation_score_value >= 0.7 [$__auto]))",
+          "expr": "sum(count_over_time({service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"} |= \"gen_ai.evaluation\" | json | gen_ai_evaluation_score_label=\"fail\" | gen_ai_evaluation_score_value >= 0.7 [$__auto]))",
           "instant": true,
-          "legendFormat": "High (≥0.7)",
+          "legendFormat": "High",
           "queryType": "instant",
           "range": false,
           "refId": "C"
         }
       ],
-      "title": "Issue Detection Rate by Confidence Score Level",
+      "title": "Detected Issues by Confidence Level",
       "transformations": [
         {
           "id": "merge",
@@ -737,8 +806,13 @@
           }
         },
         {
-          "id": "seriesToRows",
-          "options": {}
+          "id": "reduce",
+          "options": {
+            "calcs": [
+              "sum"
+            ],
+            "includeTimeField": false
+          }
         }
       ],
       "type": "barchart"
@@ -748,12 +822,9 @@
         "type": "loki",
         "uid": "${logs_datasource}"
       },
-      "description": "Total count of pass vs fail evaluations in the selected time range",
+      "description": "Evaluation count grouped by pass/fail verdict",
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
           "custom": {
             "align": "auto",
             "cellOptions": {
@@ -765,6 +836,7 @@
             "inspect": false
           },
           "mappings": [],
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -784,60 +856,25 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Verdict"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 200
-              },
-              {
-                "id": "mappings",
-                "value": [
-                  {
-                    "options": {
-                      "fail": {
-                        "color": "red",
-                        "index": 0,
-                        "text": "Fail"
-                      },
-                      "pass": {
-                        "color": "green",
-                        "index": 1,
-                        "text": "Pass"
-                      }
-                    },
-                    "type": "value"
-                  }
-                ]
-              },
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "type": "color-background"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
               "options": "Count"
             },
             "properties": [
               {
-                "id": "min",
-                "value": 0
-              },
-              {
-                "id": "custom.align",
-                "value": "center"
-              },
-              {
                 "id": "custom.cellOptions",
                 "value": {
-                  "mode": "gradient",
+                  "mode": "basic",
                   "type": "gauge"
+                }
+              },
+              {
+                "id": "custom.minWidth",
+                "value": 200
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -845,15 +882,14 @@
         ]
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
+        "h": 6,
+        "w": 13,
         "x": 0,
         "y": 17
       },
-      "id": 43,
+      "id": 52,
       "options": {
-        "cellHeight": "md",
-        "enablePagination": false,
+        "cellHeight": "sm",
         "showHeader": true,
         "sortBy": [
           {
@@ -872,9 +908,9 @@
           },
           "direction": "backward",
           "editorMode": "code",
-          "expr": "sum by (gen_ai_evaluation_score_label) (count_over_time({service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"} | logfmt | event_name=\"gen_ai.evaluation.result\" [$__auto]))",
+          "expr": "sum by (gen_ai_evaluation_score_label) (count_over_time({service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"} |= \"gen_ai.evaluation\" | json [$__auto]))",
           "instant": true,
-          "legendFormat": "",
+          "legendFormat": "{{gen_ai_evaluation_score_label}}",
           "queryType": "instant",
           "range": false,
           "refId": "A"
@@ -882,6 +918,12 @@
       ],
       "title": "Pass vs Fail Request Count",
       "transformations": [
+        {
+          "id": "labelsToFields",
+          "options": {
+            "mode": "columns"
+          }
+        },
         {
           "id": "organize",
           "options": {
@@ -895,7 +937,6 @@
           }
         }
       ],
-      "transparent": true,
       "type": "table"
     },
     {
@@ -903,12 +944,9 @@
         "type": "loki",
         "uid": "${logs_datasource}"
       },
-      "description": "Count of evaluations per classification type in the selected time range",
+      "description": "Evaluation count grouped by classification type",
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
           "custom": {
             "align": "auto",
             "cellOptions": {
@@ -920,6 +958,7 @@
             "inspect": false
           },
           "mappings": [],
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -939,34 +978,25 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Classification"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 161
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
               "options": "Count"
             },
             "properties": [
               {
-                "id": "min",
-                "value": 0
-              },
-              {
-                "id": "custom.align",
-                "value": "center"
-              },
-              {
                 "id": "custom.cellOptions",
                 "value": {
-                  "mode": "gradient",
+                  "mode": "basic",
                   "type": "gauge"
+                }
+              },
+              {
+                "id": "custom.minWidth",
+                "value": 200
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -974,15 +1004,14 @@
         ]
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
+        "h": 6,
+        "w": 11,
+        "x": 13,
         "y": 17
       },
-      "id": 41,
+      "id": 53,
       "options": {
-        "cellHeight": "md",
-        "enablePagination": false,
+        "cellHeight": "sm",
         "showHeader": true,
         "sortBy": [
           {
@@ -1001,9 +1030,9 @@
           },
           "direction": "backward",
           "editorMode": "code",
-          "expr": "sum by (gen_ai_evaluation_name) (count_over_time({service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"} | logfmt | event_name=\"gen_ai.evaluation.result\" [$__auto]))",
+          "expr": "sum by (gen_ai_evaluation_name) (count_over_time({service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"} |= \"gen_ai.evaluation\" | json [$__auto]))",
           "instant": true,
-          "legendFormat": "",
+          "legendFormat": "{{gen_ai_evaluation_name}}",
           "queryType": "instant",
           "range": false,
           "refId": "A"
@@ -1011,6 +1040,12 @@
       ],
       "title": "Eval Classification Counts",
       "transformations": [
+        {
+          "id": "labelsToFields",
+          "options": {
+            "mode": "columns"
+          }
+        },
         {
           "id": "organize",
           "options": {
@@ -1024,7 +1059,6 @@
           }
         }
       ],
-      "transparent": true,
       "type": "table"
     },
     {
@@ -1033,7 +1067,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 25
+        "y": 23
       },
       "id": 20,
       "panels": [],
@@ -1045,7 +1079,7 @@
         "type": "loki",
         "uid": "${logs_datasource}"
       },
-      "description": "Top evaluation failure reasons ranked by occurrence count in the selected time range",
+      "description": "Most common explanations for failed evaluations",
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -1059,6 +1093,7 @@
             "inspect": false
           },
           "mappings": [],
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1078,6 +1113,32 @@
           {
             "matcher": {
               "id": "byName",
+              "options": "Count"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "basic",
+                  "type": "gauge"
+                }
+              },
+              {
+                "id": "custom.width",
+                "value": 512
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
               "options": "Reason"
             },
             "properties": [
@@ -1087,34 +1148,7 @@
               },
               {
                 "id": "custom.width",
-                "value": 851
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Count"
-            },
-            "properties": [
-              {
-                "id": "min",
-                "value": 0
-              },
-              {
-                "id": "custom.width",
-                "value": 453
-              },
-              {
-                "id": "custom.align",
-                "value": "center"
-              },
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "mode": "gradient",
-                  "type": "gauge"
-                }
+                "value": 793
               }
             ]
           }
@@ -1124,17 +1158,16 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 26
+        "y": 24
       },
-      "id": 44,
+      "id": 54,
       "options": {
-        "cellHeight": "lg",
-        "enablePagination": false,
+        "cellHeight": "sm",
         "showHeader": true,
         "sortBy": [
           {
-            "desc": true,
-            "displayName": "Count"
+            "desc": false,
+            "displayName": "Value #A"
           }
         ]
       },
@@ -1148,18 +1181,23 @@
           },
           "direction": "backward",
           "editorMode": "code",
-          "expr": "topk(10, sum by (gen_ai_evaluation_explanation) (count_over_time({service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"} | logfmt | event_name=\"gen_ai.evaluation.result\" [$__auto])))",
+          "expr": "sum by (gen_ai_evaluation_explanation) (count_over_time({service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"} |= \"gen_ai.evaluation\" | json | gen_ai_evaluation_score_label=\"fail\" [$__auto]))",
           "instant": true,
-          "legendFormat": "",
+          "legendFormat": "{{gen_ai_evaluation_explanation}}",
           "queryType": "instant",
           "range": false,
           "refId": "A"
         }
       ],
-      "title": "",
+      "title": "Top Issue Explanations",
       "transformations": [
         {
-          "disabled": false,
+          "id": "labelsToFields",
+          "options": {
+            "mode": "columns"
+          }
+        },
+        {
           "id": "organize",
           "options": {
             "excludeByName": {
@@ -1172,7 +1210,6 @@
           }
         }
       ],
-      "transparent": true,
       "type": "table"
     },
     {
@@ -1185,10 +1222,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 14,
         "w": 24,
         "x": 0,
-        "y": 34
+        "y": 32
       },
       "id": 40,
       "options": {
@@ -1214,7 +1251,7 @@
           },
           "direction": "backward",
           "editorMode": "code",
-          "expr": "{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"} | logfmt | event_name = `gen_ai.evaluation.result`",
+          "expr": "{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"} |= \"gen_ai.evaluation\" | json",
           "queryType": "range",
           "refId": "A"
         }
@@ -1285,6 +1322,6 @@
   "timezone": "browser",
   "title": "GenAI Evaluations",
   "uid": "is7rtn8",
-  "version": 36,
+  "version": 21,
   "weekStart": ""
 }
