@@ -1,5 +1,5 @@
 # OpenLIT for LLM and Vector Database observability
-openlit>=0.1.0
+openlit>=1.37.4
 
 # LLM providers
 openai>=1.0.0
