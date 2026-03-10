@@ -105,7 +105,7 @@
         "content": "<img\n src=\"https://grafana.com/media/docs/grafana-cloud/ai-observability/aio11y-logo.svg\"\n width=\"100%\"\n height=\"100%\">",
         "mode": "html"
       },
-      "pluginVersion": "13.0.0-22478626928",
+      "pluginVersion": "13.0.0-22478626928.patch2",
       "title": "",
       "transparent": true,
       "type": "text"
@@ -168,7 +168,7 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "13.0.0-22478626928",
+      "pluginVersion": "13.0.0-22478626928.patch2",
       "targets": [
         {
           "datasource": {
@@ -245,7 +245,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "13.0.0-22478626928",
+      "pluginVersion": "13.0.0-22478626928.patch2",
       "targets": [
         {
           "datasource": {
@@ -254,7 +254,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "sum(gen_ai_usage_tokens_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"})",
+          "expr": "sum(increase(gen_ai_usage_tokens_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range]))",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
@@ -326,7 +326,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "13.0.0-22478626928",
+      "pluginVersion": "13.0.0-22478626928.patch2",
       "targets": [
         {
           "datasource": {
@@ -403,7 +403,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "13.0.0-22478626928",
+      "pluginVersion": "13.0.0-22478626928.patch2",
       "targets": [
         {
           "datasource": {
@@ -412,7 +412,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "sum(last_over_time(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__interval]))",
+          "expr": "sum(increase(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range]))",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
@@ -502,7 +502,7 @@
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true
         },
         "tooltip": {
           "hideZeros": true,
@@ -510,7 +510,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.0-22478626928",
+      "pluginVersion": "13.0.0-22478626928.patch2",
       "targets": [
         {
           "datasource": {
@@ -519,7 +519,7 @@
           },
           "editorMode": "code",
           "expr": "increase(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[1h]) / 1000",
-          "legendFormat": "{{gen_ai_provider_name}}",
+          "legendFormat": "{{gen_ai_system}} /  {{gen_ai_request_model}}",
           "range": true,
           "refId": "A"
         }
@@ -616,7 +616,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.0-22478626928",
+      "pluginVersion": "13.0.0-22478626928.patch2",
       "targets": [
         {
           "app": "grafana-assistant-app",
@@ -718,7 +718,7 @@
           }
         ]
       },
-      "pluginVersion": "13.0.0-22478626928",
+      "pluginVersion": "13.0.0-22478626928.patch2",
       "targets": [
         {
           "app": "grafana-assistant-app",
@@ -727,7 +727,7 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "topk(5, sum by(gen_ai_request_model) (last_over_time(gen_ai_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range])))",
+          "expr": "topk(5, sum by(gen_ai_request_model) (increase(gen_ai_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range])))",
           "instant": true,
           "legendFormat": "{{gen_ai_request_model}}",
           "queryType": "instant",
@@ -735,7 +735,7 @@
           "refId": "A"
         }
       ],
-      "title": "Top 5 Models by Requests",
+      "title": "Top Models by Requests",
       "transformations": [
         {
           "id": "seriesToRows",
@@ -813,7 +813,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "13.0.0-22478626928",
+      "pluginVersion": "13.0.0-22478626928.patch2",
       "targets": [
         {
           "datasource": {
@@ -917,7 +917,7 @@
           "sort": "desc"
         }
       },
-      "pluginVersion": "13.0.0-22478626928",
+      "pluginVersion": "13.0.0-22478626928.patch2",
       "targets": [
         {
           "app": "grafana-assistant-app",
@@ -1056,7 +1056,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.0-22478626928",
+      "pluginVersion": "13.0.0-22478626928.patch2",
       "targets": [
         {
           "app": "grafana-assistant-app",
@@ -1148,7 +1148,7 @@
         "unwrappedColumns": false,
         "wrapLogMessage": true
       },
-      "pluginVersion": "13.0.0-22478626928",
+      "pluginVersion": "13.0.0-22478626928.patch2",
       "targets": [
         {
           "datasource": {
@@ -1228,7 +1228,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Model"
+                "value": "System"
               },
               {
                 "id": "custom.width",
@@ -1258,11 +1258,11 @@
         "sortBy": [
           {
             "desc": true,
-            "displayName": "Last *"
+            "displayName": "Model"
           }
         ]
       },
-      "pluginVersion": "13.0.0-22478626928",
+      "pluginVersion": "13.0.0-22478626928.patch2",
       "targets": [
         {
           "app": "grafana-assistant-app",
@@ -1279,7 +1279,7 @@
           "refId": "A"
         }
       ],
-      "title": "Top 5 Providers by Cost",
+      "title": "Top Providers by Cost",
       "transformations": [
         {
           "id": "seriesToRows",
@@ -1383,7 +1383,7 @@
           }
         ]
       },
-      "pluginVersion": "13.0.0-22478626928",
+      "pluginVersion": "13.0.0-22478626928.patch2",
       "targets": [
         {
           "app": "grafana-assistant-app",
@@ -1400,7 +1400,7 @@
           "refId": "A"
         }
       ],
-      "title": "Top 5 Models by Cost",
+      "title": "Top Models by Cost",
       "transformations": [
         {
           "id": "seriesToRows",
@@ -1527,7 +1527,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.0-22478626928",
+      "pluginVersion": "13.0.0-22478626928.patch2",
       "targets": [
         {
           "datasource": {
@@ -1634,7 +1634,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.0-22478626928",
+      "pluginVersion": "13.0.0-22478626928.patch2",
       "targets": [
         {
           "datasource": {
@@ -1702,7 +1702,7 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "13.0.0-22478626928",
+      "pluginVersion": "13.0.0-22478626928.patch2",
       "targets": [
         {
           "app": "grafana-assistant-app",
@@ -1772,7 +1772,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "13.0.0-22478626928",
+      "pluginVersion": "13.0.0-22478626928.patch2",
       "targets": [
         {
           "app": "grafana-assistant-app",
@@ -1843,7 +1843,7 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "13.0.0-22478626928",
+      "pluginVersion": "13.0.0-22478626928.patch2",
       "targets": [
         {
           "app": "grafana-assistant-app",
@@ -1899,7 +1899,7 @@
         "content": "### By System",
         "mode": "markdown"
       },
-      "pluginVersion": "13.0.0-22478626928",
+      "pluginVersion": "13.0.0-22478626928.patch2",
       "title": "",
       "type": "text"
     },
@@ -1925,7 +1925,7 @@
         "content": "### By Model",
         "mode": "markdown"
       },
-      "pluginVersion": "13.0.0-22478626928",
+      "pluginVersion": "13.0.0-22478626928.patch2",
       "title": "",
       "type": "text"
     },
@@ -1991,7 +1991,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "13.0.0-22478626928",
+      "pluginVersion": "13.0.0-22478626928.patch2",
       "targets": [
         {
           "datasource": {
@@ -2095,7 +2095,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "13.0.0-22478626928",
+      "pluginVersion": "13.0.0-22478626928.patch2",
       "targets": [
         {
           "datasource": {
@@ -2222,7 +2222,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.0-22478626928",
+      "pluginVersion": "13.0.0-22478626928.patch2",
       "targets": [
         {
           "datasource": {
@@ -2325,7 +2325,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.0-22478626928",
+      "pluginVersion": "13.0.0-22478626928.patch2",
       "targets": [
         {
           "datasource": {
@@ -2428,7 +2428,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.0-22478626928",
+      "pluginVersion": "13.0.0-22478626928.patch2",
       "targets": [
         {
           "datasource": {
@@ -2531,7 +2531,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.0-22478626928",
+      "pluginVersion": "13.0.0-22478626928.patch2",
       "targets": [
         {
           "datasource": {
@@ -2588,9 +2588,7 @@
       },
       {
         "current": {
-          "text": [
-            "All"
-          ],
+          "text": "All",
           "value": [
             "$__all"
           ]
@@ -2617,9 +2615,7 @@
       },
       {
         "current": {
-          "text": [
-            "All"
-          ],
+          "text": "All",
           "value": [
             "$__all"
           ]
@@ -2655,6 +2651,6 @@
   "timezone": "browser",
   "title": "GenAI Observability",
   "uid": "cdiz9piuoa3gge",
-  "version": 13,
+  "version": 19,
   "weekStart": ""
 }
