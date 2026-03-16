@@ -105,7 +105,7 @@
         "content": "<img\n src=\"https://grafana.com/media/docs/grafana-cloud/ai-observability/aio11y-logo.svg\"\n width=\"100%\"\n height=\"100%\">",
         "mode": "html"
       },
-      "pluginVersion": "13.0.0-22478626928.patch2",
+      "pluginVersion": "13.0.0-22843068776",
       "title": "",
       "transparent": true,
       "type": "text"
@@ -168,7 +168,7 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "13.0.0-22478626928.patch2",
+      "pluginVersion": "13.0.0-22843068776",
       "targets": [
         {
           "datasource": {
@@ -177,7 +177,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "sum(increase(gen_ai_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range]))",
+          "expr": "sum(increase(gen_ai_client_operation_duration_seconds_count{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range]))",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
@@ -245,7 +245,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "13.0.0-22478626928.patch2",
+      "pluginVersion": "13.0.0-22843068776",
       "targets": [
         {
           "datasource": {
@@ -254,7 +254,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "sum(increase(gen_ai_usage_tokens_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range]))",
+          "expr": "sum(increase(gen_ai_client_token_usage_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range]))",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
@@ -326,7 +326,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "13.0.0-22478626928.patch2",
+      "pluginVersion": "13.0.0-22843068776",
       "targets": [
         {
           "datasource": {
@@ -403,7 +403,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "13.0.0-22478626928.patch2",
+      "pluginVersion": "13.0.0-22843068776",
       "targets": [
         {
           "datasource": {
@@ -412,7 +412,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "sum(increase(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range]))",
+          "expr": "sum(last_over_time(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__interval]))",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
@@ -498,6 +498,9 @@
       },
       "id": 55,
       "options": {
+        "annotations": {
+          "multiLane": false
+        },
         "legend": {
           "calcs": [],
           "displayMode": "list",
@@ -510,7 +513,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.0-22478626928.patch2",
+      "pluginVersion": "13.0.0-22843068776",
       "targets": [
         {
           "datasource": {
@@ -519,7 +522,7 @@
           },
           "editorMode": "code",
           "expr": "increase(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[1h]) / 1000",
-          "legendFormat": "{{gen_ai_system}} /  {{gen_ai_request_model}}",
+          "legendFormat": "{{gen_ai_provider_name}} / {{gen_ai_request_model}}",
           "range": true,
           "refId": "A"
         }
@@ -532,7 +535,7 @@
         "type": "prometheus",
         "uid": "${metrics_datasource}"
       },
-      "description": "Percentage of GenAI evaluations with no issues detected (verdict=no) over time",
+      "description": "Percentage of successful GenAI requests over time",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -573,22 +576,17 @@
             }
           },
           "mappings": [],
-          "max": 100,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
+                "color": "green",
                 "value": 0
               },
               {
-                "color": "yellow",
-                "value": 70
-              },
-              {
-                "color": "green",
-                "value": 90
+                "color": "red",
+                "value": 80
               }
             ]
           },
@@ -604,11 +602,14 @@
       },
       "id": 56,
       "options": {
+        "annotations": {
+          "multiLane": false
+        },
         "legend": {
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true
         },
         "tooltip": {
           "hideZeros": false,
@@ -616,23 +617,60 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.0-22478626928.patch2",
+      "pluginVersion": "13.0.0-22843068776",
       "targets": [
         {
-          "app": "grafana-assistant-app",
           "datasource": {
             "type": "prometheus",
             "uid": "${metrics_datasource}"
           },
-          "expr": "sum(rate(gen_ai_evaluation_count_total{verdict=\"no\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) / sum(rate(gen_ai_evaluation_count_total{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) * 100",
-          "instant": false,
-          "legendFormat": "Pass Rate",
-          "queryType": "range",
+          "editorMode": "code",
+          "expr": "sum(rate(gen_ai_client_operation_duration_seconds_count{http_status_code!~\"4..|5..\", telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) / sum(rate(gen_ai_client_operation_duration_seconds_count{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) * 100",
+          "hide": true,
+          "legendFormat": "Total Requests",
           "range": true,
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${metrics_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "(  \n  sum(increase(gen_ai_client_operation_duration_seconds_count{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval]))  \n  -  \n  (sum(increase(gen_ai_client_operation_duration_seconds_count{error_type=~\".+\", telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) or vector(0))  \n)  \n/  \nsum(increase(gen_ai_client_operation_duration_seconds_count{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval]))  \n* 100  ",
+          "hide": true,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${metrics_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum(increase(gen_ai_client_operation_duration_seconds_count{error_type=~\".+\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval]))  \n/  \nsum(increase(gen_ai_client_operation_duration_seconds_count{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval]))  \n* 100  ",
+          "hide": true,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${metrics_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "histogram_quantile(0.95, sum by(le, gen_ai_provider_name) (rate(gen_ai_client_operation_duration_seconds_bucket{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])))  ",
+          "instant": false,
+          "legendFormat": "{{gen_ai_provider_name}}",
+          "range": true,
+          "refId": "D"
         }
       ],
-      "title": "Evaluation Pass Rate",
+      "title": "Error Rate %",
       "type": "timeseries"
     },
     {
@@ -714,11 +752,11 @@
         "sortBy": [
           {
             "desc": true,
-            "displayName": "Last *"
+            "displayName": "Model"
           }
         ]
       },
-      "pluginVersion": "13.0.0-22478626928.patch2",
+      "pluginVersion": "13.0.0-22843068776",
       "targets": [
         {
           "app": "grafana-assistant-app",
@@ -727,7 +765,7 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "topk(5, sum by(gen_ai_request_model) (increase(gen_ai_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range])))",
+          "expr": "topk(5, sum by(gen_ai_request_model) (last_over_time(gen_ai_client_operation_duration_seconds_count{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range])))",
           "instant": true,
           "legendFormat": "{{gen_ai_request_model}}",
           "queryType": "instant",
@@ -735,7 +773,7 @@
           "refId": "A"
         }
       ],
-      "title": "Top Models by Requests",
+      "title": "Top 5 Models by Requests",
       "transformations": [
         {
           "id": "seriesToRows",
@@ -813,7 +851,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "13.0.0-22478626928.patch2",
+      "pluginVersion": "13.0.0-22843068776",
       "targets": [
         {
           "datasource": {
@@ -821,8 +859,8 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, sum by (le, gen_ai_system) (rate(gen_ai_first_token_time_seconds_bucket{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])))",
-          "legendFormat": "{{gen_ai_system}} P95",
+          "expr": "histogram_quantile(0.95, sum by (le, gen_ai_provider_name) (rate(gen_ai_server_time_to_first_token_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])))",
+          "legendFormat": "{{gen_ai_provider_name}} P95",
           "range": true,
           "refId": "A"
         }
@@ -894,13 +932,16 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 10,
         "w": 24,
         "x": 0,
         "y": 15
       },
       "id": 64,
       "options": {
+        "annotations": {
+          "multiLane": false
+        },
         "legend": {
           "calcs": [
             "mean",
@@ -917,7 +958,7 @@
           "sort": "desc"
         }
       },
-      "pluginVersion": "13.0.0-22478626928.patch2",
+      "pluginVersion": "13.0.0-22843068776",
       "targets": [
         {
           "app": "grafana-assistant-app",
@@ -926,9 +967,9 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "sum by(gen_ai_system, gen_ai_request_model) (rate(gen_ai_requests_total[$__rate_interval]))",
+          "expr": "sum by(gen_ai_provider_name, gen_ai_request_model) (rate(gen_ai_client_operation_duration_seconds_count[$__rate_interval]))",
           "instant": false,
-          "legendFormat": "{{gen_ai_system}} / {{gen_ai_request_model}}",
+          "legendFormat": "{{gen_ai_provider_name}} / {{gen_ai_request_model}}",
           "queryType": "range",
           "range": true,
           "refId": "A"
@@ -993,57 +1034,28 @@
               {
                 "color": "green",
                 "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
               }
             ]
           },
-          "unit": "short"
+          "unit": "none"
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Avg Cost (USD)"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "currencyUSD"
-              },
-              {
-                "id": "custom.axisPlacement",
-                "value": "right"
-              },
-              {
-                "id": "custom.stacking",
-                "value": {
-                  "group": "B",
-                  "mode": "none"
-                }
-              },
-              {
-                "id": "custom.drawStyle",
-                "value": "line"
-              },
-              {
-                "id": "custom.lineWidth",
-                "value": 2
-              },
-              {
-                "id": "custom.fillOpacity",
-                "value": 0
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 6,
         "w": 24,
         "x": 0,
-        "y": 23
+        "y": 25
       },
       "id": 6,
       "options": {
+        "annotations": {
+          "multiLane": false
+        },
         "legend": {
           "calcs": [],
           "displayMode": "list",
@@ -1056,46 +1068,55 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.0-22478626928.patch2",
+      "pluginVersion": "13.0.0-22843068776",
       "targets": [
         {
-          "app": "grafana-assistant-app",
           "datasource": {
             "type": "prometheus",
             "uid": "${metrics_datasource}"
           },
-          "expr": "sum(rate(gen_ai_usage_input_tokens_total{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) / sum(rate(gen_ai_requests_total{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval]))",
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "avg(gen_ai_client_token_usage_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", gen_ai_token_type=\"input\"})",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
           "instant": false,
           "legendFormat": "Prompt Tokens",
-          "queryType": "range",
           "range": true,
-          "refId": "A"
+          "refId": "A",
+          "useBackend": false
         },
         {
-          "app": "grafana-assistant-app",
           "datasource": {
             "type": "prometheus",
             "uid": "${metrics_datasource}"
           },
-          "expr": "sum(rate(gen_ai_usage_output_tokens_total{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) / sum(rate(gen_ai_requests_total{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval]))",
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "avg(gen_ai_client_token_usage_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\", gen_ai_token_type=\"output\"})",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
           "instant": false,
           "legendFormat": "Completion Tokens",
-          "queryType": "range",
           "range": true,
-          "refId": "B"
+          "refId": "B",
+          "useBackend": false
         },
         {
-          "app": "grafana-assistant-app",
           "datasource": {
             "type": "prometheus",
             "uid": "${metrics_datasource}"
           },
-          "expr": "sum(rate(gen_ai_usage_cost_USD_sum{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) / sum(rate(gen_ai_usage_cost_USD_count{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval]))",
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "avg(gen_ai_usage_cost_USD_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"})",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
           "instant": false,
-          "legendFormat": "Avg Cost (USD)",
-          "queryType": "range",
+          "legendFormat": "Usage Cost",
           "range": true,
-          "refId": "C"
+          "refId": "C",
+          "useBackend": false
         }
       ],
       "title": "Average Token Consumption vs. Average Usage Cost Comparison",
@@ -1108,7 +1129,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 29
+        "y": 31
       },
       "id": 47,
       "panels": [],
@@ -1128,7 +1149,7 @@
         "h": 17,
         "w": 24,
         "x": 0,
-        "y": 30
+        "y": 32
       },
       "id": 71,
       "options": {
@@ -1141,6 +1162,7 @@
         "showControls": false,
         "showFieldSelector": false,
         "showLabels": true,
+        "showLevel": true,
         "showTime": true,
         "sortOrder": "Descending",
         "syntaxHighlighting": true,
@@ -1148,7 +1170,7 @@
         "unwrappedColumns": false,
         "wrapLogMessage": true
       },
-      "pluginVersion": "13.0.0-22478626928.patch2",
+      "pluginVersion": "13.0.0-22843068776",
       "targets": [
         {
           "datasource": {
@@ -1172,7 +1194,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 47
+        "y": 49
       },
       "id": 31,
       "panels": [],
@@ -1228,7 +1250,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "System"
+                "value": "Model"
               },
               {
                 "id": "custom.width",
@@ -1248,7 +1270,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 48
+        "y": 50
       },
       "id": 67,
       "options": {
@@ -1258,11 +1280,11 @@
         "sortBy": [
           {
             "desc": true,
-            "displayName": "Model"
+            "displayName": "Last *"
           }
         ]
       },
-      "pluginVersion": "13.0.0-22478626928.patch2",
+      "pluginVersion": "13.0.0-22843068776",
       "targets": [
         {
           "app": "grafana-assistant-app",
@@ -1271,15 +1293,15 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "topk(5, sum by(gen_ai_system) (increase(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range])))",
+          "expr": "topk(5, sum by(gen_ai_provider_name) (last_over_time(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range])))",
           "instant": true,
-          "legendFormat": "{{gen_ai_system}}",
+          "legendFormat": "{{gen_ai_provider_name}}",
           "queryType": "instant",
           "range": false,
           "refId": "A"
         }
       ],
-      "title": "Top Providers by Cost",
+      "title": "Top 5 Providers by Cost",
       "transformations": [
         {
           "id": "seriesToRows",
@@ -1369,7 +1391,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 48
+        "y": 50
       },
       "id": 66,
       "options": {
@@ -1383,7 +1405,7 @@
           }
         ]
       },
-      "pluginVersion": "13.0.0-22478626928.patch2",
+      "pluginVersion": "13.0.0-22843068776",
       "targets": [
         {
           "app": "grafana-assistant-app",
@@ -1391,8 +1413,8 @@
             "type": "prometheus",
             "uid": "${metrics_datasource}"
           },
-          "editorMode": "code",
-          "expr": "topk(5, sum by(gen_ai_request_model) (increase(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range])))",
+          "editorMode": "builder",
+          "expr": "topk(5, sum by(gen_ai_request_model) (last_over_time(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range])))",
           "instant": true,
           "legendFormat": "{{gen_ai_request_model}}",
           "queryType": "instant",
@@ -1400,7 +1422,7 @@
           "refId": "A"
         }
       ],
-      "title": "Top Models by Cost",
+      "title": "Top 5 Models by Cost",
       "transformations": [
         {
           "id": "seriesToRows",
@@ -1506,18 +1528,21 @@
         ]
       },
       "gridPos": {
-        "h": 9,
+        "h": 8,
         "w": 12,
         "x": 0,
-        "y": 56
+        "y": 58
       },
       "id": 29,
       "options": {
+        "annotations": {
+          "multiLane": false
+        },
         "legend": {
           "calcs": [
             "median"
           ],
-          "displayMode": "table",
+          "displayMode": "list",
           "placement": "bottom",
           "showLegend": true
         },
@@ -1527,7 +1552,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.0-22478626928.patch2",
+      "pluginVersion": "13.0.0-22843068776",
       "targets": [
         {
           "datasource": {
@@ -1535,8 +1560,8 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "sum by(gen_ai_system) (increase(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range]))",
-          "legendFormat": "{{gen_ai_system}}",
+          "expr": "sum by(gen_ai_provider_name) (last_over_time(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__interval]))",
+          "legendFormat": "{{gen_ai_provider_name}}",
           "range": true,
           "refId": "A"
         }
@@ -1613,18 +1638,21 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
+        "h": 8,
         "w": 12,
         "x": 12,
-        "y": 56
+        "y": 58
       },
       "id": 32,
       "options": {
+        "annotations": {
+          "multiLane": false
+        },
         "legend": {
           "calcs": [
             "median"
           ],
-          "displayMode": "table",
+          "displayMode": "list",
           "placement": "bottom",
           "showLegend": true
         },
@@ -1634,7 +1662,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.0-22478626928.patch2",
+      "pluginVersion": "13.0.0-22843068776",
       "targets": [
         {
           "datasource": {
@@ -1642,7 +1670,7 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(increase(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range])) by(gen_ai_request_model)",
+          "expr": "sum(increase(gen_ai_usage_cost_USD_sum{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by(gen_ai_request_model) / 1000",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -1660,6 +1688,158 @@
       "description": "Distribution of requests across deployment environments",
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "blue",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 0,
+        "y": 66
+      },
+      "id": 70,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value_and_name",
+        "wideLayout": true
+      },
+      "pluginVersion": "13.0.0-22843068776",
+      "targets": [
+        {
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${metrics_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum by(deployment_environment) (last_over_time(gen_ai_client_operation_duration_seconds_count{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range]))",
+          "instant": true,
+          "legendFormat": "{{deployment_environment}}",
+          "queryType": "instant",
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "title": "Requests by Environment",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${metrics_datasource}"
+      },
+      "description": "Distribution of requests across AI providers / platforms",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "purple",
+            "mode": "shades"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 8,
+        "y": 66
+      },
+      "id": 69,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value_and_name",
+        "wideLayout": true
+      },
+      "pluginVersion": "13.0.0-22843068776",
+      "targets": [
+        {
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${metrics_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum by(gen_ai_provider_name) (last_over_time(gen_ai_client_operation_duration_seconds_count{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range]))",
+          "instant": true,
+          "legendFormat": "{{gen_ai_provider_name}}",
+          "queryType": "instant",
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "title": "Requests by Platform",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${metrics_datasource}"
+      },
+      "description": "Distribution of requests by GenAI operation type (chat, image, etc.)",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "green",
+            "mode": "fixed"
+          },
+          "decimals": 0,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -1681,154 +1861,13 @@
       "gridPos": {
         "h": 6,
         "w": 8,
-        "x": 0,
-        "y": 65
-      },
-      "id": 70,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "value_and_name",
-        "wideLayout": true
-      },
-      "pluginVersion": "13.0.0-22478626928.patch2",
-      "targets": [
-        {
-          "app": "grafana-assistant-app",
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${metrics_datasource}"
-          },
-          "editorMode": "code",
-          "expr": "sum by(deployment_environment) (increase(gen_ai_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range]))",
-          "instant": true,
-          "legendFormat": "{{deployment_environment}}",
-          "queryType": "instant",
-          "range": false,
-          "refId": "A"
-        }
-      ],
-      "title": "Requests by Environment",
-      "transparent": true,
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${metrics_datasource}"
-      },
-      "description": "Distribution of requests across AI providers / platforms",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "continuous-BlPu"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 8,
-        "x": 8,
-        "y": 65
-      },
-      "id": 69,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "13.0.0-22478626928.patch2",
-      "targets": [
-        {
-          "app": "grafana-assistant-app",
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${metrics_datasource}"
-          },
-          "editorMode": "code",
-          "expr": "sum by(gen_ai_system) (increase(gen_ai_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range]))",
-          "instant": true,
-          "legendFormat": "{{gen_ai_system}}",
-          "queryType": "instant",
-          "range": false,
-          "refId": "A"
-        }
-      ],
-      "title": "Requests by Platform",
-      "transparent": true,
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${metrics_datasource}"
-      },
-      "description": "Distribution of requests by GenAI operation type (chat, image, etc.)",
-      "fieldConfig": {
-        "defaults": {
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "orange",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 8,
         "x": 16,
-        "y": 65
+        "y": 66
       },
       "id": 68,
       "options": {
         "colorMode": "background",
-        "graphMode": "none",
+        "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
         "percentChangeColorMode": "standard",
@@ -1843,7 +1882,7 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "13.0.0-22478626928.patch2",
+      "pluginVersion": "13.0.0-22843068776",
       "targets": [
         {
           "app": "grafana-assistant-app",
@@ -1851,8 +1890,8 @@
             "type": "prometheus",
             "uid": "${metrics_datasource}"
           },
-          "editorMode": "code",
-          "expr": "sum by(gen_ai_operation_name) (increase(gen_ai_requests_total{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range]))",
+          "editorMode": "builder",
+          "expr": "sum by(gen_ai_operation_name) (last_over_time(gen_ai_client_operation_duration_seconds_count{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range]))",
           "instant": true,
           "legendFormat": "{{gen_ai_operation_name}}",
           "queryType": "instant",
@@ -1865,12 +1904,199 @@
       "type": "stat"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${metrics_datasource}"
+      },
+      "description": "This panel displays the distribution of request durations grouped by GenAI system (OpenAI, Anthropic, Cohere, etc.). It highlights how long requests take to complete across different GenAI platforms, offering insights into platform-specific performance characteristics. Understanding this distribution helps in comparing system performance and identifying which GenAI platforms provide the best response times.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "scaleDistribution": {
+              "type": "linear"
+            }
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 72
+      },
+      "id": 57,
+      "options": {
+        "annotations": {
+          "multiLane": false
+        },
+        "calculate": false,
+        "calculation": {
+          "xBuckets": {
+            "mode": "count",
+            "value": "10"
+          },
+          "yBuckets": {
+            "mode": "count",
+            "value": "10"
+          }
+        },
+        "cellGap": 1,
+        "color": {
+          "exponent": 0.5,
+          "fill": "dark-blue",
+          "mode": "spectrum",
+          "reverse": false,
+          "scale": "exponential",
+          "scheme": "Blues",
+          "steps": 128
+        },
+        "exemplars": {
+          "color": "rgba(255,0,255,0.7)"
+        },
+        "filterValues": {
+          "le": 1e-9
+        },
+        "legend": {
+          "show": false
+        },
+        "rowsFrame": {
+          "layout": "auto"
+        },
+        "tooltip": {
+          "mode": "single",
+          "showColorScale": false,
+          "yHistogram": false
+        },
+        "yAxis": {
+          "axisPlacement": "left",
+          "reverse": false,
+          "unit": "s"
+        }
+      },
+      "pluginVersion": "13.0.0-22843068776",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${metrics_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "histogram_quantile(0.95, sum(rate(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (le, gen_ai_provider_name))",
+          "legendFormat": "{{gen_ai_provider_name}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Latency Distribution",
+      "transparent": true,
+      "type": "heatmap"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${metrics_datasource}"
+      },
+      "description": "This panel displays the 95th percentile latency distribution across models in a heatmap format. The intensity of colors represents the concentration of requests at different latency levels, helping identify performance patterns and outliers across different GenAI models.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "scaleDistribution": {
+              "type": "linear"
+            }
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 72
+      },
+      "id": 53,
+      "options": {
+        "annotations": {
+          "multiLane": false
+        },
+        "calculate": false,
+        "calculation": {
+          "xBuckets": {
+            "mode": "count",
+            "value": "10"
+          },
+          "yBuckets": {
+            "mode": "count",
+            "value": "10"
+          }
+        },
+        "cellGap": 1,
+        "color": {
+          "exponent": 0.5,
+          "fill": "blue",
+          "mode": "scheme",
+          "reverse": false,
+          "scale": "exponential",
+          "scheme": "Purples",
+          "steps": 128
+        },
+        "exemplars": {
+          "color": "rgba(255,0,255,0.7)"
+        },
+        "filterValues": {
+          "le": 1e-9
+        },
+        "legend": {
+          "show": false
+        },
+        "rowsFrame": {
+          "layout": "auto"
+        },
+        "tooltip": {
+          "mode": "single",
+          "showColorScale": false,
+          "yHistogram": false
+        },
+        "yAxis": {
+          "axisPlacement": "left",
+          "reverse": false,
+          "unit": "none"
+        }
+      },
+      "pluginVersion": "13.0.0-22843068776",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${metrics_datasource}"
+          },
+          "expr": "histogram_quantile(0.95, sum(rate(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (le, gen_ai_request_model))",
+          "legendFormat": "{{gen_ai_request_model}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Latency Distribution",
+      "transparent": true,
+      "type": "heatmap"
+    },
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 71
+        "y": 80
       },
       "id": 46,
       "panels": [],
@@ -1887,7 +2113,7 @@
         "h": 2,
         "w": 12,
         "x": 0,
-        "y": 72
+        "y": 81
       },
       "id": 59,
       "options": {
@@ -1899,7 +2125,7 @@
         "content": "### By System",
         "mode": "markdown"
       },
-      "pluginVersion": "13.0.0-22478626928.patch2",
+      "pluginVersion": "13.0.0-22843068776",
       "title": "",
       "type": "text"
     },
@@ -1913,7 +2139,7 @@
         "h": 2,
         "w": 12,
         "x": 12,
-        "y": 72
+        "y": 81
       },
       "id": 60,
       "options": {
@@ -1925,7 +2151,7 @@
         "content": "### By Model",
         "mode": "markdown"
       },
-      "pluginVersion": "13.0.0-22478626928.patch2",
+      "pluginVersion": "13.0.0-22843068776",
       "title": "",
       "type": "text"
     },
@@ -1964,7 +2190,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 74
+        "y": 83
       },
       "id": 38,
       "options": {
@@ -1991,7 +2217,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "13.0.0-22478626928.patch2",
+      "pluginVersion": "13.0.0-22843068776",
       "targets": [
         {
           "datasource": {
@@ -2001,7 +2227,7 @@
           "disableTextWrap": false,
           "editorMode": "code",
           "exemplar": false,
-          "expr": "histogram_quantile(0.95, \n  sum by(le, gen_ai_system) (\n    rate(gen_ai_token_generation_time_seconds_bucket{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])\n  )\n)",
+          "expr": "histogram_quantile(0.95, \n  sum by(le, gen_ai_provider_name) (\n    increase(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range])\n  )\n)",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": true,
@@ -2068,7 +2294,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 74
+        "y": 83
       },
       "id": 37,
       "options": {
@@ -2095,7 +2321,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "13.0.0-22478626928.patch2",
+      "pluginVersion": "13.0.0-22843068776",
       "targets": [
         {
           "datasource": {
@@ -2105,7 +2331,7 @@
           "disableTextWrap": false,
           "editorMode": "code",
           "exemplar": false,
-          "expr": "histogram_quantile(0.95, \n  sum by(le, gen_ai_request_model) (\n    rate(gen_ai_token_generation_time_seconds_bucket{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])\n  )\n)",
+          "expr": "histogram_quantile(0.95, \n  sum by(le, gen_ai_request_model) (\n    increase(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__range])\n  )\n)",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": true,
@@ -2201,18 +2427,21 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
+        "h": 8,
         "w": 12,
         "x": 0,
-        "y": 82
+        "y": 91
       },
       "id": 41,
       "options": {
+        "annotations": {
+          "multiLane": false
+        },
         "legend": {
           "calcs": [
             "median"
           ],
-          "displayMode": "table",
+          "displayMode": "list",
           "placement": "bottom",
           "showLegend": true
         },
@@ -2222,7 +2451,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.0-22478626928.patch2",
+      "pluginVersion": "13.0.0-22843068776",
       "targets": [
         {
           "datasource": {
@@ -2230,7 +2459,7 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, sum(rate(gen_ai_first_token_time_seconds_bucket{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (gen_ai_system, le))",
+          "expr": "histogram_quantile(0.95, sum(rate(gen_ai_server_time_to_first_token_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (gen_ai_provider_name, le))",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -2304,18 +2533,21 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
+        "h": 8,
         "w": 12,
         "x": 12,
-        "y": 82
+        "y": 91
       },
       "id": 42,
       "options": {
+        "annotations": {
+          "multiLane": false
+        },
         "legend": {
           "calcs": [
             "median"
           ],
-          "displayMode": "table",
+          "displayMode": "list",
           "placement": "bottom",
           "showLegend": true
         },
@@ -2325,7 +2557,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.0-22478626928.patch2",
+      "pluginVersion": "13.0.0-22843068776",
       "targets": [
         {
           "datasource": {
@@ -2333,7 +2565,7 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, sum(rate(gen_ai_first_token_time_seconds_bucket{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (gen_ai_request_model, le))",
+          "expr": "histogram_quantile(0.95, sum(rate(gen_ai_server_time_to_first_token_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (gen_ai_request_model, le))",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -2410,15 +2642,18 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 91
+        "y": 99
       },
       "id": 39,
       "options": {
+        "annotations": {
+          "multiLane": false
+        },
         "legend": {
           "calcs": [
             "median"
           ],
-          "displayMode": "table",
+          "displayMode": "list",
           "placement": "bottom",
           "showLegend": true
         },
@@ -2428,7 +2663,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.0-22478626928.patch2",
+      "pluginVersion": "13.0.0-22843068776",
       "targets": [
         {
           "datasource": {
@@ -2436,7 +2671,7 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, sum(rate(gen_ai_token_generation_time_seconds_bucket{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (gen_ai_system, le))",
+          "expr": "histogram_quantile(0.95, sum(rate(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (gen_ai_provider_name, le))",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -2513,15 +2748,18 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 91
+        "y": 99
       },
       "id": 43,
       "options": {
+        "annotations": {
+          "multiLane": false
+        },
         "legend": {
           "calcs": [
             "median"
           ],
-          "displayMode": "table",
+          "displayMode": "list",
           "placement": "bottom",
           "showLegend": true
         },
@@ -2531,7 +2769,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.0-22478626928.patch2",
+      "pluginVersion": "13.0.0-22843068776",
       "targets": [
         {
           "datasource": {
@@ -2539,7 +2777,7 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, sum(rate(gen_ai_token_generation_time_seconds_bucket{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (gen_ai_request_model, le))",
+          "expr": "histogram_quantile(0.95, sum(rate(gen_ai_client_operation_duration_seconds_bucket{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])) by (gen_ai_request_model, le))",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -2560,7 +2798,7 @@
     "list": [
       {
         "current": {
-          "text": "grafanacloud-edaf18-prom",
+          "text": "grafanacloud-cadf65-prom",
           "value": "grafanacloud-prom"
         },
         "includeAll": false,
@@ -2574,7 +2812,7 @@
       },
       {
         "current": {
-          "text": "grafanacloud-edaf18-logs",
+          "text": "grafanacloud-cadf65-logs",
           "value": "grafanacloud-logs"
         },
         "includeAll": false,
@@ -2650,7 +2888,7 @@
   "timepicker": {},
   "timezone": "browser",
   "title": "GenAI Observability",
-  "uid": "cdiz9piuoa3gge",
-  "version": 19,
+  "uid": "cdiz9piuoa3ggc",
+  "version": 7,
   "weekStart": ""
 }
