@@ -1121,10 +1121,6 @@
   "templating": {
     "list": [
       {
-        "current": {
-          "text": "grafanacloud-cadf65-logs",
-          "value": "grafanacloud-logs"
-        },
         "label": "Logs data source",
         "name": "logs_datasource",
         "options": [],
