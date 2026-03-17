@@ -604,7 +604,7 @@
         "targets": [
           {
             "editorMode": "code",
-            "expr": "histogram_quantile(0.95, sum(rate(gen_ai_agent_operation_duration_seconds_bucket{gen_ai_agent_name=~\"$gen_ai_agent_name\"}[$__rate_interval])) by (le, gen_ai_agent_name))",
+            "expr": "sum(rate(gen_ai_agent_operation_duration_seconds_bucket{gen_ai_agent_name=~\"$gen_ai_agent_name\"}[$__rate_interval])) by (le)",
             "legendFormat": "__auto",
             "range": true,
             "refId": "A"
@@ -873,7 +873,7 @@
             },
             "direction": "backward",
             "editorMode": "code",
-            "expr": "{service_name=\"chatservice\"} |= \"_agent\"  | json | line_format \"\\n\\tName: {{.name}}\\n\\tTraceID: {{.otelTraceID}}\\n\\tSpanID: {{.otelSpanID}}\\n\\tMessage: {{.message}}\" |~ \"$gen_ai_agent_name\"",
+            "expr": "{service_name=~\"$service_name\"} |= \"_agent\"  | json | line_format \"\\n\\tName: {{.name}}\\n\\tTraceID: {{.otelTraceID}}\\n\\tSpanID: {{.otelSpanID}}\\n\\tMessage: {{.message}}\" |~ \"$gen_ai_agent_name\"",
             "queryType": "range",
             "refId": "C"
           },
@@ -884,7 +884,7 @@
             },
             "direction": "backward",
             "editorMode": "code",
-            "expr": "{service_name=\"chatservice\"} |~ \"$gen_ai_agent_name\"",
+            "expr": "{service_name=~\"$service_name\"} |~ \"$gen_ai_agent_name\"",
             "hide": true,
             "queryType": "range",
             "refId": "A"
@@ -916,6 +916,34 @@
           "refresh": 1,
           "regex": "^(?!.*(?:-alert-state-history|-usage-insights)$).*",
           "type": "datasource"
+        },
+        {
+          "current": {
+            "text": "All",
+            "value": [
+              "$__all"
+            ]
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${metrics_datasource}"
+          },
+          "definition": "label_values(service_name)",
+          "includeAll": true,
+          "label": "service_name",
+          "multi": true,
+          "name": "service_name",
+          "options": [],
+          "query": {
+            "qryType": 1,
+            "query": "label_values(service_name)",
+            "refId": "PrometheusVariableQueryEditor-VariableQuery"
+          },
+          "refresh": 2,
+          "regex": "",
+          "regexApplyTo": "value",
+          "sort": 1,
+          "type": "query"
         },
         {
           "current": {

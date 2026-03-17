@@ -650,7 +650,7 @@
             "uid": "${metrics_datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(increase(gen_ai_client_operation_duration_seconds_count{error_type=~\".+\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval]))  \n/  \nsum(increase(gen_ai_client_operation_duration_seconds_count{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval]))  \n* 100  ",
+          "expr": "sum(increase(gen_ai_client_operation_duration_seconds_count{telemetry_sdk_name=\"openlit\", error_type=~\".+\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval]))  \n/  \nsum(increase(gen_ai_client_operation_duration_seconds_count{telemetry_sdk_name=\"openlit\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval]))  \n* 100  ",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
