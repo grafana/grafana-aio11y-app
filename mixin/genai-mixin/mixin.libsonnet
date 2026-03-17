@@ -1,5 +1,6 @@
 {
   grafanaDashboards: {
+    'genai-agent-observability.json': (import 'dashboards/genai-agent-observability.json'),
     'genai-observability.json': (import 'dashboards/genai-observability.json'),
     'genai-evaluations.json': (import 'dashboards/genai-evaluations.json'),
     'mcp-observability.json': (import 'dashboards/mcp-observability.json'),

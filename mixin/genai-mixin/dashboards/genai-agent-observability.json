@@ -15,7 +15,7 @@
         }
       ]
     },
-    "editable": true,
+    "editable": false,
     "fiscalYearStartMonth": 0,
     "graphTooltip": 0,
     "links": [],
@@ -49,7 +49,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "grafanacloud-prom"
+          "uid": "${metrics_datasource}"
         },
         "description": "The total agent invocations in the selected time range.",
         "fieldConfig": {
@@ -104,7 +104,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "grafanacloud-prom"
+              "uid": "${metrics_datasource}"
             },
             "editorMode": "code",
             "expr": "sum(round(increase(gen_ai_agent_invocations_total[$__range])))",
@@ -119,7 +119,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "grafanacloud-prom"
+          "uid": "${metrics_datasource}"
         },
         "description": "The total number of agent invocations in the selected time range, grouped by source.",
         "fieldConfig": {
@@ -170,7 +170,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "grafanacloud-prom"
+              "uid": "${metrics_datasource}"
             },
             "editorMode": "code",
             "expr": "sum(round(increase(gen_ai_agent_invocations_total{gen_ai_agent_source=~\"$gen_ai_agent_name\"}[$__range]))) by (gen_ai_agent_source)",
@@ -185,7 +185,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "grafanacloud-prom"
+          "uid": "${metrics_datasource}"
         },
         "description": "The total usage cost per agent in the selected time range.",
         "fieldConfig": {
@@ -252,7 +252,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "grafanacloud-prom"
+          "uid": "${metrics_datasource}"
         },
         "description": "The usage cost per agent in the selected time range.",
         "fieldConfig": {
@@ -326,7 +326,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "grafanacloud-prom"
+          "uid": "${metrics_datasource}"
         },
         "description": "The total number of agent invocations in the selected time range, grouped by source.",
         "fieldConfig": {
@@ -388,7 +388,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "grafanacloud-prom"
+              "uid": "${metrics_datasource}"
             },
             "editorMode": "code",
             "expr": "sum by(gen_ai_agent_source) (round(increase(gen_ai_agent_invocations_total{gen_ai_agent_source=~\"$gen_ai_agent_name\"}[$__range])))  ",
@@ -401,7 +401,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "grafanacloud-prom"
+              "uid": "${metrics_datasource}"
             },
             "editorMode": "code",
             "expr": "sum(round(increase(gen_ai_agent_invocations_total[$__range])))  ",
@@ -436,7 +436,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "grafanacloud-prom"
+          "uid": "${metrics_datasource}"
         },
         "description": "95th percentile latency for AI agent operations, by agent name. 95% of operations complete within this duration. High values indicate slowdowns in specific agents.",
         "fieldConfig": {
@@ -535,7 +535,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "grafanacloud-prom"
+          "uid": "${metrics_datasource}"
         },
         "description": "95th percentile latency for agent operations, by agent name.",
         "fieldConfig": {
@@ -616,7 +616,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "grafanacloud-prom"
+          "uid": "${metrics_datasource}"
         },
         "description": "The average time spent executing an operation in the selected time range, grouped by agent name and provider.",
         "fieldConfig": {
@@ -704,7 +704,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "grafanacloud-prom"
+              "uid": "${metrics_datasource}"
             },
             "editorMode": "code",
             "expr": "sum(round(increase(gen_ai_agent_operation_duration_seconds_sum{gen_ai_agent_name=~\"$gen_ai_agent_name\"}[$__range]))) by (gen_ai_agent_name, gen_ai_provider_name)",
@@ -716,7 +716,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "grafanacloud-prom"
+              "uid": "${metrics_datasource}"
             },
             "editorMode": "code",
             "expr": "sum by(gen_ai_agent_name, gen_ai_provider_name) (increase(gen_ai_agent_operation_duration_seconds_sum{gen_ai_agent_name=~\"$gen_ai_agent_name\"}[$__range]))\n/\nsum by(gen_ai_agent_name, gen_ai_provider_name) (increase(gen_ai_agent_operation_duration_seconds_count{gen_ai_agent_name=~\"$gen_ai_agent_name\"}[$__range]))",
@@ -731,7 +731,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "grafanacloud-prom"
+          "uid": "${metrics_datasource}"
         },
         "description": "The rate of completed agent operations, broken down by agent name and provider. ",
         "fieldConfig": {
@@ -819,7 +819,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "grafanacloud-prom"
+              "uid": "${metrics_datasource}"
             },
             "editorMode": "code",
             "expr": "sum by(gen_ai_agent_name, gen_ai_provider_name) (rate(gen_ai_agent_operation_duration_seconds_count{gen_ai_agent_name=~\"$gen_ai_agent_name\"}[$__rate_interval]))",
@@ -834,7 +834,7 @@
       {
         "datasource": {
           "type": "loki",
-          "uid": "grafanacloud-logs"
+          "uid": "${logs_datasource}"
         },
         "description": "The logs for agent interactions. ",
         "fieldConfig": {
@@ -869,7 +869,7 @@
           {
             "datasource": {
               "type": "loki",
-              "uid": "grafanacloud-logs"
+              "uid": "${logs_datasource}"
             },
             "direction": "backward",
             "editorMode": "code",
@@ -880,7 +880,7 @@
           {
             "datasource": {
               "type": "loki",
-              "uid": "grafanacloud-logs"
+              "uid": "${logs_datasource}"
             },
             "direction": "backward",
             "editorMode": "code",
@@ -900,10 +900,6 @@
     "templating": {
       "list": [
         {
-          "current": {
-            "text": "grafanacloud-cfba10-prom",
-            "value": "grafanacloud-prom"
-          },
           "label": "Metrics data source",
           "name": "metrics_datasource",
           "options": [],
@@ -913,10 +909,6 @@
           "type": "datasource"
         },
         {
-          "current": {
-            "text": "grafanacloud-cfba10-logs",
-            "value": "grafanacloud-logs"
-          },
           "label": "Logs data source",
           "name": "logs_datasource",
           "options": [],
