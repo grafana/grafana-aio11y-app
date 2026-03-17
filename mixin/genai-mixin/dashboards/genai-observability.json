@@ -651,7 +651,6 @@
           },
           "editorMode": "code",
           "expr": "sum(increase(gen_ai_client_operation_duration_seconds_count{error_type=~\".+\", service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval]))  \n/  \nsum(increase(gen_ai_client_operation_duration_seconds_count{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval]))  \n* 100  ",
-          "hide": true,
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -664,6 +663,7 @@
           },
           "editorMode": "code",
           "expr": "histogram_quantile(0.95, sum by(le, gen_ai_provider_name) (rate(gen_ai_client_operation_duration_seconds_bucket{service_name=~\"$service_name\", deployment_environment=~\"$deployment_environment\"}[$__rate_interval])))  ",
+          "hide": true,
           "instant": false,
           "legendFormat": "{{gen_ai_provider_name}}",
           "range": true,
@@ -2797,10 +2797,6 @@
   "templating": {
     "list": [
       {
-        "current": {
-          "text": "grafanacloud-cadf65-prom",
-          "value": "grafanacloud-prom"
-        },
         "includeAll": false,
         "label": "Metrics data source",
         "name": "metrics_datasource",
@@ -2811,10 +2807,6 @@
         "type": "datasource"
       },
       {
-        "current": {
-          "text": "grafanacloud-cadf65-logs",
-          "value": "grafanacloud-logs"
-        },
         "includeAll": false,
         "label": "Logs data source",
         "name": "logs_datasource",
