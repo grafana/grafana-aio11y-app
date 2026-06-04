@@ -1,8 +1,6 @@
 module github.com/gtm/ai-observability
 
-go 1.21
-
-toolchain go1.22.2
+go 1.25.0
 
 require github.com/grafana/grafana-plugin-sdk-go v0.212.0
 
@@ -78,7 +76,7 @@ require (
 	golang.org/x/exp v0.0.0-20231006140011-7918f672742d // indirect
 	golang.org/x/mod v0.13.0 // indirect
 	golang.org/x/net v0.20.0 // indirect
-	golang.org/x/sys v0.16.0 // indirect
+	golang.org/x/sys v0.44.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/tools v0.14.0 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
