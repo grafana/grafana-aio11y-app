@@ -2,7 +2,7 @@ module github.com/gtm/ai-observability
 
 go 1.21
 
-toolchain go1.22.2
+toolchain go1.25.13
 
 require github.com/grafana/grafana-plugin-sdk-go v0.212.0
 
