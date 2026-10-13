@@ -47,12 +47,12 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: actions/setup-node@v4
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
       with:
         node-version: "${{ inputs.node-version }}"
 
     - name: Setup Go environment
-      uses: actions/setup-go@v5
+      uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
       with:
         go-version: "${{ inputs.go-version }}"
 
@@ -78,7 +78,7 @@ runs:
 
     - name: Test backend
       if: steps.check-for-backend.outputs.has-backend == 'true'
-      uses: magefile/mage-action@v3
+      uses: magefile/mage-action@6f50bbb8ea47d56e62dee92392788acbc8192d0b # v3
       with:
         version: latest
         args: coverage
@@ -86,7 +86,7 @@ runs:
 
     - name: Build backend
       if: steps.check-for-backend.outputs.has-backend == 'true'
-      uses: magefile/mage-action@v3
+      uses: magefile/mage-action@6f50bbb8ea47d56e62dee92392788acbc8192d0b # v3
       with:
         version: latest
         args: buildAll
@@ -165,7 +165,7 @@ runs:
       shell: bash
 
     - name: Create Github release
-      uses: softprops/action-gh-release@v2
+      uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2
       with:
         generate_release_notes: true
         token: ${{ inputs.token }}
