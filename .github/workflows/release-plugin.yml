@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
       - name: Build Plugin
         id: build_plugin
@@ -37,17 +37,19 @@ jobs:
           VERSION: ${{ steps.build_plugin.outputs.version }}
           ARCHIVE_URL: ${{ steps.build_plugin.outputs.archive-url }}
           ARCHIVE_SHA1SUM_URL: ${{ steps.build_plugin.outputs.archive-sha1sum-url }}
+          ARCHIVE_SHA1SUM: ${{ steps.build_plugin.outputs.archive-sha1sum }}
+          REF_NAME: ${{ github.ref_name }}
         run: |
           echo "Publish new plugin version on grafana.com:"
           echo "Plugin version: ${VERSION}"
           
           # Download the SHA1 sum
-          SHA1=$(cat ${{ steps.build_plugin.outputs.archive-sha1sum }})
+          SHA1=$(cat "${ARCHIVE_SHA1SUM}")
           result=$(curl -H "Authorization: Bearer $GCOM_TOKEN" \
             -H "Content-Type: application/json" \
             https://grafana.com/api/plugins -d @- << EOF
             {
-              "url": "https://github.com/${{ github.repository }}/tree/${{ github.ref_name }}",
+              "url": "https://github.com/${{ github.repository }}/tree/${REF_NAME}",
               "download": {
                 "any": {
                   "url": "${ARCHIVE_URL}",
