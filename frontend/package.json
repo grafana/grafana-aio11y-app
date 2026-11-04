@@ -76,6 +76,6 @@
     "react-markdown": "^9.0.1",
     "react-router-dom": "^6.22.0",
     "rxjs": "7.8.1",
-    "tslib": "2.5.3"
+    "tslib": "2.9.1"
   }
 }
